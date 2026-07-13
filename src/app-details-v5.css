@@ -82,8 +82,12 @@
 }
 
 @media (max-width: 680px) {
+  .app-detail-back {
+    left: 0;
+  }
+
   .app-summary-wrap {
-    padding-inline: 14px;
+    padding-inline: 0;
     margin-top: -18px;
   }
 
@@ -113,6 +117,14 @@
   .app-summary-stats {
     margin-top: 14px;
     padding-top: 12px;
+  }
+
+  .app-summary-stat strong {
+    font-size: .82rem;
+  }
+
+  .app-summary-stat span {
+    font-size: .58rem;
   }
 
   .app-download-actions {
