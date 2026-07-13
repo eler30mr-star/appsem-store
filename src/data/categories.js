@@ -14,3 +14,8 @@ export const categoryMap = categories.reduce((map, category) => {
   map[category.key] = category.label;
   return map;
 }, {});
+
+categoryMap.bible = "Libros y referencias";
+categoryMap.christian = "Libros y referencias";
+categoryMap.cristianas = "Libros y referencias";
+categoryMap["libros-referencias"] = "Libros y referencias";
