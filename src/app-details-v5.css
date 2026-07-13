@@ -154,6 +154,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.app-review-rating .star:active,
+.app-review-rating .star:focus,
+.app-review-rating .star:focus-visible {
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
 }
 
 .app-review-rating .form-message {
