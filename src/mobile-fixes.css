@@ -1,0 +1,83 @@
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main,
+section,
+.container,
+.detail-layout,
+.detail-main,
+.detail-sidebar,
+.detail-section {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.detail-main,
+.detail-section {
+  width: 100%;
+}
+
+.screenshots-row {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 4px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.screenshots-row::-webkit-scrollbar {
+  display: none;
+}
+
+.screenshot-frame {
+  flex: 0 0 214px;
+  width: 214px;
+  min-width: 214px;
+  max-width: 214px;
+  height: 410px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 680px) {
+  .detail-layout,
+  .detail-main,
+  .detail-section {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .detail-section {
+    overflow: hidden;
+    padding: 16px;
+  }
+
+  .screenshots-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .screenshot-frame {
+    flex: 0 0 180px;
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    height: 350px;
+  }
+}
