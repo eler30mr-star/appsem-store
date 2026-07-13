@@ -1,9 +1,14 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { Grid2X2, Share2, ShieldCheck } from "lucide-react";
+import { useState } from "react";
+import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
+import { Grid2X2, Search, Share2, ShieldCheck, X } from "lucide-react";
 
 export default function Header() {
   const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchOpen, setSearchOpen] = useState(Boolean(searchParams.get("q")));
   const isAppDetails = pathname.startsWith("/app/");
+  const isHome = pathname === "/";
+  const searchValue = searchParams.get("q") || "";
 
   async function handleShare() {
     const shareData = {
@@ -23,6 +28,23 @@ export default function Header() {
         console.error("No se pudo compartir la página.", error);
       }
     }
+  }
+
+  function handleSearchChange(event) {
+    const value = event.target.value;
+    const nextParams = new URLSearchParams(searchParams);
+
+    if (value) nextParams.set("q", value);
+    else nextParams.delete("q");
+
+    setSearchParams(nextParams, { replace: true });
+  }
+
+  function closeSearch() {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete("q");
+    setSearchParams(nextParams, { replace: true });
+    setSearchOpen(false);
   }
 
   return (
@@ -46,6 +68,35 @@ export default function Header() {
           >
             <Share2 size={22} />
           </button>
+        ) : isHome ? (
+          <div className={`header-search ${searchOpen ? "open" : ""}`}>
+            {searchOpen ? (
+              <div className="header-search-field">
+                <Search size={20} />
+                <input
+                  aria-label="Buscar apps"
+                  autoFocus
+                  onChange={handleSearchChange}
+                  placeholder="Buscar apps..."
+                  type="search"
+                  value={searchValue}
+                />
+                <button type="button" onClick={closeSearch} aria-label="Cerrar búsqueda">
+                  <X size={20} />
+                </button>
+              </div>
+            ) : (
+              <button
+                className="header-search-button"
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                aria-label="Buscar apps"
+                title="Buscar"
+              >
+                <Search size={23} />
+              </button>
+            )}
+          </div>
         ) : (
           <nav className="top-nav" aria-label="Navegación principal">
             <NavLink to="/" end>
