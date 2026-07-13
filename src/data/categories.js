@@ -1,7 +1,6 @@
 export const categories = [
   { key: "all", label: "Todas" },
-  { key: "bible", label: "Biblia" },
-  { key: "christian", label: "Cristiana" },
+  { key: "books-reference", label: "Libros y referencias" },
   { key: "tools", label: "Herramientas" },
   { key: "education", label: "Educación" },
   { key: "entertainment", label: "Entretenimiento" },
