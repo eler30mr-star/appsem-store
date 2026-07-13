@@ -104,27 +104,45 @@
   text-overflow: ellipsis;
 }
 
-.home-row-app-copy span {
+.home-row-app-copy > span {
   margin-top: 6px;
   color: var(--muted);
   font-size: .84rem;
 }
 
-.home-row-app-copy small {
+.home-row-app-meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px 12px;
   margin-top: 8px;
-  color: var(--warning);
+}
+
+.home-row-app-meta small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  color: var(--muted);
+  font-size: .78rem;
   font-weight: 800;
+  white-space: nowrap;
+}
+
+.home-row-app-meta small:first-child {
+  color: var(--warning);
 }
 
 .home-row-app-card-compact {
-  flex: 0 0 238px;
-  min-width: 238px;
+  flex: 0 0 250px;
+  min-width: 250px;
   border-radius: 20px;
 }
 
 .home-row-app-card-compact .home-row-app-body {
   grid-template-columns: 66px minmax(0, 1fr);
-  min-height: 96px;
+  min-height: 104px;
   gap: 12px;
   padding: 12px;
 }
@@ -137,6 +155,15 @@
 
 .home-row-app-card-compact .home-row-app-copy strong {
   font-size: 1rem;
+}
+
+.home-row-app-card-compact .home-row-app-meta {
+  gap: 6px 9px;
+  margin-top: 7px;
+}
+
+.home-row-app-card-compact .home-row-app-meta small {
+  font-size: .72rem;
 }
 
 @media (max-width: 680px) {
@@ -189,7 +216,7 @@
 
   .home-row-app-card-featured .home-row-app-body {
     grid-template-columns: 74px minmax(0, 1fr);
-    min-height: 108px;
+    min-height: 112px;
     padding: 15px;
   }
 
@@ -199,14 +226,14 @@
   }
 
   .home-row-app-card-compact {
-    flex-basis: min(72vw, 270px);
-    min-width: min(72vw, 270px);
+    flex-basis: min(76vw, 285px);
+    min-width: min(76vw, 285px);
     border-radius: 18px;
   }
 
   .home-row-app-card-compact .home-row-app-body {
     grid-template-columns: 64px minmax(0, 1fr);
-    min-height: 92px;
+    min-height: 102px;
     padding: 12px;
   }
 
@@ -236,7 +263,7 @@
   }
 
   .home-row-app-card-compact {
-    flex-basis: min(74vw, 260px);
-    min-width: min(74vw, 260px);
+    flex-basis: min(78vw, 278px);
+    min-width: min(78vw, 278px);
   }
 }
