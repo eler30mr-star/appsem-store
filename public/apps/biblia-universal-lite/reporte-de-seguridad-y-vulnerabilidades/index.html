@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Reporte de seguridad y vulnerabilidades de Biblia Universal Lite."
+  />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Reporte de Seguridad y Vulnerabilidades | Biblia Universal Lite</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-dark: #173ea8;
+      --accent: #2563eb;
+      --danger: #b42318;
+      --danger-soft: #fff1f0;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --content: 920px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 30%),
+        linear-gradient(180deg, #eef4ff 0, var(--bg) 320px);
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      padding: 52px 24px 34px;
+    }
+
+    .hero-inner {
+      max-width: var(--content);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: rgba(255, 255, 255, 0.74);
+      backdrop-filter: blur(10px);
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+    }
+
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
+    }
+
+    .site-nav {
+      max-width: var(--content);
+      margin: 22px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: #334155;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .site-nav a:hover {
+      color: var(--primary);
+      border-color: rgba(37, 99, 235, 0.35);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .site-nav a.active,
+    .site-nav a[aria-current="page"] {
+      color: #ffffff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    h1 {
+      margin: 26px 0 14px;
+      font-size: clamp(2.1rem, 7vw, 4.2rem);
+      line-height: 1.04;
+      letter-spacing: -0.052em;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+    }
+
+    .updated-date,
+    .effective-date {
+      display: inline-block;
+      margin-top: 22px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .page {
+      width: min(calc(100% - 32px), var(--content));
+      margin: 0 auto 72px;
+    }
+
+    .legal-card,
+    .policy-card,
+    .terms-card {
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .intro {
+      padding: 36px 42px;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .intro strong {
+      color: #ffffff;
+    }
+
+    .summary {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+
+    .content {
+      padding: 24px 42px 46px;
+    }
+
+    section {
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 8px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.35rem, 3vw, 1.72rem);
+      line-height: 1.3;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      font-size: 1.08rem;
+      color: #1e3a8a;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul, ol {
+      margin: 12px 0 16px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 2px 7px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      color: #1e3a8a;
+      font-size: 0.9em;
+    }
+
+    .notice,
+    .warning {
+      margin: 20px 0 4px;
+      padding: 18px 20px;
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    }
+
+    .notice {
+      border-left: 4px solid var(--accent);
+      background: #eff6ff;
+      color: #1e3a5f;
+    }
+
+    .warning {
+      border-left: 4px solid var(--danger);
+      background: var(--danger-soft);
+      color: #7a271a;
+    }
+
+    .contact-box {
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .contact-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #0f172a;
+      font-size: 1.06rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    footer {
+      padding: 28px 20px 42px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .footer-nav a {
+      font-weight: 650;
+    }
+
+    .back-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #ffffff;
+      background: #0f172a;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.24);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .back-top:hover {
+      background: var(--primary-dark);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 38px 18px 28px;
+      }
+
+      .site-nav {
+        margin-top: 18px;
+        gap: 7px;
+      }
+
+      .site-nav a {
+        min-height: 38px;
+        padding: 8px 12px;
+        font-size: 0.84rem;
+      }
+
+      .page {
+        width: min(calc(100% - 20px), var(--content));
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        border-radius: 22px;
+      }
+
+      .intro {
+        padding: 28px 24px;
+      }
+
+      .content {
+        padding: 10px 24px 34px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+
+      h1 {
+        letter-spacing: -0.045em;
+      }
+
+      .back-top {
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #07101f;
+        --surface: #0f172a;
+        --surface-soft: #111c30;
+        --text: #dbe5f5;
+        --muted: #94a3b8;
+        --border: #243247;
+        --danger-soft: rgba(180, 35, 24, 0.18);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 28%),
+          linear-gradient(180deg, #081225 0, var(--bg) 320px);
+      }
+
+      h1,
+      h2,
+      .contact-box strong {
+        color: #f8fafc;
+      }
+
+      h3 {
+        color: #93c5fd;
+      }
+
+      .brand {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: rgba(96, 165, 250, 0.22);
+        color: #bfdbfe;
+      }
+
+      .site-nav a {
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.82);
+        border-color: #2d3b52;
+      }
+
+      .site-nav a.active,
+      .site-nav a[aria-current="page"] {
+        color: #ffffff;
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        background: rgba(15, 23, 42, 0.97);
+        border-color: var(--border);
+      }
+
+      code {
+        color: #bfdbfe;
+      }
+
+      .notice {
+        background: rgba(30, 64, 175, 0.18);
+        color: #dbeafe;
+      }
+
+      .warning {
+        color: #fecaca;
+      }
+
+      a {
+        color: #60a5fa;
+      }
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        AppsMart Technology
+      </div>
+
+      <nav class="site-nav" aria-label="Navegación legal">
+        <a href="index.html">Privacidad</a>
+        <a href="terminos.html">Términos</a>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="eliminacion-cuenta-datos.html">Eliminar cuenta</a>
+        <a href="seguridad.html" class="active" aria-current="page">Seguridad</a>
+      </nav>
+
+      <h1>Reporte de Seguridad y Vulnerabilidades</h1>
+
+      <p class="subtitle">
+        Información para reportar de forma responsable posibles fallos de seguridad
+        relacionados con <strong>Biblia Universal Lite</strong>.
+      </p>
+
+      <span class="updated-date">Última actualización: 12 de julio de 2026</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="legal-card">
+      <div class="intro">
+        <p><strong>Seguridad responsable</strong></p>
+
+        <p>
+          Si encuentras una posible vulnerabilidad, puedes reportarla para ayudarnos a proteger
+          la aplicación y a sus usuarios.
+        </p>
+
+        <div class="summary">
+          <strong>Resumen claro</strong>
+          <ul>
+            <li>Envía reportes a support.apps.amt@gmail.com.</li>
+            <li>No accedas, copies, modifiques ni elimines datos de otros usuarios.</li>
+            <li>No realices ataques destructivos, spam ni denegación de servicio.</li>
+            <li>Incluye pasos claros y evidencia técnica segura.</li>
+            <li>No existe una recompensa económica garantizada.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content">
+        <section>
+          <h2>1. Alcance</h2>
+          <p>Puedes reportar posibles problemas relacionados con:</p>
+          <ul>
+            <li>La aplicación Android Biblia Universal Lite.</li>
+            <li>Inicio de sesión con Google y Firebase Authentication.</li>
+            <li>Reglas de acceso y seguridad de Firebase o Firestore.</li>
+            <li>Comentarios, likes y otras interacciones sociales disponibles en la app.</li>
+            <li>Sincronización de notas, versículos guardados, capítulos leídos y oraciones mediante Google Drive.</li>
+            <li>Protecciones mediante App Check o Play Integrity cuando estén habilitadas.</li>
+            <li>Problemas que puedan exponer datos, permitir accesos indebidos o afectar la integridad de la aplicación.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>2. Fuera de alcance</h2>
+          <ul>
+            <li>Errores visuales, de diseño o textos sin impacto de seguridad.</li>
+            <li>Problemas de rendimiento que no afecten datos, cuentas o disponibilidad.</li>
+            <li>Reportes sin información suficiente para revisar el problema.</li>
+            <li>Fallos que pertenezcan directamente a Google, Firebase u otro proveedor y no a la integración de Biblia Universal Lite.</li>
+            <li>Solicitudes normales de soporte, eliminación de cuenta o administración de suscripciones.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>3. Cómo reportar</h2>
+          <p>Envía el reporte a:</p>
+
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+            <br />
+            <a
+              class="button"
+              href="mailto:support.apps.amt@gmail.com?subject=Reporte%20de%20seguridad%20-%20Biblia%20Universal%20Lite"
+            >
+              Reportar vulnerabilidad
+            </a>
+          </div>
+
+          <p style="margin-top: 16px;">
+            Usa como asunto sugerido:
+            <strong>Reporte de seguridad - Biblia Universal Lite</strong>.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. Qué incluir</h2>
+          <ul>
+            <li>Versión de la app.</li>
+            <li>Modelo del dispositivo y versión de Android.</li>
+            <li>Descripción del problema y su posible impacto.</li>
+            <li>Pasos exactos para reproducirlo.</li>
+            <li>Función afectada.</li>
+            <li>Capturas, video o registros que no expongan datos privados de terceros.</li>
+            <li>Fecha y hora aproximada de la prueba.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>5. Investigación permitida</h2>
+          <p>
+            Puedes investigar comportamientos visibles desde tu propia cuenta o desde cuentas de
+            prueba bajo tu control, siempre que no afectes a otros usuarios ni interrumpas el servicio.
+          </p>
+          <ul>
+            <li>Probar flujos normales de autenticación y funciones sociales.</li>
+            <li>Revisar errores de acceso, permisos o validación.</li>
+            <li>Reportar configuraciones inseguras observadas sin explotación destructiva.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>6. Actividades no permitidas</h2>
+          <ul>
+            <li>Acceder, copiar, modificar, eliminar o divulgar datos de otros usuarios.</li>
+            <li>Realizar ataques de denegación de servicio, estrés o carga masiva.</li>
+            <li>Manipular artificialmente comentarios, likes o contadores.</li>
+            <li>Enviar spam o datos falsos para alterar el funcionamiento de la app.</li>
+            <li>Usar malware, phishing, ingeniería social o robo de credenciales.</li>
+            <li>Intentar acceder a cuentas, claves, repositorios, consolas o sistemas sin autorización.</li>
+            <li>Publicar detalles sensibles antes de que el problema haya sido revisado.</li>
+          </ul>
+
+          <div class="warning">
+            Si durante una prueba encuentras datos privados o acceso no autorizado, detén la
+            investigación y reporta el hallazgo sin copiar, modificar ni compartir esos datos.
+          </div>
+        </section>
+
+        <section>
+          <h2>7. Protección de datos</h2>
+          <p>
+            No envíes contraseñas, códigos de verificación, tokens, claves ni datos personales
+            innecesarios.
+          </p>
+          <p>
+            Oculta correos, nombres, fotos, identificadores y cualquier otro dato de terceros en
+            capturas, videos o registros.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. Revisión y divulgación responsable</h2>
+          <p>
+            Revisaremos los reportes dentro de un plazo razonable y podremos solicitar información
+            adicional para validar el problema.
+          </p>
+          <p>
+            Pedimos que no publiques pruebas de concepto, rutas de explotación o información
+            sensible antes de que el problema haya sido revisado y corregido.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Recompensas</h2>
+          <p>
+            Biblia Universal Lite no cuenta actualmente con un programa público de recompensas
+            económicas por vulnerabilidades.
+          </p>
+          <p>
+            Enviar un reporte no garantiza pago, premio ni compensación.
+          </p>
+        </section>
+
+        <section>
+          <h2>10. Servicios de terceros</h2>
+          <p>
+            La aplicación puede utilizar servicios de Google Firebase, Google Drive, Google Play
+            Services, Play Integrity, AdMob, UMP y Google Play Billing.
+          </p>
+          <p>
+            Si el problema pertenece directamente a un proveedor externo y no a la integración de
+            Biblia Universal Lite, puede ser necesario reportarlo también mediante el canal oficial
+            de dicho proveedor.
+          </p>
+        </section>
+
+        <section>
+          <h2>11. Contacto</h2>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <span>Reportes de seguridad:</span><br />
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+            <p style="margin-top: 10px; margin-bottom: 0;">
+              Asunto sugerido: <strong>Reporte de seguridad - Biblia Universal Lite</strong>
+            </p>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <nav class="footer-nav" aria-label="Enlaces legales">
+      <a href="index.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="eliminacion-cuenta-datos.html">Eliminar cuenta</a>
+      <a href="seguridad.html">Seguridad</a>
+    </nav>
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+
+  <button
+    class="back-top"
+    type="button"
+    aria-label="Volver al inicio"
+    title="Volver al inicio"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+  >
+    ↑
+  </button>
+</body>
+</html>
