@@ -65,6 +65,11 @@ export default function Home() {
     setSearchParams(nextParams, { replace: true });
   }
 
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+    event.currentTarget.querySelector("input")?.blur();
+  }
+
   function clearSearch() {
     const nextParams = new URLSearchParams(searchParams);
     nextParams.delete("q");
@@ -110,7 +115,7 @@ export default function Home() {
 
       {searchOpen ? (
         <section className="app-search-overlay" aria-label="Buscar apps">
-          <div className="app-search-topbar">
+          <form className="app-search-topbar" onSubmit={handleSearchSubmit} role="search">
             <button type="button" onClick={closeSearch} aria-label="Volver">
               <ArrowLeft size={24} />
             </button>
@@ -120,6 +125,8 @@ export default function Home() {
               <input
                 autoFocus
                 aria-label="Buscar apps"
+                enterKeyHint="search"
+                inputMode="search"
                 onChange={handleSearchChange}
                 placeholder="Buscar apps"
                 type="search"
@@ -130,7 +137,7 @@ export default function Home() {
             <button type="button" onClick={clearSearch} aria-label="Borrar búsqueda" disabled={!searchTerm}>
               <X size={24} />
             </button>
-          </div>
+          </form>
 
           <div className="container app-search-results">
             {loading ? <LoadingState text="Cargando apps publicadas..." /> : null}
