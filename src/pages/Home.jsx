@@ -40,14 +40,18 @@ function appMatchesCategory(app, category) {
   return accepted.has(appKey) || accepted.has(appLabel);
 }
 
-function AppRowCard({ app }) {
+function AppRowCard({ app, featured = false }) {
   const bannerStyle = app.bannerUrl
     ? { backgroundImage: `url(${app.bannerUrl})` }
     : undefined;
 
   return (
-    <Link className="home-row-app-card" to={`/app/${app.slug}`} aria-label={`Ver ${app.title}`}>
-      <div className="home-row-app-banner" style={bannerStyle} aria-hidden="true" />
+    <Link
+      className={`home-row-app-card ${featured ? "home-row-app-card-featured" : "home-row-app-card-compact"}`}
+      to={`/app/${app.slug}`}
+      aria-label={`Ver ${app.title}`}
+    >
+      {featured ? <div className="home-row-app-banner" style={bannerStyle} aria-hidden="true" /> : null}
       <div className="home-row-app-body">
         <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
         <div className="home-row-app-copy">
@@ -68,7 +72,7 @@ function AppHorizontalSection({ title, apps }) {
       <div className="home-section-heading">
         <h2>{title}</h2>
       </div>
-      <div className="home-app-row" aria-label={title}>
+      <div className="home-app-row home-app-row-compact" aria-label={title}>
         {apps.map((app) => <AppRowCard app={app} key={app.id} />)}
       </div>
     </section>
@@ -171,7 +175,7 @@ export default function Home() {
             {activeCategory === "all" ? (
               <section className="home-promoted-row-section">
                 <div className="home-app-row home-app-row-primary" aria-label="Apps disponibles">
-                  {apps.map((app) => <AppRowCard app={app} key={app.id} />)}
+                  {apps.map((app) => <AppRowCard app={app} featured key={app.id} />)}
                 </div>
               </section>
             ) : null}
