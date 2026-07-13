@@ -43,9 +43,38 @@ export default function LoadingState({ text = "Cargando contenido..." }) {
     );
   }
 
+  if (text === "Cargando apps publicadas...") {
+    return (
+      <div className="catalog-loading" aria-label={text} aria-busy="true">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <article className="catalog-loading-card" key={index}>
+            <div className="catalog-loading-main">
+              <div className="catalog-loading-icon skeleton-shimmer" />
+              <div className="catalog-loading-copy">
+                <span className="catalog-loading-category skeleton-shimmer" />
+                <span className="catalog-loading-title skeleton-shimmer" />
+                <span className="catalog-loading-text skeleton-shimmer" />
+                <span className="catalog-loading-text short skeleton-shimmer" />
+              </div>
+            </div>
+            <div className="catalog-loading-meta">
+              <span className="skeleton-shimmer" />
+              <span className="skeleton-shimmer" />
+              <span className="skeleton-shimmer" />
+            </div>
+            <div className="catalog-loading-footer">
+              <span className="catalog-loading-stars skeleton-shimmer" />
+              <span className="catalog-loading-button skeleton-shimmer" />
+            </div>
+          </article>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="loading-state">
-      <span className="loader" />
+    <div className="site-loading-state" aria-label={text} aria-busy="true">
+      <div className="site-loading-spinner" />
       <p>{text}</p>
     </div>
   );
