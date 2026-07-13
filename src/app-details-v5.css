@@ -29,7 +29,8 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
-  width: 100%;
+  width: calc(100% - 24px);
+  margin-inline: auto;
 }
 
 .app-direct-download,
@@ -80,8 +81,38 @@
   font-size: .72rem;
 }
 
+@media (max-width: 680px) {
+  .app-summary-wrap {
+    padding-inline: 0;
+  }
+
+  .app-summary-card {
+    padding: 10px;
+  }
+
+  .app-summary-head {
+    grid-template-columns: 74px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .app-summary-icon {
+    width: 74px;
+    height: 74px;
+  }
+
+  .app-summary-copy h1 {
+    font-size: 1.46rem;
+  }
+
+  .app-download-actions {
+    width: calc(100% - 28px);
+    gap: 10px;
+  }
+}
+
 @media (max-width: 420px) {
   .app-download-actions {
+    width: calc(100% - 24px);
     gap: 8px;
   }
 
