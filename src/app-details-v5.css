@@ -4,6 +4,26 @@
   --app-detail-fixed-header-height: 76px;
 }
 
+.app-detail-share-button {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #0f172a;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-detail-share-button:hover,
+.app-detail-share-button:focus-visible {
+  background: #eef2ff;
+  color: var(--primary-dark);
+}
+
 .app-summary-like-stat {
   appearance: none;
   border: 0;
@@ -195,6 +215,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   }
 
   .app-detail-site-header .brand {
@@ -206,6 +227,10 @@
     flex: 0 0 auto;
     width: 46px;
     height: 46px;
+  }
+
+  .app-detail-share-button {
+    flex: 0 0 auto;
   }
 
   .app-detail-hero-v4 {
