@@ -141,6 +141,20 @@
     width: 100%;
     gap: 10px;
   }
+
+  .detail-main > .detail-section:first-of-type {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .detail-main > .detail-section:first-of-type .section-title-row {
+    padding-inline: 16px;
+  }
+
+  .detail-main > .detail-section:first-of-type .screenshots-row {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 420px) {
