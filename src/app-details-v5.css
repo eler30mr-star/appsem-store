@@ -83,11 +83,11 @@
 
 @media (max-width: 680px) {
   .app-detail-back {
-    left: 0;
+    left: 14px;
   }
 
   .app-summary-wrap {
-    padding-inline: 0;
+    padding-inline: 14px;
     margin-top: -18px;
   }
 
