@@ -13,40 +13,12 @@
 .home-category-sections {
   display: grid;
   gap: 34px;
-  margin-top: 36px;
+  margin-top: 38px;
 }
 
 .home-promoted-row-section,
 .home-app-row-section {
   min-width: 0;
-}
-
-.home-promoted-tabs {
-  width: fit-content;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
-  padding: 4px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #fff;
-}
-
-.home-promoted-tabs button {
-  min-height: 40px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font-weight: 800;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.home-promoted-tabs button.active {
-  color: #fff;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
 }
 
 .home-section-heading {
@@ -65,10 +37,10 @@
 
 .home-app-row {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2px 2px 10px;
+  padding: 2px 2px 12px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -79,50 +51,64 @@
 }
 
 .home-row-app-card {
-  flex: 0 0 238px;
-  min-width: 238px;
-  display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
-  gap: 12px;
-  align-items: center;
-  padding: 14px;
+  flex: 0 0 330px;
+  min-width: 330px;
+  overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 24px;
   background: #fff;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, .06);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, .08);
   scroll-snap-align: start;
 }
 
-.home-row-app-card img {
-  width: 72px;
-  height: 72px;
+.home-row-app-banner {
+  width: 100%;
+  height: 142px;
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, .9), rgba(37, 99, 235, .7)),
+    var(--surface-2);
+  background-position: center;
+  background-size: cover;
+}
+
+.home-row-app-body {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+}
+
+.home-row-app-body img {
+  width: 76px;
+  height: 76px;
   border-radius: 18px;
   object-fit: cover;
   background: var(--surface-2);
 }
 
-.home-row-app-card > div {
+.home-row-app-copy {
   min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
-.home-row-app-card strong {
+.home-row-app-copy strong {
   overflow: hidden;
-  font-size: 1rem;
+  font-size: 1.08rem;
   line-height: 1.2;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.home-row-app-card span {
-  margin-top: 5px;
+.home-row-app-copy span {
+  margin-top: 6px;
   color: var(--muted);
-  font-size: .8rem;
+  font-size: .84rem;
 }
 
-.home-row-app-card small {
-  margin-top: 7px;
+.home-row-app-copy small {
+  margin-top: 8px;
   color: var(--warning);
   font-weight: 800;
 }
@@ -144,13 +130,8 @@
   }
 
   .home-category-sections {
-    gap: 30px;
-    margin-top: 34px;
-  }
-
-  .home-promoted-tabs {
-    margin-left: 20px;
-    margin-bottom: 16px;
+    gap: 32px;
+    margin-top: 36px;
   }
 
   .home-section-heading {
@@ -166,30 +147,33 @@
   .home-app-row {
     width: 100vw;
     margin-left: calc(50% - 50vw);
-    padding: 2px 20px 10px;
+    padding: 2px 20px 12px;
     scroll-padding-inline: 20px;
   }
 
   .home-row-app-card {
-    flex-basis: min(78vw, 280px);
-    min-width: min(78vw, 280px);
-    grid-template-columns: 66px minmax(0, 1fr);
-    padding: 12px;
-    border-radius: 18px;
+    flex-basis: min(86vw, 350px);
+    min-width: min(86vw, 350px);
+    border-radius: 22px;
   }
 
-  .home-row-app-card img {
-    width: 66px;
-    height: 66px;
-    border-radius: 16px;
+  .home-row-app-banner {
+    height: 150px;
+  }
+
+  .home-row-app-body {
+    grid-template-columns: 74px minmax(0, 1fr);
+    min-height: 108px;
+    padding: 15px;
+  }
+
+  .home-row-app-body img {
+    width: 74px;
+    height: 74px;
   }
 }
 
 @media (max-width: 420px) {
-  .home-promoted-tabs {
-    margin-left: 18px;
-  }
-
   .home-section-heading {
     width: calc(100% - 36px);
   }
@@ -197,5 +181,14 @@
   .home-app-row {
     padding-inline: 18px;
     scroll-padding-inline: 18px;
+  }
+
+  .home-row-app-card {
+    flex-basis: min(88vw, 340px);
+    min-width: min(88vw, 340px);
+  }
+
+  .home-row-app-banner {
+    height: 146px;
   }
 }
