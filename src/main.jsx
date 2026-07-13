@@ -8,6 +8,7 @@ import "./app-details-v5.css";
 import "./gallery-spacing.css";
 import "./app-detail-loading.css";
 import "./site-shell.css";
+import "./app-details-desktop.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
