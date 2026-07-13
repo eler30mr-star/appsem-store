@@ -1,16 +1,19 @@
 .category-bar {
+  position: static;
+  top: auto;
+  z-index: auto;
   border-top: 0;
 }
 
 .home-store-content {
-  padding-top: 14px;
+  padding-top: 20px;
   padding-bottom: 44px;
 }
 
 .home-category-sections {
   display: grid;
-  gap: 30px;
-  margin-top: 34px;
+  gap: 34px;
+  margin-top: 36px;
 }
 
 .home-promoted-row-section,
@@ -19,10 +22,11 @@
 }
 
 .home-promoted-tabs {
+  width: fit-content;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -30,8 +34,8 @@
 }
 
 .home-promoted-tabs button {
-  min-height: 38px;
-  padding: 0 16px;
+  min-height: 40px;
+  padding: 0 18px;
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -125,6 +129,7 @@
 
 @media (max-width: 680px) {
   .category-bar {
+    position: static;
     padding-top: 0;
   }
 
@@ -135,17 +140,17 @@
 
   .home-store-content {
     width: 100%;
-    padding-top: 14px;
+    padding-top: 18px;
   }
 
   .home-category-sections {
-    gap: 26px;
-    margin-top: 30px;
+    gap: 30px;
+    margin-top: 34px;
   }
 
   .home-promoted-tabs {
     margin-left: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
   .home-section-heading {
@@ -166,8 +171,8 @@
   }
 
   .home-row-app-card {
-    flex-basis: 224px;
-    min-width: 224px;
+    flex-basis: min(78vw, 280px);
+    min-width: min(78vw, 280px);
     grid-template-columns: 66px minmax(0, 1fr);
     padding: 12px;
     border-radius: 18px;
