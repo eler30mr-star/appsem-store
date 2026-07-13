@@ -24,6 +24,27 @@
   color: var(--primary-dark);
 }
 
+.app-summary-icon-column {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+
+.app-summary-category {
+  max-width: 100%;
+  padding: 4px 8px;
+  font-size: .66rem;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-summary-copy h1 {
+  margin-top: 0;
+}
+
 .app-summary-like-stat {
   appearance: none;
   border: 0;
@@ -271,6 +292,7 @@
   .app-summary-head {
     grid-template-columns: 78px minmax(0, 1fr);
     gap: 12px;
+    align-items: start;
   }
 
   .app-summary-icon {
@@ -278,8 +300,16 @@
     height: 78px;
   }
 
+  .app-summary-copy {
+    padding-top: 8px;
+  }
+
   .app-summary-copy h1 {
     font-size: 1.46rem;
+  }
+
+  .app-summary-category {
+    max-width: 78px;
   }
 
   .app-summary-stats {
