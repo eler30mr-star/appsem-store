@@ -271,13 +271,7 @@ export default function AppDetails() {
             </button>
           </div>
 
-          <section className="detail-section">
-            <div className="section-title-row">
-              <div>
-                <span className="eyebrow">Galería</span>
-                <h2>Capturas de pantalla</h2>
-              </div>
-            </div>
+          <section className="app-screenshots-section" aria-label={`Capturas de pantalla de ${app.title}`}>
             <ScreenshotGallery screenshots={app.screenshots} title={app.title} />
           </section>
 
