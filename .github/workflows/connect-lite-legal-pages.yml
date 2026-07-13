@@ -1,0 +1,75 @@
+name: Connect Lite legal pages
+
+on:
+  push:
+    paths:
+      - .github/workflows/connect-lite-legal-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Update legal navigation links
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path("public/apps/biblia-universal-lite/politicas-de-privacidad/index.html"),
+              Path("public/apps/biblia-universal-lite/terminos-de-servicio/index.html"),
+              Path("public/apps/biblia-universal-lite/aviso-legal/index.html"),
+              Path("public/apps/biblia-universal-lite/eliminacion-cuenta-datos/index.html"),
+              Path("public/apps/biblia-universal-lite/reporte-de-seguridad-y-vulnerabilidades/index.html"),
+          ]
+
+          base = "https://appsem-store.vercel.app/apps/biblia-universal-lite"
+
+          replacements = {
+              'href="index.html"': f'href="{base}/politicas-de-privacidad/"',
+              'href="terminos.html"': f'href="{base}/terminos-de-servicio/"',
+              'href="aviso-legal.html"': f'href="{base}/aviso-legal/"',
+              'href="eliminacion-cuenta-datos.html"': f'href="{base}/eliminacion-cuenta-datos/"',
+              'href="seguridad.html"': f'href="{base}/reporte-de-seguridad-y-vulnerabilidades/"',
+          }
+
+          for file in files:
+              if not file.exists():
+                  raise FileNotFoundError(f"No existe: {file}")
+
+              content = file.read_text(encoding="utf-8")
+              original = content
+
+              for old, new in replacements.items():
+                  content = content.replace(old, new)
+
+              if content != original:
+                  file.write_text(content, encoding="utf-8")
+                  print(f"Actualizado: {file}")
+              else:
+                  print(f"Sin cambios: {file}")
+          PY
+
+      - name: Commit updated links
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No hay cambios pendientes."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/apps/biblia-universal-lite
+          git commit -m "Update Lite legal navigation to Vercel URLs"
+          git push origin main
