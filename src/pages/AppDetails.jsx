@@ -219,15 +219,10 @@ export default function AppDetails() {
               </div>
 
               <div className="app-summary-stats" aria-label="Estadísticas de la app">
-                <button
-                  className={`app-summary-stat app-summary-like-stat ${liked ? "active" : ""}`}
-                  onClick={handleLike}
-                  disabled={liked}
-                  type="button"
-                >
+                <div className="app-summary-stat app-summary-like-count">
                   <strong><Heart size={16} /> {formatNumber(app.likesCount)}</strong>
-                  <span>{liked ? "Te gusta" : "Me gusta"}</span>
-                </button>
+                  <span>Me gusta</span>
+                </div>
 
                 <div className="app-summary-stat">
                   <strong>{app.appSize || "—"}</strong>
@@ -269,6 +264,16 @@ export default function AppDetails() {
             >
               <span className="play-store-mark" aria-hidden="true">▶</span>
               Google Play
+            </button>
+
+            <button
+              className={`app-like-button ${liked ? "active" : ""}`}
+              onClick={handleLike}
+              disabled={liked}
+              type="button"
+            >
+              <Heart size={19} fill={liked ? "currentColor" : "none"} />
+              {liked ? "Te gusta" : "Me gusta"}
             </button>
           </div>
 
