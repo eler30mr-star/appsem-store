@@ -16,6 +16,36 @@ function getCreatedTime(app) {
   return 0;
 }
 
+function normalizeCategory(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+function appMatchesCategory(app, category) {
+  const appKey = normalizeCategory(app.categoryKey);
+  const appLabel = normalizeCategory(app.category);
+  const categoryKey = normalizeCategory(category.key);
+  const categoryLabel = normalizeCategory(category.label);
+
+  const aliases = {
+    bible: ["bible", "biblia", "biblias"],
+    christian: ["christian", "cristiana", "cristianas", "cristiano", "cristianos"],
+    tools: ["tools", "herramienta", "herramientas"],
+    education: ["education", "educacion"],
+    entertainment: ["entertainment", "entretenimiento"],
+    productivity: ["productivity", "productividad"],
+    lifestyle: ["lifestyle", "estilo de vida"],
+    games: ["games", "juego", "juegos"],
+    other: ["other", "otros", "otro"]
+  };
+
+  const accepted = new Set([categoryKey, categoryLabel, ...(aliases[category.key] || [])]);
+  return accepted.has(appKey) || accepted.has(appLabel);
+}
+
 function AppRowCard({ app }) {
   return (
     <Link className="home-row-app-card" to={`/app/${app.slug}`} aria-label={`Ver ${app.title}`}>
@@ -109,7 +139,7 @@ export default function Home() {
     return filteredCategories
       .map((category) => ({
         ...category,
-        apps: apps.filter((app) => app.categoryKey === category.key)
+        apps: apps.filter((app) => appMatchesCategory(app, category))
       }))
       .filter((category) => category.apps.length > 0);
   }, [apps, activeCategory]);
