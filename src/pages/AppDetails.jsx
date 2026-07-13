@@ -132,8 +132,8 @@ export default function AppDetails() {
     }
   }
 
-  async function handleDownload() {
-    if (!app?.playStoreUrl) return;
+  async function openDownload(url) {
+    if (!url || !app) return;
 
     try {
       await registerDownloadClick(app);
@@ -144,7 +144,7 @@ export default function AppDetails() {
     } catch (err) {
       console.error(err);
     } finally {
-      window.open(app.playStoreUrl, "_blank", "noopener,noreferrer");
+      window.open(url, "_blank", "noopener,noreferrer");
     }
   }
 
@@ -187,12 +187,14 @@ export default function AppDetails() {
       }
     : undefined;
 
+  const directDownloadUrl = app.downloadUrl || app.apkUrl || app.playStoreUrl;
+
   return (
     <main>
       <section className="app-detail-hero app-detail-hero-v4">
         <div className="container app-detail-hero-inner">
-          <Link className="back-link light app-detail-back" to="/">
-            <ArrowLeft size={18} /> Volver a la tienda
+          <Link className="back-link light app-detail-back" to="/" aria-label="Volver a la tienda">
+            <ArrowLeft size={18} />
           </Link>
 
           <div className="app-detail-banner" style={bannerStyle} aria-label={`Banner de ${app.title}`} />
@@ -215,43 +217,26 @@ export default function AppDetails() {
                 </div>
               </div>
 
-              <div className="app-summary-actions-block">
-                <div className="app-summary-actions">
-                  <button
-                    className={`app-summary-like ${liked ? "active" : ""}`}
-                    onClick={handleLike}
-                    disabled={liked}
-                    type="button"
-                  >
-                    <Heart size={18} /> {liked ? "Me gusta enviado" : "Me gusta"}
-                  </button>
+              <div className="app-summary-stats" aria-label="Estadísticas de la app">
+                <button
+                  className={`app-summary-stat app-summary-like-stat ${liked ? "active" : ""}`}
+                  onClick={handleLike}
+                  disabled={liked}
+                  type="button"
+                >
+                  <strong><Heart size={16} /> {formatNumber(app.likesCount)}</strong>
+                  <span>{liked ? "Te gusta" : "Me gusta"}</span>
+                </button>
 
-                  <button
-                    className="app-summary-download"
-                    onClick={handleDownload}
-                    disabled={!app.playStoreUrl}
-                    type="button"
-                  >
-                    <Download size={18} /> Descargar
-                  </button>
+                <div className="app-summary-stat">
+                  <strong>{formatNumber(app.downloadsCount)}</strong>
+                  <span>Descargas</span>
                 </div>
 
-                <div className="app-summary-stats" aria-label="Estadísticas de la app">
-                  <div className="app-summary-stat">
-                    <strong>{formatNumber(app.likesCount)}</strong>
-                    <span>Me gusta</span>
-                  </div>
-                  <div className="app-summary-stat">
-                    <strong>{formatNumber(app.downloadsCount)}</strong>
-                    <span>Descargas</span>
-                  </div>
-                  <div className="app-summary-stat">
-                    <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
-                    <span>Valoración</span>
-                  </div>
+                <div className="app-summary-stat">
+                  <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
+                  <span>Valoración</span>
                 </div>
-
-                {!app.playStoreUrl ? <p className="tiny-note">Esta app aún no tiene enlace de descarga.</p> : null}
               </div>
             </div>
           </div>
@@ -260,6 +245,27 @@ export default function AppDetails() {
 
       <section className="container detail-layout">
         <div className="detail-main">
+          <div className="app-download-actions" aria-label="Opciones de descarga">
+            <button
+              className="app-direct-download"
+              onClick={() => openDownload(directDownloadUrl)}
+              disabled={!directDownloadUrl}
+              type="button"
+            >
+              <Download size={19} /> Descargar
+            </button>
+
+            <button
+              className="app-play-store-button"
+              onClick={() => openDownload(app.playStoreUrl)}
+              disabled={!app.playStoreUrl}
+              type="button"
+            >
+              <span className="play-store-mark" aria-hidden="true">▶</span>
+              Google Play
+            </button>
+          </div>
+
           <section className="detail-section">
             <div className="section-title-row">
               <div>
