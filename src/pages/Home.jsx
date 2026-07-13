@@ -47,6 +47,7 @@ function AppHorizontalSection({ title, apps }) {
 export default function Home() {
   const [apps, setApps] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [promotedView, setPromotedView] = useState("featured");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -96,6 +97,8 @@ export default function Home() {
       .sort((a, b) => getCreatedTime(b) - getCreatedTime(a))
       .slice(0, 8);
   }, [apps]);
+
+  const promotedApps = promotedView === "featured" ? featuredApps : recentApps;
 
   const categorySections = useMemo(() => {
     const visibleCategories = categories.filter((category) => category.key !== "all");
@@ -150,10 +153,32 @@ export default function Home() {
         {!loading && !error && apps.length > 0 ? (
           <>
             {activeCategory === "all" ? (
-              <div className="home-promoted-sections">
-                <AppHorizontalSection title="Destacadas" apps={featuredApps} />
-                <AppHorizontalSection title="Recién subidas" apps={recentApps} />
-              </div>
+              <section className="home-promoted-row-section">
+                <div className="home-promoted-tabs" role="tablist" aria-label="Selección de apps">
+                  <button
+                    className={promotedView === "featured" ? "active" : ""}
+                    type="button"
+                    role="tab"
+                    aria-selected={promotedView === "featured"}
+                    onClick={() => setPromotedView("featured")}
+                  >
+                    Destacadas
+                  </button>
+                  <button
+                    className={promotedView === "recent" ? "active" : ""}
+                    type="button"
+                    role="tab"
+                    aria-selected={promotedView === "recent"}
+                    onClick={() => setPromotedView("recent")}
+                  >
+                    Recién subidas
+                  </button>
+                </div>
+
+                <div className="home-app-row" aria-label={promotedView === "featured" ? "Apps destacadas" : "Apps recién subidas"}>
+                  {promotedApps.map((app) => <AppRowCard app={app} key={app.id} />)}
+                </div>
+              </section>
             ) : null}
 
             <div className="home-category-sections">
