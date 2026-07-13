@@ -92,6 +92,19 @@
 }
 
 @media (max-width: 680px) {
+  .app-detail-hero-inner {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .app-detail-banner {
+    width: 100vw;
+    max-width: 100vw;
+    margin-inline: 0;
+    border-radius: 0;
+  }
+
   .app-detail-back {
     left: var(--app-detail-hero-gutter);
   }
@@ -140,6 +153,7 @@
   .detail-layout {
     width: calc(100% - (var(--app-detail-mobile-gutter) * 2));
     margin-inline: auto;
+    padding-top: 18px;
   }
 
   .app-download-actions {
