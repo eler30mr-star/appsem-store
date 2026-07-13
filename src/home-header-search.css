@@ -1,13 +1,7 @@
-.header-search {
-  min-width: 42px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.header-search-button,
-.header-search-field button {
+.header-search-button {
   width: 42px;
   height: 42px;
+  flex: 0 0 42px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -20,42 +14,9 @@
 }
 
 .header-search-button:hover,
-.header-search-button:focus-visible,
-.header-search-field button:hover,
-.header-search-field button:focus-visible {
+.header-search-button:focus-visible {
   background: #e0e7ff;
   color: var(--primary-dark);
-}
-
-.header-search-field {
-  width: min(360px, 44vw);
-  height: 46px;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 8px;
-  padding: 0 4px 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, .08);
-}
-
-.header-search-field > svg {
-  color: var(--primary);
-}
-
-.header-search-field input {
-  min-width: 0;
-  width: 100%;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--text);
-}
-
-.header-search-field input::-webkit-search-cancel-button {
-  display: none;
 }
 
 .home-catalog-section {
@@ -64,6 +25,112 @@
 
 .home-catalog-section .catalog-heading h1 {
   margin-bottom: 0;
+}
+
+.app-search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.app-search-topbar {
+  min-height: 76px;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  border-bottom: 1px solid var(--line);
+  background: rgba(248, 250, 252, .98);
+  backdrop-filter: blur(18px);
+}
+
+.app-search-topbar > button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-search-topbar > button:disabled {
+  opacity: .28;
+  cursor: default;
+}
+
+.app-search-input-wrap {
+  min-width: 0;
+  height: 48px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, .06);
+}
+
+.app-search-input-wrap svg {
+  color: var(--primary);
+}
+
+.app-search-input-wrap input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.app-search-input-wrap input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.app-search-results {
+  flex: 1 1 auto;
+  width: min(1180px, calc(100% - 32px));
+  padding-top: 24px;
+  padding-bottom: 40px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.app-search-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.app-search-results-heading strong {
+  font-size: 1.2rem;
+}
+
+.app-search-results-heading span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.app-search-hint {
+  margin: 34px 0 0;
+  color: var(--muted);
+  text-align: center;
 }
 
 @media (max-width: 680px) {
@@ -80,6 +147,10 @@
     flex: 1 1 auto;
   }
 
+  .site-header:not(.app-detail-site-header) .brand-mark {
+    flex: 0 0 46px;
+  }
+
   .site-header:not(.app-detail-site-header) .brand > span:last-child {
     min-width: 0;
   }
@@ -91,24 +162,29 @@
     text-overflow: ellipsis;
   }
 
-  .header-search.open {
-    flex: 1 1 auto;
-  }
-
-  .header-search.open + * {
-    display: none;
-  }
-
-  .header-search-field {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .header-search.open ~ .top-nav {
-    display: none;
-  }
-
   .home-catalog-section {
+    padding-top: 20px;
+  }
+
+  .app-search-topbar {
+    min-height: 68px;
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    gap: 6px;
+    padding-inline: 10px;
+  }
+
+  .app-search-topbar > button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .app-search-input-wrap {
+    height: 46px;
+    padding: 0 14px;
+  }
+
+  .app-search-results {
+    width: calc(100% - 36px);
     padding-top: 20px;
   }
 }
