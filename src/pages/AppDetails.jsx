@@ -320,10 +320,9 @@ export default function AppDetails() {
 
           <section className="info-card">
             <h2><Shield size={20} /> Seguridad y privacidad</h2>
-            <p>Consulta la política de privacidad específica de esta app antes de descargarla.</p>
             {app.privacyPolicyUrl ? (
               <a className="outline-button" href={app.privacyPolicyUrl} target="_blank" rel="noreferrer">
-                <BadgeCheck size={18} /> Ver política de la app
+                <BadgeCheck size={18} /> Ver políticas de privacidad
               </a>
             ) : (
               <p className="muted-text">No se agregó política individual para esta app.</p>
