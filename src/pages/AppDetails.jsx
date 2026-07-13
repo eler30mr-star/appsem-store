@@ -205,12 +205,10 @@ export default function AppDetails() {
           <div className="app-summary-wrap">
             <div className="app-summary-card">
               <div className="app-summary-head">
-                <div className="app-summary-icon-column">
-                  <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
-                  <span className="app-category light-category app-summary-category">{categoryLabel}</span>
-                </div>
+                <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
 
                 <div className="app-summary-copy">
+                  <span className="app-category light-category app-summary-category">{categoryLabel}</span>
                   <h1>{app.title}</h1>
                   <div className="detail-rating-line app-summary-rating">
                     <RatingStars value={Math.round(app.ratingAverage || 0)} />
