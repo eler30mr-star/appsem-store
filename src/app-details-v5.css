@@ -245,6 +245,31 @@
     min-height: 62px;
     font-size: 1.25rem;
   }
+
+  .detail-main > .info-card {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .detail-main > .info-card dl div {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    align-items: start;
+    gap: 14px;
+  }
+
+  .detail-main > .info-card dt,
+  .detail-main > .info-card dd {
+    min-width: 0;
+    max-width: 100%;
+    line-height: 1.35;
+  }
+
+  .detail-main > .info-card dd {
+    text-align: right;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 }
 
 @media (max-width: 420px) {
@@ -262,5 +287,10 @@
     min-height: 48px;
     padding: 0 10px;
     font-size: .88rem;
+  }
+
+  .detail-main > .info-card dl div {
+    grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+    gap: 10px;
   }
 }
