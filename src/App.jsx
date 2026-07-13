@@ -12,14 +12,16 @@ export default function App() {
   return (
     <div className="app-shell">
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/app/:slug" element={<AppDetails />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/cookies" element={<Cookies />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <div className="site-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/app/:slug" element={<AppDetails />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/cookies" element={<Cookies />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );
