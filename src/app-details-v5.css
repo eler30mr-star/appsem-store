@@ -1,5 +1,6 @@
 :root {
   --app-detail-mobile-gutter: 20px;
+  --app-detail-hero-gutter: 12px;
 }
 
 .app-summary-like-stat {
@@ -87,11 +88,11 @@
 
 @media (max-width: 680px) {
   .app-detail-back {
-    left: var(--app-detail-mobile-gutter);
+    left: var(--app-detail-hero-gutter);
   }
 
   .app-summary-wrap {
-    padding-inline: var(--app-detail-mobile-gutter);
+    padding-inline: var(--app-detail-hero-gutter);
     margin-top: -18px;
   }
 
@@ -145,6 +146,7 @@
 @media (max-width: 420px) {
   :root {
     --app-detail-mobile-gutter: 18px;
+    --app-detail-hero-gutter: 10px;
   }
 
   .app-download-actions {
