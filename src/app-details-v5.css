@@ -83,25 +83,36 @@
 
 @media (max-width: 680px) {
   .app-summary-wrap {
-    padding-inline: 0;
+    padding-inline: 14px;
+    margin-top: -18px;
   }
 
   .app-summary-card {
-    padding: 10px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
   }
 
   .app-summary-head {
-    grid-template-columns: 74px minmax(0, 1fr);
-    gap: 10px;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 12px;
   }
 
   .app-summary-icon {
-    width: 74px;
-    height: 74px;
+    width: 78px;
+    height: 78px;
   }
 
   .app-summary-copy h1 {
     font-size: 1.46rem;
+  }
+
+  .app-summary-stats {
+    margin-top: 14px;
+    padding-top: 12px;
   }
 
   .app-download-actions {
