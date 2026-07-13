@@ -127,6 +127,39 @@
   margin: 0;
 }
 
+.app-review-heading h2 {
+  margin: 0;
+}
+
+.app-review-heading p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.app-review-rating {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin: 16px 0 18px;
+}
+
+.app-review-rating .rating-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.app-review-rating .star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-review-rating .form-message {
+  margin: 0;
+}
+
 @media (max-width: 680px) {
   .app-detail-hero-inner {
     width: 100%;
@@ -269,6 +302,10 @@
     text-align: right;
     overflow-wrap: anywhere;
     word-break: break-word;
+  }
+
+  .app-review-rating {
+    margin-top: 14px;
   }
 }
 
