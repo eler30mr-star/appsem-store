@@ -1,6 +1,6 @@
 :root {
   --app-detail-mobile-gutter: 20px;
-  --app-detail-hero-gutter: 12px;
+  --app-detail-hero-gutter: var(--app-detail-mobile-gutter);
 }
 
 .app-summary-like-stat {
@@ -191,11 +191,11 @@
   }
 
   .app-detail-back {
-    left: var(--app-detail-hero-gutter);
+    left: var(--app-detail-mobile-gutter);
   }
 
   .app-summary-wrap {
-    padding-inline: var(--app-detail-hero-gutter);
+    padding-inline: var(--app-detail-mobile-gutter);
     margin-top: -18px;
   }
 
@@ -328,7 +328,7 @@
 @media (max-width: 420px) {
   :root {
     --app-detail-mobile-gutter: 18px;
-    --app-detail-hero-gutter: 10px;
+    --app-detail-hero-gutter: var(--app-detail-mobile-gutter);
   }
 
   .app-download-actions {
