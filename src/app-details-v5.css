@@ -1,0 +1,94 @@
+.app-summary-like-stat {
+  appearance: none;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.app-summary-like-stat strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.app-summary-like-stat:hover,
+.app-summary-like-stat:focus-visible {
+  color: #ffffff;
+}
+
+.app-summary-like-stat.active,
+.app-summary-like-stat:disabled {
+  color: #86efac;
+  cursor: default;
+}
+
+.app-download-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  width: 100%;
+}
+
+.app-direct-download,
+.app-play-store-button {
+  min-width: 0;
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 16px;
+  font-weight: 900;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.app-direct-download {
+  color: #ffffff;
+  background: linear-gradient(135deg, #159447, #20b95f);
+  box-shadow: 0 12px 28px rgba(22, 163, 74, .18);
+}
+
+.app-play-store-button {
+  color: #ffffff;
+  background: #0f172a;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
+}
+
+.app-direct-download:hover:not(:disabled),
+.app-play-store-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.app-direct-download:disabled,
+.app-play-store-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.play-store-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .12);
+  font-size: .72rem;
+}
+
+@media (max-width: 420px) {
+  .app-download-actions {
+    gap: 8px;
+  }
+
+  .app-direct-download,
+  .app-play-store-button {
+    min-height: 48px;
+    padding: 0 10px;
+    font-size: .88rem;
+  }
+}
