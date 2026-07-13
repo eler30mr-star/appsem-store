@@ -1,12 +1,48 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Search, X } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import AppCard from "../components/AppCard";
 import CategoryTabs from "../components/CategoryTabs";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
-import { categoryMap } from "../data/categories";
+import { categories, categoryMap } from "../data/categories";
 import { getPublishedApps } from "../services/appsService";
+
+const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231e293b'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='white'%3EAS%3C/text%3E%3C/svg%3E";
+
+function getCreatedTime(app) {
+  if (app.createdAt?.seconds) return app.createdAt.seconds * 1000;
+  if (app.createdAt?.toDate) return app.createdAt.toDate().getTime();
+  return 0;
+}
+
+function AppRowCard({ app }) {
+  return (
+    <Link className="home-row-app-card" to={`/app/${app.slug}`} aria-label={`Ver ${app.title}`}>
+      <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+      <div>
+        <strong>{app.title}</strong>
+        <span>{categoryMap[app.categoryKey] || app.category || "App"}</span>
+        <small>★ {Number(app.ratingAverage || 0).toFixed(1)}</small>
+      </div>
+    </Link>
+  );
+}
+
+function AppHorizontalSection({ title, apps }) {
+  if (!apps.length) return null;
+
+  return (
+    <section className="home-app-row-section">
+      <div className="home-section-heading">
+        <h2>{title}</h2>
+      </div>
+      <div className="home-app-row" aria-label={title}>
+        {apps.map((app) => <AppRowCard app={app} key={app.id} />)}
+      </div>
+    </section>
+  );
+}
 
 export default function Home() {
   const [apps, setApps] = useState([]);
@@ -49,11 +85,31 @@ export default function Home() {
       .some((value) => String(value).toLowerCase().includes(term)));
   }, [apps, searchTerm]);
 
-  const filteredApps = useMemo(() => {
-    return apps.filter((app) => activeCategory === "all" || app.categoryKey === activeCategory);
-  }, [apps, activeCategory]);
+  const featuredApps = useMemo(() => {
+    return [...apps]
+      .sort((a, b) => Number(b.downloadsCount || 0) - Number(a.downloadsCount || 0))
+      .slice(0, 8);
+  }, [apps]);
 
-  const title = activeCategory === "all" ? "Todas las apps disponibles" : categoryMap[activeCategory];
+  const recentApps = useMemo(() => {
+    return [...apps]
+      .sort((a, b) => getCreatedTime(b) - getCreatedTime(a))
+      .slice(0, 8);
+  }, [apps]);
+
+  const categorySections = useMemo(() => {
+    const visibleCategories = categories.filter((category) => category.key !== "all");
+    const filteredCategories = activeCategory === "all"
+      ? visibleCategories
+      : visibleCategories.filter((category) => category.key === activeCategory);
+
+    return filteredCategories
+      .map((category) => ({
+        ...category,
+        apps: apps.filter((app) => app.categoryKey === category.key)
+      }))
+      .filter((category) => category.apps.length > 0);
+  }, [apps, activeCategory]);
 
   function handleSearchChange(event) {
     const nextParams = new URLSearchParams(searchParams);
@@ -87,28 +143,31 @@ export default function Home() {
     <>
       <CategoryTabs activeCategory={activeCategory} onChange={setActiveCategory} />
 
-      <main className="container catalog-section home-catalog-section">
-        <div className="catalog-heading">
-          <div>
-            <span className="eyebrow">Catálogo</span>
-            <h1>{title}</h1>
-          </div>
-          <p>{filteredApps.length} app{filteredApps.length === 1 ? "" : "s"}</p>
-        </div>
-
+      <main className="container home-store-content">
         {loading ? <LoadingState text="Cargando apps publicadas..." /> : null}
         {error ? <div className="error-box">{error}</div> : null}
 
-        {!loading && !error && filteredApps.length > 0 ? (
-          <div className="apps-grid">
-            {filteredApps.map((app) => <AppCard app={app} key={app.id} />)}
-          </div>
+        {!loading && !error && apps.length > 0 ? (
+          <>
+            {activeCategory === "all" ? (
+              <div className="home-promoted-sections">
+                <AppHorizontalSection title="Destacadas" apps={featuredApps} />
+                <AppHorizontalSection title="Recién subidas" apps={recentApps} />
+              </div>
+            ) : null}
+
+            <div className="home-category-sections">
+              {categorySections.map((category) => (
+                <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />
+              ))}
+            </div>
+          </>
         ) : null}
 
-        {!loading && !error && filteredApps.length === 0 ? (
+        {!loading && !error && apps.length === 0 ? (
           <EmptyState
-            title={apps.length ? "No hay apps en esta categoría" : "Aún no hay apps publicadas"}
-            message={apps.length ? "Prueba con otra categoría." : "Cuando publiques apps desde el panel admin aparecerán aquí automáticamente."}
+            title="Aún no hay apps publicadas"
+            message="Cuando publiques apps desde el panel admin aparecerán aquí automáticamente."
           />
         ) : null}
       </main>
