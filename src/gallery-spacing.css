@@ -4,4 +4,26 @@
     padding: 0 var(--app-detail-mobile-gutter) 10px;
     scroll-padding-inline: var(--app-detail-mobile-gutter);
   }
+
+  .app-summary-head {
+    align-items: center;
+  }
+
+  .app-summary-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 0;
+  }
+
+  .app-summary-category {
+    align-self: flex-start;
+    max-width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .app-summary-copy h1 {
+    margin: 0;
+  }
 }
