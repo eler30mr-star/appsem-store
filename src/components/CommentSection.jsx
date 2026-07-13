@@ -1,8 +1,16 @@
 import { useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
+import RatingStars from "./RatingStars";
 import { submitComment } from "../services/appsService";
 
-export default function CommentSection({ appId, comments = [], onCommentSent }) {
+export default function CommentSection({
+  appId,
+  comments = [],
+  onCommentSent,
+  rated,
+  onRate,
+  interactionMessage
+}) {
   const [form, setForm] = useState({ name: "", comment: "" });
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
@@ -25,13 +33,18 @@ export default function CommentSection({ appId, comments = [], onCommentSent }) 
   }
 
   return (
-    <section className="detail-section comments-section">
+    <section className="detail-section comments-section app-reviews-section">
       <div className="section-title-row">
         <div>
-          <span className="eyebrow">Opiniones</span>
-          <h2>Comentarios de usuarios</h2>
+          <h2>Valora y comenta</h2>
         </div>
         <span className="comment-count"><MessageCircle size={18} /> {comments.length}</span>
+      </div>
+
+      <div className="app-review-rating">
+        <span>{rated ? "Ya valoraste" : "Tu valoración"}</span>
+        <RatingStars value={rated || 0} interactive={!rated} onRate={onRate} size={24} />
+        {interactionMessage ? <p className="form-message">{interactionMessage}</p> : null}
       </div>
 
       <form className="comment-form" onSubmit={handleSubmit}>
