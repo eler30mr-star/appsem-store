@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -6,17 +6,14 @@ import {
   Download,
   Heart,
   Info,
-  MonitorSmartphone,
   Shield,
-  Star,
-  ThumbsUp
+  Star
 } from "lucide-react";
 import CommentSection from "../components/CommentSection";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
 import RatingStars from "../components/RatingStars";
 import ScreenshotGallery from "../components/ScreenshotGallery";
-import StatBadge from "../components/StatBadge";
 import { categoryMap } from "../data/categories";
 import {
   checkUserInteraction,
@@ -30,7 +27,9 @@ import {
 const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231e293b'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='white'%3EAS%3C/text%3E%3C/svg%3E";
 
 function formatNumber(value) {
-  return new Intl.NumberFormat("es-PE", { notation: Number(value || 0) >= 10000 ? "compact" : "standard" }).format(value || 0);
+  return new Intl.NumberFormat("es-PE", {
+    notation: Number(value || 0) >= 10000 ? "compact" : "standard"
+  }).format(value || 0);
 }
 
 export default function AppDetails() {
@@ -49,16 +48,19 @@ export default function AppDetails() {
     async function loadApp() {
       setLoading(true);
       setError("");
+
       try {
         const data = await getAppBySlug(slug);
         if (!alive) return;
 
         setApp(data);
+
         if (data) {
           const [publicComments, interaction] = await Promise.all([
             getApprovedComments(data.id),
             checkUserInteraction(data.id)
           ]);
+
           if (!alive) return;
           setComments(publicComments);
           setLiked(interaction.liked);
@@ -73,28 +75,30 @@ export default function AppDetails() {
     }
 
     loadApp();
+
     return () => {
       alive = false;
     };
   }, [slug]);
 
-  const heroStyle = useMemo(() => {
-    if (!app?.bannerUrl) return undefined;
-    return { backgroundImage: `linear-gradient(110deg, rgba(15, 23, 42, .96), rgba(15, 23, 42, .78)), url(${app.bannerUrl})` };
-  }, [app?.bannerUrl]);
-
   async function handleLike() {
     if (!app || liked) return;
     setInteractionMessage("");
+
     try {
       const result = await likeApp(app.id);
+
       if (result.alreadyLiked) {
         setLiked(true);
         setInteractionMessage("Ya diste me gusta a esta app.");
         return;
       }
+
       setLiked(true);
-      setApp((current) => ({ ...current, likesCount: Number(current.likesCount || 0) + 1 }));
+      setApp((current) => ({
+        ...current,
+        likesCount: Number(current.likesCount || 0) + 1
+      }));
       setInteractionMessage("Gracias por tu me gusta.");
     } catch (err) {
       console.error(err);
@@ -105,13 +109,16 @@ export default function AppDetails() {
   async function handleRate(value) {
     if (!app || rated) return;
     setInteractionMessage("");
+
     try {
       const result = await submitRating(app.id, value);
+
       if (result.alreadyRated) {
         setRated(value);
         setInteractionMessage("Ya valoraste esta app anteriormente.");
         return;
       }
+
       setRated(value);
       setApp((current) => ({
         ...current,
@@ -127,9 +134,13 @@ export default function AppDetails() {
 
   async function handleDownload() {
     if (!app?.playStoreUrl) return;
+
     try {
       await registerDownloadClick(app);
-      setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
+      setApp((current) => ({
+        ...current,
+        downloadsCount: Number(current.downloadsCount || 0) + 1
+      }));
     } catch (err) {
       console.error(err);
     } finally {
@@ -143,48 +154,106 @@ export default function AppDetails() {
     setComments(publicComments);
   }
 
-  if (loading) return <main className="container page-pad"><LoadingState text="Cargando ficha de la app..." /></main>;
-  if (error) return <main className="container page-pad"><div className="error-box">{error}</div></main>;
-  if (!app) {
+  if (loading) {
     return (
       <main className="container page-pad">
-        <EmptyState title="App no encontrada" message="La app no existe o todavía no está publicada." />
-        <Link className="back-link" to="/"><ArrowLeft size={18} /> Volver a la tienda</Link>
+        <LoadingState text="Cargando ficha de la app..." />
       </main>
     );
   }
 
+  if (error) {
+    return (
+      <main className="container page-pad">
+        <div className="error-box">{error}</div>
+      </main>
+    );
+  }
+
+  if (!app) {
+    return (
+      <main className="container page-pad">
+        <EmptyState title="App no encontrada" message="La app no existe o todavía no está publicada." />
+        <Link className="back-link" to="/">
+          <ArrowLeft size={18} /> Volver a la tienda
+        </Link>
+      </main>
+    );
+  }
+
+  const bannerStyle = app.bannerUrl
+    ? {
+        backgroundImage: `linear-gradient(100deg, rgba(4, 10, 25, .72), rgba(4, 10, 25, .24)), url(${app.bannerUrl})`
+      }
+    : undefined;
+
   return (
     <main>
-      <section className="app-detail-hero" style={heroStyle}>
-        <div className="container detail-hero-grid">
-          <div>
-            <Link className="back-link light" to="/"><ArrowLeft size={18} /> Volver a la tienda</Link>
-            <div className="detail-app-head">
-              <img className="detail-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
-              <div>
-                <span className="app-category light-category">{categoryMap[app.categoryKey] || app.category || "App"}</span>
-                <h1>{app.title}</h1>
-                <p>{app.shortDescription || "Aplicación disponible en Appsem Store."}</p>
-                <div className="detail-rating-line">
-                  <RatingStars value={Math.round(app.ratingAverage || 0)} />
-                  <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
-                  <span>({formatNumber(app.ratingCount)} valoraciones)</span>
+      <section className="app-detail-hero app-detail-hero-v4">
+        <div className="container app-detail-hero-inner">
+          <Link className="back-link light app-detail-back" to="/">
+            <ArrowLeft size={18} /> Volver a la tienda
+          </Link>
+
+          <div className="app-detail-banner" style={bannerStyle} aria-label={`Banner de ${app.title}`} />
+
+          <div className="app-summary-wrap">
+            <div className="app-summary-card">
+              <div className="app-summary-head">
+                <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+
+                <div className="app-summary-copy">
+                  <span className="app-category light-category">
+                    {categoryMap[app.categoryKey] || app.category || "App"}
+                  </span>
+                  <h1>{app.title}</h1>
+                  <div className="detail-rating-line app-summary-rating">
+                    <RatingStars value={Math.round(app.ratingAverage || 0)} />
+                    <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
+                    <span>· {formatNumber(app.ratingCount)} valoraciones</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="download-panel">
-            <div className="download-stats">
-              <StatBadge icon={Heart} label="Me gusta" value={formatNumber(app.likesCount)} />
-              <StatBadge icon={Download} label="Descargas" value={formatNumber(app.downloadsCount)} />
-              <StatBadge icon={Star} label="Valoración" value={Number(app.ratingAverage || 0).toFixed(1)} />
+              <div className="app-summary-actions-block">
+                <div className="app-summary-actions">
+                  <button
+                    className={`app-summary-like ${liked ? "active" : ""}`}
+                    onClick={handleLike}
+                    disabled={liked}
+                    type="button"
+                  >
+                    <Heart size={18} /> {liked ? "Me gusta enviado" : "Me gusta"}
+                  </button>
+
+                  <button
+                    className="app-summary-download"
+                    onClick={handleDownload}
+                    disabled={!app.playStoreUrl}
+                    type="button"
+                  >
+                    <Download size={18} /> Descargar
+                  </button>
+                </div>
+
+                <div className="app-summary-stats" aria-label="Estadísticas de la app">
+                  <div className="app-summary-stat">
+                    <strong>{formatNumber(app.likesCount)}</strong>
+                    <span>Me gusta</span>
+                  </div>
+                  <div className="app-summary-stat">
+                    <strong>{formatNumber(app.downloadsCount)}</strong>
+                    <span>Descargas</span>
+                  </div>
+                  <div className="app-summary-stat">
+                    <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
+                    <span>Valoración</span>
+                  </div>
+                </div>
+
+                {!app.playStoreUrl ? <p className="tiny-note">Esta app aún no tiene enlace de descarga.</p> : null}
+              </div>
             </div>
-            <button className="download-button" onClick={handleDownload} type="button" disabled={!app.playStoreUrl}>
-              <Download size={20} /> Descargar en Google Play
-            </button>
-            {!app.playStoreUrl ? <p className="tiny-note">Esta app aún no tiene enlace de descarga.</p> : null}
           </div>
         </div>
       </section>
@@ -204,17 +273,16 @@ export default function AppDetails() {
           <section className="detail-section">
             <span className="eyebrow">Descripción</span>
             <h2>Acerca de esta app</h2>
-            <p className="long-text">{app.fullDescription || app.shortDescription || "Descripción no disponible."}</p>
+            <p className="long-text">
+              {app.fullDescription || app.shortDescription || "Descripción no disponible."}
+            </p>
           </section>
 
           <section className="detail-section user-actions-card">
             <span className="eyebrow">Participación</span>
             <h2>Valora esta app</h2>
             <p className="muted-text">Tu valoración ayuda a otros visitantes a conocer mejor esta aplicación.</p>
-            <div className="actions-row">
-              <button className={`like-button ${liked ? "active" : ""}`} onClick={handleLike} disabled={liked} type="button">
-                <ThumbsUp size={19} /> {liked ? "Me gusta enviado" : "Me gusta"}
-              </button>
+            <div className="actions-row app-rating-actions">
               <div className="rate-box">
                 <span>{rated ? "Ya valoraste" : "Tu valoración"}</span>
                 <RatingStars value={rated || 0} interactive={!rated} onRate={handleRate} size={22} />
