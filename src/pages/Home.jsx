@@ -10,12 +10,6 @@ import { getPublishedApps } from "../services/appsService";
 
 const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231e293b'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='white'%3EAS%3C/text%3E%3C/svg%3E";
 
-function getCreatedTime(app) {
-  if (app.createdAt?.seconds) return app.createdAt.seconds * 1000;
-  if (app.createdAt?.toDate) return app.createdAt.toDate().getTime();
-  return 0;
-}
-
 function normalizeCategory(value) {
   return String(value || "")
     .normalize("NFD")
@@ -47,13 +41,20 @@ function appMatchesCategory(app, category) {
 }
 
 function AppRowCard({ app }) {
+  const bannerStyle = app.bannerUrl
+    ? { backgroundImage: `url(${app.bannerUrl})` }
+    : undefined;
+
   return (
     <Link className="home-row-app-card" to={`/app/${app.slug}`} aria-label={`Ver ${app.title}`}>
-      <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
-      <div>
-        <strong>{app.title}</strong>
-        <span>{categoryMap[app.categoryKey] || app.category || "App"}</span>
-        <small>★ {Number(app.ratingAverage || 0).toFixed(1)}</small>
+      <div className="home-row-app-banner" style={bannerStyle} aria-hidden="true" />
+      <div className="home-row-app-body">
+        <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+        <div className="home-row-app-copy">
+          <strong>{app.title}</strong>
+          <span>{categoryMap[app.categoryKey] || app.category || "App"}</span>
+          <small>★ {Number(app.ratingAverage || 0).toFixed(1)}</small>
+        </div>
       </div>
     </Link>
   );
@@ -77,7 +78,6 @@ function AppHorizontalSection({ title, apps }) {
 export default function Home() {
   const [apps, setApps] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [promotedView, setPromotedView] = useState("featured");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,20 +115,6 @@ export default function Home() {
       .filter(Boolean)
       .some((value) => String(value).toLowerCase().includes(term)));
   }, [apps, searchTerm]);
-
-  const featuredApps = useMemo(() => {
-    return [...apps]
-      .sort((a, b) => Number(b.downloadsCount || 0) - Number(a.downloadsCount || 0))
-      .slice(0, 8);
-  }, [apps]);
-
-  const recentApps = useMemo(() => {
-    return [...apps]
-      .sort((a, b) => getCreatedTime(b) - getCreatedTime(a))
-      .slice(0, 8);
-  }, [apps]);
-
-  const promotedApps = promotedView === "featured" ? featuredApps : recentApps;
 
   const categorySections = useMemo(() => {
     const visibleCategories = categories.filter((category) => category.key !== "all");
@@ -184,29 +170,8 @@ export default function Home() {
           <>
             {activeCategory === "all" ? (
               <section className="home-promoted-row-section">
-                <div className="home-promoted-tabs" role="tablist" aria-label="Selección de apps">
-                  <button
-                    className={promotedView === "featured" ? "active" : ""}
-                    type="button"
-                    role="tab"
-                    aria-selected={promotedView === "featured"}
-                    onClick={() => setPromotedView("featured")}
-                  >
-                    Destacadas
-                  </button>
-                  <button
-                    className={promotedView === "recent" ? "active" : ""}
-                    type="button"
-                    role="tab"
-                    aria-selected={promotedView === "recent"}
-                    onClick={() => setPromotedView("recent")}
-                  >
-                    Recién subidas
-                  </button>
-                </div>
-
-                <div className="home-app-row" aria-label={promotedView === "featured" ? "Apps destacadas" : "Apps recién subidas"}>
-                  {promotedApps.map((app) => <AppRowCard app={app} key={app.id} />)}
+                <div className="home-app-row home-app-row-primary" aria-label="Apps disponibles">
+                  {apps.map((app) => <AppRowCard app={app} key={app.id} />)}
                 </div>
               </section>
             ) : null}
