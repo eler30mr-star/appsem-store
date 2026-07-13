@@ -7,6 +7,7 @@ import "./mobile-fixes.css";
 import "./app-details-v5.css";
 import "./gallery-spacing.css";
 import "./app-detail-loading.css";
+import "./site-shell.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
