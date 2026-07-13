@@ -299,23 +299,6 @@ export default function AppDetails() {
             ) : null}
           </section>
 
-          <section className="detail-section user-actions-card">
-            <span className="eyebrow">Participación</span>
-            <h2>Valora esta app</h2>
-            <p className="muted-text">Tu valoración ayuda a otros visitantes a conocer mejor esta aplicación.</p>
-            <div className="actions-row app-rating-actions">
-              <div className="rate-box">
-                <span>{rated ? "Ya valoraste" : "Tu valoración"}</span>
-                <RatingStars value={rated || 0} interactive={!rated} onRate={handleRate} size={22} />
-              </div>
-            </div>
-            {interactionMessage ? <p className="form-message">{interactionMessage}</p> : null}
-          </section>
-
-          <CommentSection appId={app.id} comments={comments} onCommentSent={reloadComments} />
-        </div>
-
-        <aside className="detail-sidebar">
           <section className="info-card">
             <h2><Info size={20} /> Información</h2>
             <dl>
@@ -338,7 +321,22 @@ export default function AppDetails() {
               <p className="muted-text">No se agregó política individual para esta app.</p>
             )}
           </section>
-        </aside>
+
+          <section className="detail-section user-actions-card">
+            <span className="eyebrow">Participación</span>
+            <h2>Valora esta app</h2>
+            <p className="muted-text">Tu valoración ayuda a otros visitantes a conocer mejor esta aplicación.</p>
+            <div className="actions-row app-rating-actions">
+              <div className="rate-box">
+                <span>{rated ? "Ya valoraste" : "Tu valoración"}</span>
+                <RatingStars value={rated || 0} interactive={!rated} onRate={handleRate} size={22} />
+              </div>
+            </div>
+            {interactionMessage ? <p className="form-message">{interactionMessage}</p> : null}
+          </section>
+
+          <CommentSection appId={app.id} comments={comments} onCommentSent={reloadComments} />
+        </div>
       </section>
     </main>
   );
