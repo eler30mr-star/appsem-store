@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Eliminación de cuenta y datos de Biblia Universal Lite." />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Eliminar Cuenta y Datos | Biblia Universal Lite</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-dark: #173ea8;
+      --accent: #2563eb;
+      --danger: #b42318;
+      --danger-soft: #fff1f0;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --content: 920px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 30%),
+        linear-gradient(180deg, #eef4ff 0, var(--bg) 320px);
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      padding: 52px 24px 34px;
+    }
+
+    .hero-inner {
+      max-width: var(--content);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: rgba(255, 255, 255, 0.74);
+      backdrop-filter: blur(10px);
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+    }
+
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
+    }
+
+    .site-nav {
+      max-width: var(--content);
+      margin: 22px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: #334155;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .site-nav a:hover {
+      color: var(--primary);
+      border-color: rgba(37, 99, 235, 0.35);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .site-nav a.active,
+    .site-nav a[aria-current="page"] {
+      color: #ffffff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    h1 {
+      margin: 26px 0 14px;
+      font-size: clamp(2.1rem, 7vw, 4.2rem);
+      line-height: 1.04;
+      letter-spacing: -0.052em;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+    }
+
+    .updated-date,
+    .effective-date {
+      display: inline-block;
+      margin-top: 22px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .page {
+      width: min(calc(100% - 32px), var(--content));
+      margin: 0 auto 72px;
+    }
+
+    .legal-card,
+    .policy-card,
+    .terms-card {
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .intro {
+      padding: 36px 42px;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .intro strong {
+      color: #ffffff;
+    }
+
+    .summary {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+
+    .content {
+      padding: 24px 42px 46px;
+    }
+
+    section {
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 8px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.35rem, 3vw, 1.72rem);
+      line-height: 1.3;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      font-size: 1.08rem;
+      color: #1e3a8a;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul, ol {
+      margin: 12px 0 16px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 2px 7px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      color: #1e3a8a;
+      font-size: 0.9em;
+    }
+
+    .notice,
+    .warning {
+      margin: 20px 0 4px;
+      padding: 18px 20px;
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    }
+
+    .notice {
+      border-left: 4px solid var(--accent);
+      background: #eff6ff;
+      color: #1e3a5f;
+    }
+
+    .warning {
+      border-left: 4px solid var(--danger);
+      background: var(--danger-soft);
+      color: #7a271a;
+    }
+
+    .contact-box {
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .contact-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #0f172a;
+      font-size: 1.06rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    footer {
+      padding: 28px 20px 42px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .footer-nav a {
+      font-weight: 650;
+    }
+
+    .back-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #ffffff;
+      background: #0f172a;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.24);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .back-top:hover {
+      background: var(--primary-dark);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 38px 18px 28px;
+      }
+
+      .site-nav {
+        margin-top: 18px;
+        gap: 7px;
+      }
+
+      .site-nav a {
+        min-height: 38px;
+        padding: 8px 12px;
+        font-size: 0.84rem;
+      }
+
+      .page {
+        width: min(calc(100% - 20px), var(--content));
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        border-radius: 22px;
+      }
+
+      .intro {
+        padding: 28px 24px;
+      }
+
+      .content {
+        padding: 10px 24px 34px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+
+      h1 {
+        letter-spacing: -0.045em;
+      }
+
+      .back-top {
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #07101f;
+        --surface: #0f172a;
+        --surface-soft: #111c30;
+        --text: #dbe5f5;
+        --muted: #94a3b8;
+        --border: #243247;
+        --danger-soft: rgba(180, 35, 24, 0.18);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 28%),
+          linear-gradient(180deg, #081225 0, var(--bg) 320px);
+      }
+
+      h1,
+      h2,
+      .contact-box strong {
+        color: #f8fafc;
+      }
+
+      h3 {
+        color: #93c5fd;
+      }
+
+      .brand {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: rgba(96, 165, 250, 0.22);
+        color: #bfdbfe;
+      }
+
+      .site-nav a {
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.82);
+        border-color: #2d3b52;
+      }
+
+      .site-nav a.active,
+      .site-nav a[aria-current="page"] {
+        color: #ffffff;
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        background: rgba(15, 23, 42, 0.97);
+        border-color: var(--border);
+      }
+
+      code {
+        color: #bfdbfe;
+      }
+
+      .notice {
+        background: rgba(30, 64, 175, 0.18);
+        color: #dbeafe;
+      }
+
+      .warning {
+        color: #fecaca;
+      }
+
+      a {
+        color: #60a5fa;
+      }
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        AppsMart Technology
+      </div>
+
+      <nav class="site-nav" aria-label="Navegación legal">
+        <a href="index.html">Privacidad</a>
+        <a href="terminos.html">Términos</a>
+        <a href="aviso-legal.html">Aviso legal</a>
+        <a href="eliminacion-cuenta-datos.html" class="active" aria-current="page">Eliminar cuenta</a>
+        <a href="seguridad.html">Seguridad</a>
+      </nav>
+
+      <h1>Eliminar Cuenta y Datos</h1>
+
+      <p class="subtitle">
+        Información sobre cómo eliminar tu cuenta y los datos asociados a
+        <strong>Biblia Universal Lite</strong>.
+      </p>
+
+      <span class="updated-date">Última actualización: 12 de julio de 2026</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="legal-card">
+      <div class="intro">
+        <p>
+          <strong>Control de cuenta y privacidad</strong>
+        </p>
+
+        <p>
+          Puedes eliminar tu cuenta desde la propia aplicación. Si no puedes acceder o el
+          proceso falla, puedes contactar con AppsMart Technology.
+        </p>
+
+        <div class="summary">
+          <strong>Resumen claro</strong>
+          <ul>
+            <li>Se eliminan los datos de cuenta gestionados por la app.</li>
+            <li>Se eliminan comentarios y likes asociados al usuario.</li>
+            <li>Se intenta eliminar el respaldo privado de la app en Google Drive.</li>
+            <li>Se eliminan oraciones y preferencias locales gestionadas por la app.</li>
+            <li>Eliminar la cuenta no cancela una suscripción activa de Google Play.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content">
+        <section>
+          <h2>1. Qué datos se eliminan</h2>
+          <p>Según los datos existentes en tu cuenta, la eliminación puede incluir:</p>
+          <ul>
+            <li>Cuenta de autenticación de la aplicación.</li>
+            <li>Documento y datos de usuario almacenados en Firebase.</li>
+            <li>Comentarios publicados por tu cuenta.</li>
+            <li>Likes realizados en contenidos diarios.</li>
+            <li>Tu identificador dentro de los likes de comentarios de otros usuarios.</li>
+            <li>Datos sincronizados por la app en Google Drive.</li>
+            <li>Oraciones y preferencias locales administradas por la aplicación.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>2. Cómo eliminar la cuenta</h2>
+          <p>Desde Biblia Universal Lite:</p>
+          <ol>
+            <li>Abre la aplicación y entra a tu cuenta.</li>
+            <li>Ve a la sección de cuenta o perfil.</li>
+            <li>Selecciona <strong>Eliminar cuenta</strong>.</li>
+            <li>Confirma la eliminación.</li>
+          </ol>
+
+          <div class="warning">
+            Si tu autenticación no es suficientemente reciente, el proceso se detendrá antes
+            de borrar datos. En ese caso, vuelve a iniciar sesión y repite la eliminación.
+          </div>
+        </section>
+
+        <section>
+          <h2>3. Comentarios y likes</h2>
+          <p>
+            Los comentarios publicados por tu cuenta se eliminan.
+          </p>
+          <p>
+            También se eliminan tus registros de likes. Si diste like a un comentario de otro
+            usuario, tu identificador se retira de ese comentario y el contador se actualiza.
+          </p>
+        </section>
+
+        <section>
+          <h2>4. Google Drive</h2>
+          <p>La app puede sincronizar en su espacio privado de Google Drive:</p>
+          <ul>
+            <li>Versículos guardados.</li>
+            <li>Capítulos leídos.</li>
+            <li>Notas personales.</li>
+            <li>Resaltados asociados a notas.</li>
+            <li>Oraciones guardadas.</li>
+          </ul>
+          <p>
+            Al eliminar la cuenta desde la aplicación, Biblia Universal Lite intenta eliminar
+            el respaldo remoto gestionado por la propia app.
+          </p>
+          <p>
+            Los temas bíblicos y el juego de rompecabezas no se sincronizan mediante Google Drive.
+          </p>
+
+          <div class="notice">
+            AppsMart Technology no puede entrar manualmente al espacio privado de Google Drive
+            del usuario ni eliminar esos datos directamente mediante una solicitud por correo.
+          </div>
+        </section>
+
+        <section>
+          <h2>5. Datos locales</h2>
+          <p>
+            La aplicación elimina las oraciones almacenadas localmente y determinadas
+            preferencias generales y de perfil.
+          </p>
+          <p>
+            También puedes borrar los datos de la app desde la configuración de Android o
+            desinstalarla, pero eso no elimina por sí solo la cuenta ni los datos remotos.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Solicitud de asistencia</h2>
+          <p>
+            Si no puedes acceder a la aplicación o no puedes completar la eliminación, escribe a:
+          </p>
+
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+            <br />
+            <a
+              class="button"
+              href="mailto:support.apps.amt@gmail.com?subject=Eliminar%20cuenta%20y%20datos%20-%20Biblia%20Universal%20Lite"
+            >
+              Contactar con soporte
+            </a>
+          </div>
+
+          <p style="margin-top: 16px;">
+            Indica el correo de Google asociado a la cuenta y que solicitas ayuda para eliminar
+            tu cuenta de Biblia Universal Lite.
+          </p>
+
+          <div class="notice">
+            No envíes contraseñas, códigos de verificación ni otras credenciales sensibles.
+          </div>
+        </section>
+
+        <section>
+          <h2>7. Suscripción</h2>
+          <p>
+            Eliminar tu cuenta no cancela automáticamente una suscripción activa de Google Play.
+          </p>
+          <p>
+            Si tienes una suscripción para eliminar anuncios, debes administrarla desde:
+          </p>
+          <p><strong>Google Play &gt; Pagos y suscripciones &gt; Suscripciones.</strong></p>
+        </section>
+
+        <section>
+          <h2>8. Donaciones</h2>
+          <p>
+            La eliminación de la cuenta no elimina necesariamente los registros conservados por
+            el proveedor externo utilizado para procesar una donación.
+          </p>
+          <p>
+            AppsMart Technology no almacena directamente los datos completos de tarjetas o medios
+            de pago gestionados por terceros.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Copias y registros técnicos</h2>
+          <p>
+            Algunos proveedores pueden conservar temporalmente copias residuales o registros
+            técnicos según sus propios procesos de seguridad y respaldo.
+          </p>
+          <p>
+            AppsMart Technology no utiliza esos registros para reactivar una cuenta eliminada ni
+            reconstruir el perfil del usuario.
+          </p>
+        </section>
+
+        <section>
+          <h2>10. Contacto</h2>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <span>Soporte y privacidad:</span><br />
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <nav class="footer-nav" aria-label="Enlaces legales">
+      <a href="index.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="eliminacion-cuenta-datos.html">Eliminar cuenta</a>
+      <a href="seguridad.html">Seguridad</a>
+    </nav>
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+
+  <button
+    class="back-top"
+    type="button"
+    aria-label="Volver al inicio"
+    title="Volver al inicio"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+  >
+    ↑
+  </button>
+</body>
+</html>
