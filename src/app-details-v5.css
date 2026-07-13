@@ -91,6 +91,42 @@
   overflow: hidden;
 }
 
+.app-about-section {
+  width: 100%;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.app-about-toggle {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #111827;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app-about-toggle svg {
+  flex: 0 0 auto;
+}
+
+.app-about-content {
+  padding: 0 0 18px;
+}
+
+.app-about-content .long-text {
+  margin: 0;
+}
+
 @media (max-width: 680px) {
   .app-detail-hero-inner {
     width: 100%;
@@ -198,6 +234,16 @@
     height: 100%;
     border-radius: 16px;
     object-fit: cover;
+  }
+
+  .app-about-section {
+    border-top-color: rgba(226, 232, 240, .95);
+    border-bottom-color: rgba(226, 232, 240, .95);
+  }
+
+  .app-about-toggle {
+    min-height: 62px;
+    font-size: 1.25rem;
   }
 }
 
