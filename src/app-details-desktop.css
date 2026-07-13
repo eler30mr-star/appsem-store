@@ -1,0 +1,44 @@
+@media (min-width: 981px) {
+  .app-detail-hero-inner,
+  .detail-layout {
+    width: min(1180px, calc(100% - 64px));
+  }
+
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .detail-main {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .app-download-actions {
+    width: min(650px, 100%);
+    margin-inline: 0;
+  }
+
+  .app-like-button {
+    grid-column: 1 / -1;
+  }
+
+  .app-screenshots-section,
+  .app-about-section,
+  .detail-main > .info-card,
+  .detail-main > section {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .app-screenshots-section .screenshots-row {
+    width: 100%;
+    max-width: none;
+  }
+
+  .detail-main > .info-card,
+  .detail-main > .info-card + .info-card {
+    position: static;
+    top: auto;
+  }
+}
