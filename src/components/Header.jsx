@@ -6,7 +6,7 @@ export default function Header() {
   const isAppDetails = pathname.startsWith("/app/");
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${isAppDetails ? "app-detail-site-header" : ""}`}>
       <div className="container header-inner">
         <Link className="brand" to="/" aria-label="Ir al inicio de Appsem Store">
           <span className="brand-mark">AS</span>
