@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   BadgeCheck,
+  ChevronDown,
+  ChevronUp,
   Download,
   Heart,
   Info,
@@ -41,6 +43,7 @@ export default function AppDetails() {
   const [liked, setLiked] = useState(false);
   const [rated, setRated] = useState(null);
   const [interactionMessage, setInteractionMessage] = useState("");
+  const [aboutExpanded, setAboutExpanded] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -275,12 +278,25 @@ export default function AppDetails() {
             <ScreenshotGallery screenshots={app.screenshots} title={app.title} />
           </section>
 
-          <section className="detail-section">
-            <span className="eyebrow">Descripción</span>
-            <h2>Acerca de esta app</h2>
-            <p className="long-text">
-              {app.fullDescription || app.shortDescription || "Descripción no disponible."}
-            </p>
+          <section className={`app-about-section ${aboutExpanded ? "expanded" : ""}`}>
+            <button
+              className="app-about-toggle"
+              type="button"
+              onClick={() => setAboutExpanded((current) => !current)}
+              aria-expanded={aboutExpanded}
+              aria-controls="app-about-content"
+            >
+              <span>Acerca de la app</span>
+              {aboutExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+            </button>
+
+            {aboutExpanded ? (
+              <div id="app-about-content" className="app-about-content">
+                <p className="long-text">
+                  {app.fullDescription || app.shortDescription || "Descripción no disponible."}
+                </p>
+              </div>
+            ) : null}
           </section>
 
           <section className="detail-section user-actions-card">
