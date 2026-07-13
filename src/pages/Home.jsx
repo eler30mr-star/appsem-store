@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import AppCard from "../components/AppCard";
 import CategoryTabs from "../components/CategoryTabs";
 import EmptyState from "../components/EmptyState";
@@ -10,9 +10,10 @@ import { getPublishedApps } from "../services/appsService";
 export default function Home() {
   const [apps, setApps] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("q") || "";
 
   useEffect(() => {
     let alive = true;
@@ -52,54 +53,13 @@ export default function Home() {
 
   return (
     <>
-      <section className="hero-section">
-        <div className="container hero-grid">
-          <div className="hero-copy">
-            <span className="hero-badge"><Sparkles size={16} /> Tienda oficial</span>
-            <h1>Apps Android organizadas, modernas y listas para descargar.</h1>
-            <p>
-              Explora el catálogo público de Appsem Store. Cada app cuenta con ficha completa,
-              capturas, valoración, comentarios, me gusta y acceso directo a Google Play.
-            </p>
-            <div className="hero-search" role="search">
-              <Search size={20} />
-              <input
-                aria-label="Buscar apps"
-                onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Buscar una app..."
-                type="search"
-                value={searchTerm}
-              />
-            </div>
-          </div>
-
-          <div className="hero-panel" aria-hidden="true">
-            <div className="floating-card one">
-              <span>⭐ 4.8</span>
-              <strong>Valoraciones reales</strong>
-            </div>
-            <div className="phone-preview">
-              <div className="phone-top" />
-              <div className="phone-app-row" />
-              <div className="phone-app-row small" />
-              <div className="phone-screens" />
-              <div className="phone-button" />
-            </div>
-            <div className="floating-card two">
-              <span>⬇️</span>
-              <strong>Clics hacia Play Store</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <CategoryTabs activeCategory={activeCategory} onChange={setActiveCategory} />
 
-      <main className="container catalog-section">
+      <main className="container catalog-section home-catalog-section">
         <div className="catalog-heading">
           <div>
             <span className="eyebrow">Catálogo</span>
-            <h2>{title}</h2>
+            <h1>{title}</h1>
           </div>
           <p>{filteredApps.length} app{filteredApps.length === 1 ? "" : "s"}</p>
         </div>
