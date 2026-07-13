@@ -229,6 +229,11 @@ export default function AppDetails() {
                 </button>
 
                 <div className="app-summary-stat">
+                  <strong>{app.appSize || "—"}</strong>
+                  <span>Tamaño</span>
+                </div>
+
+                <div className="app-summary-stat">
                   <strong>{formatNumber(app.downloadsCount)}</strong>
                   <span>Descargas</span>
                 </div>
