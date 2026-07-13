@@ -9,6 +9,7 @@ import "./gallery-spacing.css";
 import "./app-detail-loading.css";
 import "./site-shell.css";
 import "./app-details-desktop.css";
+import "./app-details-desktop-actions.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
