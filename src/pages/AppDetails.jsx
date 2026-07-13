@@ -8,8 +8,7 @@ import {
   Download,
   Heart,
   Info,
-  Shield,
-  Star
+  Shield
 } from "lucide-react";
 import CommentSection from "../components/CommentSection";
 import EmptyState from "../components/EmptyState";
@@ -191,6 +190,7 @@ export default function AppDetails() {
     : undefined;
 
   const directDownloadUrl = app.downloadUrl || app.apkUrl || app.playStoreUrl;
+  const categoryLabel = categoryMap[app.categoryKey] || app.category || "App";
 
   return (
     <main>
@@ -205,12 +205,12 @@ export default function AppDetails() {
           <div className="app-summary-wrap">
             <div className="app-summary-card">
               <div className="app-summary-head">
-                <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+                <div className="app-summary-icon-column">
+                  <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+                  <span className="app-category light-category app-summary-category">{categoryLabel}</span>
+                </div>
 
                 <div className="app-summary-copy">
-                  <span className="app-category light-category">
-                    {categoryMap[app.categoryKey] || app.category || "App"}
-                  </span>
                   <h1>{app.title}</h1>
                   <div className="detail-rating-line app-summary-rating">
                     <RatingStars value={Math.round(app.ratingAverage || 0)} />
