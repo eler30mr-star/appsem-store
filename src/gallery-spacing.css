@@ -5,6 +5,11 @@
     scroll-padding-inline: var(--app-detail-mobile-gutter);
   }
 
+  .app-summary-wrap {
+    margin-top: 0;
+    padding-top: 14px;
+  }
+
   .app-summary-head {
     align-items: center;
   }
