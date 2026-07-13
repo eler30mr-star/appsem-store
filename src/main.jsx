@@ -11,6 +11,7 @@ import "./site-shell.css";
 import "./app-details-desktop.css";
 import "./app-details-desktop-actions.css";
 import "./home-header-search.css";
+import "./home-store-sections.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
