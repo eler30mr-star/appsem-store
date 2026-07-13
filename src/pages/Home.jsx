@@ -31,8 +31,19 @@ function appMatchesCategory(app, category) {
   const categoryLabel = normalizeCategory(category.label);
 
   const aliases = {
-    bible: ["bible", "biblia", "biblias"],
-    christian: ["christian", "cristiana", "cristianas", "cristiano", "cristianos"],
+    "books-reference": [
+      "books-reference",
+      "libros-referencias",
+      "libros y referencias",
+      "bible",
+      "biblia",
+      "biblias",
+      "christian",
+      "cristiana",
+      "cristianas",
+      "cristiano",
+      "cristianos"
+    ],
     tools: ["tools", "herramienta", "herramientas"],
     education: ["education", "educacion"],
     entertainment: ["entertainment", "entretenimiento"],
