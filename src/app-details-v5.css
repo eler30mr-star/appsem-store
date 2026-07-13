@@ -1,3 +1,7 @@
+:root {
+  --app-detail-mobile-gutter: 20px;
+}
+
 .app-summary-like-stat {
   appearance: none;
   border: 0;
@@ -29,7 +33,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 10px;
-  width: calc(100% - 24px);
+  width: 100%;
   margin-inline: auto;
 }
 
@@ -83,11 +87,11 @@
 
 @media (max-width: 680px) {
   .app-detail-back {
-    left: 14px;
+    left: var(--app-detail-mobile-gutter);
   }
 
   .app-summary-wrap {
-    padding-inline: 14px;
+    padding-inline: var(--app-detail-mobile-gutter);
     margin-top: -18px;
   }
 
@@ -127,15 +131,23 @@
     font-size: .58rem;
   }
 
+  .detail-layout {
+    width: calc(100% - (var(--app-detail-mobile-gutter) * 2));
+    margin-inline: auto;
+  }
+
   .app-download-actions {
-    width: calc(100% - 28px);
+    width: 100%;
     gap: 10px;
   }
 }
 
 @media (max-width: 420px) {
+  :root {
+    --app-detail-mobile-gutter: 18px;
+  }
+
   .app-download-actions {
-    width: calc(100% - 24px);
     gap: 8px;
   }
 
