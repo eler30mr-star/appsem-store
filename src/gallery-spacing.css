@@ -1,0 +1,7 @@
+@media (max-width: 680px) {
+  .app-screenshots-section .screenshots-row {
+    box-sizing: border-box;
+    padding: 0 var(--app-detail-mobile-gutter) 10px;
+    scroll-padding-inline: var(--app-detail-mobile-gutter);
+  }
+}
