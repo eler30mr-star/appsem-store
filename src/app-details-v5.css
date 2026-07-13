@@ -1,6 +1,7 @@
 :root {
   --app-detail-mobile-gutter: 20px;
   --app-detail-hero-gutter: var(--app-detail-mobile-gutter);
+  --app-detail-fixed-header-height: 76px;
 }
 
 .app-summary-like-stat {
@@ -177,6 +178,40 @@
 }
 
 @media (max-width: 680px) {
+  .app-detail-site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    width: 100%;
+  }
+
+  .app-detail-site-header .header-inner {
+    width: calc(100% - (var(--app-detail-mobile-gutter) * 2));
+    height: var(--app-detail-fixed-header-height);
+    margin-inline: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .app-detail-site-header .brand {
+    width: auto;
+    gap: 10px;
+  }
+
+  .app-detail-site-header .brand-mark {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+  }
+
+  .app-detail-hero-v4 {
+    margin-top: var(--app-detail-fixed-header-height);
+  }
+
   .app-detail-hero-inner {
     width: 100%;
     max-width: none;
