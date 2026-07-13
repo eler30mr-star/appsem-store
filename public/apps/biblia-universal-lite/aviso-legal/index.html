@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aviso Legal de Biblia Universal Lite, desarrollada por AppsMart Technology." />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Aviso Legal | Biblia Universal Lite</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #1d4ed8;
+      --primary-dark: #173ea8;
+      --accent: #2563eb;
+      --danger: #b42318;
+      --danger-soft: #fff1f0;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 18px;
+      --content: 920px;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 30%),
+        linear-gradient(180deg, #eef4ff 0, var(--bg) 320px);
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      padding: 52px 24px 34px;
+    }
+
+    .hero-inner {
+      max-width: var(--content);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border: 1px solid rgba(37, 99, 235, 0.16);
+      border-radius: 999px;
+      color: var(--primary-dark);
+      background: rgba(255, 255, 255, 0.74);
+      backdrop-filter: blur(10px);
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+    }
+
+    .brand-mark {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.12);
+    }
+
+    .site-nav {
+      max-width: var(--content);
+      margin: 22px auto 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .site-nav a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: #334155;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .site-nav a:hover {
+      color: var(--primary);
+      border-color: rgba(37, 99, 235, 0.35);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .site-nav a.active,
+    .site-nav a[aria-current="page"] {
+      color: #ffffff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    h1 {
+      margin: 26px 0 14px;
+      font-size: clamp(2.1rem, 7vw, 4.2rem);
+      line-height: 1.04;
+      letter-spacing: -0.052em;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+    }
+
+    .updated-date,
+    .effective-date {
+      display: inline-block;
+      margin-top: 22px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .page {
+      width: min(calc(100% - 32px), var(--content));
+      margin: 0 auto 72px;
+    }
+
+    .legal-card,
+    .policy-card,
+    .terms-card {
+      background: rgba(255, 255, 255, 0.97);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .intro {
+      padding: 36px 42px;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .intro strong {
+      color: #ffffff;
+    }
+
+    .summary {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+
+    .content {
+      padding: 24px 42px 46px;
+    }
+
+    section {
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 8px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: clamp(1.35rem, 3vw, 1.72rem);
+      line-height: 1.3;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      font-size: 1.08rem;
+      color: #1e3a8a;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul, ol {
+      margin: 12px 0 16px;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 2px 7px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      color: #1e3a8a;
+      font-size: 0.9em;
+    }
+
+    .notice,
+    .warning {
+      margin: 20px 0 4px;
+      padding: 18px 20px;
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    }
+
+    .notice {
+      border-left: 4px solid var(--accent);
+      background: #eff6ff;
+      color: #1e3a5f;
+    }
+
+    .warning {
+      border-left: 4px solid var(--danger);
+      background: var(--danger-soft);
+      color: #7a271a;
+    }
+
+    .contact-box {
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+    }
+
+    .contact-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #0f172a;
+      font-size: 1.06rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .button:hover {
+      background: var(--primary-dark);
+      text-decoration: none;
+    }
+
+    footer {
+      padding: 28px 20px 42px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px 16px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .footer-nav a {
+      font-weight: 650;
+    }
+
+    .back-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      color: #ffffff;
+      background: #0f172a;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.24);
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    .back-top:hover {
+      background: var(--primary-dark);
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 38px 18px 28px;
+      }
+
+      .site-nav {
+        margin-top: 18px;
+        gap: 7px;
+      }
+
+      .site-nav a {
+        min-height: 38px;
+        padding: 8px 12px;
+        font-size: 0.84rem;
+      }
+
+      .page {
+        width: min(calc(100% - 20px), var(--content));
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        border-radius: 22px;
+      }
+
+      .intro {
+        padding: 28px 24px;
+      }
+
+      .content {
+        padding: 10px 24px 34px;
+      }
+
+      section {
+        padding: 28px 0;
+      }
+
+      h1 {
+        letter-spacing: -0.045em;
+      }
+
+      .back-top {
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #07101f;
+        --surface: #0f172a;
+        --surface-soft: #111c30;
+        --text: #dbe5f5;
+        --muted: #94a3b8;
+        --border: #243247;
+        --danger-soft: rgba(180, 35, 24, 0.18);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      }
+
+      body {
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 28%),
+          linear-gradient(180deg, #081225 0, var(--bg) 320px);
+      }
+
+      h1,
+      h2,
+      .contact-box strong {
+        color: #f8fafc;
+      }
+
+      h3 {
+        color: #93c5fd;
+      }
+
+      .brand {
+        background: rgba(15, 23, 42, 0.8);
+        border-color: rgba(96, 165, 250, 0.22);
+        color: #bfdbfe;
+      }
+
+      .site-nav a {
+        color: #cbd5e1;
+        background: rgba(15, 23, 42, 0.82);
+        border-color: #2d3b52;
+      }
+
+      .site-nav a.active,
+      .site-nav a[aria-current="page"] {
+        color: #ffffff;
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .legal-card,
+      .policy-card,
+      .terms-card {
+        background: rgba(15, 23, 42, 0.97);
+        border-color: var(--border);
+      }
+
+      code {
+        color: #bfdbfe;
+      }
+
+      .notice {
+        background: rgba(30, 64, 175, 0.18);
+        color: #dbeafe;
+      }
+
+      .warning {
+        color: #fecaca;
+      }
+
+      a {
+        color: #60a5fa;
+      }
+    }
+  </style>
+</head>
+
+<body id="top">
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        AppsMart Technology
+      </div>
+
+      <nav class="site-nav" aria-label="Navegación legal">
+        <a href="index.html">Privacidad</a>
+        <a href="terminos.html">Términos</a>
+        <a href="aviso-legal.html" class="active" aria-current="page">Aviso legal</a>
+        <a href="eliminacion-cuenta-datos.html">Eliminar cuenta</a>
+        <a href="seguridad.html">Seguridad</a>
+      </nav>
+
+      <h1>Aviso Legal</h1>
+
+      <p class="subtitle">
+        Información legal relativa a
+        <strong>Biblia Universal Lite</strong> y a su titular.
+      </p>
+
+      <span class="updated-date">Última actualización: 12 de julio de 2026</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <article class="legal-card">
+      <div class="intro">
+        <p>
+          El presente Aviso Legal regula la información general, titularidad y condiciones
+          legales relacionadas con <strong>Biblia Universal Lite</strong>, una aplicación
+          desarrollada y administrada por <strong>AppsMart Technology</strong>.
+        </p>
+        <p>
+          El acceso y uso de la aplicación también se encuentra sujeto a los Términos de
+          Servicio y a la Política de Privacidad vigentes.
+        </p>
+      </div>
+
+      <div class="content">
+        <section>
+          <h2>1. Identificación del responsable</h2>
+          <p>
+            Biblia Universal Lite es una aplicación desarrollada y administrada por:
+          </p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <span>Aplicación: Biblia Universal Lite</span><br />
+            <span>Correo electrónico:
+              <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+            </span>
+          </div>
+          <p style="margin-top: 18px;">
+            AppsMart Technology es responsable de la gestión, mantenimiento y desarrollo
+            de las funciones propias de Biblia Universal Lite, sin perjuicio de los
+            servicios externos utilizados por la aplicación.
+          </p>
+        </section>
+
+        <section>
+          <h2>2. Objeto de la aplicación</h2>
+          <p>
+            Biblia Universal Lite ofrece contenido bíblico y herramientas digitales
+            relacionadas con la lectura, reflexión y experiencia espiritual del usuario.
+          </p>
+          <p>Entre sus funciones pueden encontrarse:</p>
+          <ul>
+            <li>Lectura de textos bíblicos.</li>
+            <li>Funciones de audio.</li>
+            <li>Versículo diario.</li>
+            <li>Devocionales diarios.</li>
+            <li>Temas bíblicos.</li>
+            <li>Notas, versículos guardados y capítulos leídos.</li>
+            <li>Resaltados asociados a notas.</li>
+            <li>Oraciones guardadas.</li>
+            <li>Recordatorios y notificaciones.</li>
+            <li>Sincronización de determinados datos mediante Google Drive.</li>
+            <li>Likes, comentarios y opciones para compartir contenido.</li>
+            <li>Juego de rompecabezas de temática bíblica.</li>
+            <li>Publicidad.</li>
+            <li>Suscripción destinada exclusivamente a eliminar anuncios.</li>
+            <li>Opción de donaciones o aportes voluntarios.</li>
+          </ul>
+          <p>
+            La disponibilidad de determinadas funciones puede variar según la versión de la
+            aplicación, el dispositivo, la región, la configuración del usuario o la
+            disponibilidad de servicios de terceros.
+          </p>
+        </section>
+
+        <section>
+          <h2>3. Naturaleza del contenido bíblico y espiritual</h2>
+          <p>
+            Biblia Universal Lite proporciona contenido de naturaleza bíblica, devocional,
+            reflexiva y espiritual.
+          </p>
+          <p>
+            El contenido ofrecido tiene fines informativos, educativos, de lectura y
+            reflexión personal. No constituye asesoramiento médico, psicológico, legal,
+            financiero ni profesional de otra naturaleza.
+          </p>
+          <div class="notice">
+            Ante una situación que requiera atención médica, psicológica, legal o de otro
+            tipo profesional, el usuario debe buscar la asistencia de un profesional
+            cualificado o del servicio correspondiente.
+          </div>
+        </section>
+
+        <section>
+          <h2>4. Propiedad intelectual</h2>
+          <p>
+            Salvo que se indique expresamente lo contrario, los elementos originales de
+            Biblia Universal Lite, incluyendo su diseño, interfaces, organización,
+            logotipos, elementos gráficos originales, código fuente y funciones
+            desarrolladas, pertenecen a AppsMart Technology o se utilizan bajo las
+            autorizaciones correspondientes.
+          </p>
+          <p>
+            Los textos bíblicos, traducciones, recursos, imágenes o materiales de terceros
+            pueden estar sujetos a dominio público, licencias, autorizaciones o derechos
+            correspondientes a sus respectivos autores, titulares o proveedores.
+          </p>
+          <p>
+            La presencia de contenido de terceros dentro de la aplicación no implica que
+            AppsMart Technology adquiera la propiedad de dicho contenido.
+          </p>
+          <p>
+            Queda prohibida la reproducción, redistribución, venta, explotación comercial
+            o utilización no autorizada de los elementos originales de la aplicación,
+            salvo autorización expresa o cuando la legislación aplicable permita
+            expresamente dicha utilización.
+          </p>
+        </section>
+
+        <section>
+          <h2>5. Marcas, nombres y elementos identificativos</h2>
+          <p>
+            Los nombres <strong>AppsMart Technology</strong> y
+            <strong>Biblia Universal Lite</strong>, así como los logotipos y elementos
+            identificativos originales asociados a la aplicación, pueden estar protegidos
+            conforme a los derechos y normas aplicables.
+          </p>
+          <p>
+            No se autoriza el uso de estos elementos de una forma que pueda generar
+            confusión sobre una relación, patrocinio, autorización o vinculación oficial
+            con AppsMart Technology.
+          </p>
+        </section>
+
+        <section>
+          <h2>6. Contenido generado por los usuarios</h2>
+          <p>
+            Determinadas funciones pueden permitir que los usuarios publiquen comentarios
+            o realicen otras interacciones.
+          </p>
+          <p>
+            Cada usuario es responsable del contenido que decide publicar y debe respetar
+            los derechos de terceros y las normas de uso de la aplicación.
+          </p>
+          <p>
+            AppsMart Technology puede moderar, limitar, ocultar o eliminar contenido cuando
+            exista una razón relacionada con abuso, spam, seguridad, contenido ilegal,
+            vulneración de derechos o incumplimiento de los Términos de Servicio.
+          </p>
+        </section>
+
+        <section>
+          <h2>7. Publicidad</h2>
+          <p>
+            Biblia Universal Lite puede mostrar anuncios mediante Google AdMob y servicios
+            publicitarios relacionados.
+          </p>
+          <p>
+            Los anuncios, productos, servicios o contenidos de terceros mostrados mediante
+            plataformas publicitarias son responsabilidad de sus respectivos anunciantes o
+            proveedores.
+          </p>
+          <p>
+            La presencia de un anuncio dentro de la aplicación no implica necesariamente
+            recomendación, respaldo o garantía de AppsMart Technology respecto del
+            anunciante, producto o servicio anunciado.
+          </p>
+        </section>
+
+        <section>
+          <h2>8. Suscripción para eliminar anuncios</h2>
+          <p>
+            Biblia Universal Lite puede ofrecer una suscripción destinada exclusivamente a
+            eliminar los anuncios cubiertos por esta opción.
+          </p>
+          <p>
+            La suscripción es gestionada mediante Google Play y no desbloquea funciones
+            adicionales de la aplicación.
+          </p>
+          <p>
+            Las condiciones comerciales, precio, periodo de facturación y gestión de la
+            suscripción se muestran mediante la aplicación y los servicios de Google Play
+            antes de la contratación.
+          </p>
+        </section>
+
+        <section>
+          <h2>9. Donaciones y aportes voluntarios</h2>
+          <p>
+            La aplicación puede incluir una opción para realizar donaciones o aportes
+            voluntarios destinados a apoyar el mantenimiento, desarrollo y continuidad de
+            Biblia Universal Lite.
+          </p>
+          <p>
+            Las donaciones son voluntarias y no constituyen la compra de acciones,
+            participaciones, propiedad, derechos sobre AppsMart Technology ni derechos de
+            propiedad sobre la aplicación.
+          </p>
+          <p>
+            Una donación no elimina anuncios, no desbloquea funciones adicionales y no
+            sustituye la suscripción destinada a eliminar publicidad.
+          </p>
+          <p>
+            Las condiciones y el método utilizado para procesar el aporte se mostrarán
+            antes de confirmar la operación.
+          </p>
+        </section>
+
+        <section>
+          <h2>10. Servicios y enlaces de terceros</h2>
+          <p>
+            Biblia Universal Lite utiliza o puede interactuar con servicios externos,
+            incluyendo servicios proporcionados por Google, Firebase, Google Drive, Google
+            Play, proveedores de publicidad y proveedores relacionados con las funciones
+            habilitadas en la aplicación.
+          </p>
+          <p>
+            AppsMart Technology no controla de forma completa la infraestructura,
+            disponibilidad, políticas ni decisiones operativas de dichos terceros.
+          </p>
+          <p>
+            Cuando el usuario accede o interactúa con servicios externos, pueden resultar
+            aplicables las políticas y condiciones del proveedor correspondiente.
+          </p>
+        </section>
+
+        <section>
+          <h2>11. Disponibilidad y funcionamiento</h2>
+          <p>
+            AppsMart Technology busca mantener Biblia Universal Lite disponible, estable y
+            funcional.
+          </p>
+          <p>
+            Sin embargo, la aplicación puede experimentar interrupciones, errores,
+            mantenimiento, cambios técnicos o limitaciones derivadas del dispositivo,
+            conexión a Internet, sistema operativo o servicios de terceros.
+          </p>
+          <p>
+            No se garantiza la disponibilidad permanente e ininterrumpida de todas las
+            funciones.
+          </p>
+        </section>
+
+        <section>
+          <h2>12. Limitación de responsabilidad</h2>
+          <p>
+            En la medida permitida por la legislación aplicable, AppsMart Technology no
+            será responsable de daños indirectos o consecuencias derivadas exclusivamente
+            de circunstancias fuera de su control razonable, incluyendo:
+          </p>
+          <ul>
+            <li>Interrupciones de servicios de terceros.</li>
+            <li>Problemas de conexión a Internet.</li>
+            <li>Fallos o incompatibilidades del dispositivo.</li>
+            <li>Pérdida de acceso a cuentas externas.</li>
+            <li>Eliminación accidental de información por parte del usuario.</li>
+            <li>Modificaciones realizadas por proveedores de servicios externos.</li>
+          </ul>
+          <p>
+            Nada de este Aviso Legal pretende limitar o excluir derechos o responsabilidades
+            que no puedan ser legalmente limitados conforme a la legislación aplicable.
+          </p>
+        </section>
+
+        <section>
+          <h2>13. Vulnerabilidades y seguridad</h2>
+          <p>
+            No está permitido intentar acceder sin autorización a sistemas, datos o
+            servicios relacionados con Biblia Universal Lite, alterar deliberadamente su
+            funcionamiento o utilizar vulnerabilidades para perjudicar a la aplicación o a
+            otros usuarios.
+          </p>
+          <p>
+            Si detectas un posible problema de seguridad o vulnerabilidad, puedes
+            comunicarlo de forma responsable a:
+          </p>
+          <div class="contact-box">
+            <strong>Contacto de soporte y seguridad</strong>
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+          </div>
+        </section>
+
+        <section>
+          <h2>14. Política de Privacidad y Términos de Servicio</h2>
+          <p>
+            El tratamiento de información y datos relacionados con Biblia Universal Lite
+            se describe en la Política de Privacidad de la aplicación.
+          </p>
+          <p>
+            Las reglas aplicables al acceso, uso, comentarios, suscripción, donaciones y
+            demás funciones se desarrollan en los Términos de Servicio.
+          </p>
+          <p>
+            Este Aviso Legal debe interpretarse junto con dichos documentos.
+          </p>
+        </section>
+
+        <section>
+          <h2>15. Modificaciones del Aviso Legal</h2>
+          <p>
+            AppsMart Technology puede actualizar este Aviso Legal cuando cambien las
+            funciones de la aplicación, los servicios utilizados, las prácticas operativas
+            o los requisitos aplicables.
+          </p>
+          <p>
+            Cuando se realicen cambios, se actualizará la fecha indicada al inicio del
+            documento.
+          </p>
+        </section>
+
+        <section>
+          <h2>16. Legislación aplicable</h2>
+          <p>
+            Este Aviso Legal se interpretará de acuerdo con la legislación aplicable, sin
+            perjuicio de los derechos obligatorios que puedan corresponder al usuario
+            conforme a las normas de protección al consumidor u otras disposiciones
+            aplicables en su lugar de residencia.
+          </p>
+        </section>
+
+        <section>
+          <h2>17. Contacto</h2>
+          <p>
+            Para consultas relacionadas con Biblia Universal Lite o con este Aviso Legal,
+            puedes contactar a:
+          </p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong>
+            <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a>
+          </div>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <nav class="footer-nav" aria-label="Enlaces legales">
+      <a href="index.html">Privacidad</a>
+      <a href="terminos.html">Términos</a>
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="eliminacion-cuenta-datos.html">Eliminar cuenta</a>
+      <a href="seguridad.html">Seguridad</a>
+    </nav>
+    © 2026 AppsMart Technology · Biblia Universal Lite
+  </footer>
+
+  <button
+    class="back-top"
+    type="button"
+    aria-label="Volver al inicio"
+    title="Volver al inicio"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+  >
+    ↑
+  </button>
+</body>
+</html>
