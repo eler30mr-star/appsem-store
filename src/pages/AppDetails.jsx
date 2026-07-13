@@ -306,6 +306,14 @@ export default function AppDetails() {
               <div><dt>Sistema operativo</dt><dd>{app.operatingSystem || "Android"}</dd></div>
               <div><dt>Android requerido</dt><dd>{app.minAndroidVersion || "No especificado"}</dd></div>
               <div><dt>Versión actual</dt><dd>{app.currentVersion || "No especificado"}</dd></div>
+              <div><dt>Última actualización</dt><dd>{app.lastUpdate || "No especificado"}</dd></div>
+              <div><dt>Idiomas</dt><dd>{app.languages || "No especificado"}</dd></div>
+              <div><dt>Uso sin conexión</dt><dd>{app.offlineUse || "No especificado"}</dd></div>
+              <div><dt>Contiene anuncios</dt><dd>{app.containsAds || "No especificado"}</dd></div>
+              <div><dt>Compras dentro de la app</dt><dd>{app.inAppPurchases || "No especificado"}</dd></div>
+              <div><dt>Clasificación por edad</dt><dd>{app.ageRating || "No especificado"}</dd></div>
+              <div><dt>Precio</dt><dd>{app.price || "No especificado"}</dd></div>
+              <div><dt>Nombre del paquete</dt><dd>{app.packageName || "No especificado"}</dd></div>
               <div><dt>Desarrollador</dt><dd>{app.developer || "AppsMart Technology"}</dd></div>
             </dl>
           </section>
