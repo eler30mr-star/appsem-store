@@ -7,8 +7,15 @@ export default function Footer() {
         <div>
           <h3>Appsem Store</h3>
           <p>
-            Catálogo público de aplicaciones Android de AppsMart Technology. Una tienda limpia,
-            directa y enfocada únicamente en apps disponibles.
+            Tienda Oficial de{" "}
+            <a
+              href="https://appsmart-technology.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#60a5fa", fontWeight: 800 }}
+            >
+              AppsMart Technology
+            </a>
           </p>
         </div>
         <div className="footer-links">
