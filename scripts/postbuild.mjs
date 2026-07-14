@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 const SITE_URL = "https://appsem-store.vercel.app";
 const PROJECT_ID = "webs-8b1bf";
 const DIST = "dist";
+const DEFAULT_IMAGE = `${SITE_URL}/images/web/appsem-store-icon-512.png`;
 
 const STATIC_ROUTES = {
   "/": {
@@ -121,7 +122,7 @@ function appHtml(template, app) {
   const title = `${app.title} | Appsem Store`;
   const description = app.seoDescription || app.shortDescription || app.fullDescription || `Descubre ${app.title} en Appsem Store.`;
   const url = `${SITE_URL}/app/${app.slug}`;
-  const image = app.bannerUrl || app.iconUrl || `${SITE_URL}/appsem-store-icon.png`;
+  const image = app.bannerUrl || app.iconUrl || DEFAULT_IMAGE;
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -153,7 +154,7 @@ function staticHtml(template, path, meta) {
     title: meta.title,
     description: meta.description,
     url: `${SITE_URL}${path}`,
-    image: `${SITE_URL}/appsem-store-icon.png`
+    image: DEFAULT_IMAGE
   });
 }
 
@@ -198,7 +199,7 @@ async function main() {
     title: "Página no encontrada | Appsem Store",
     description: "La página o aplicación solicitada no está disponible en Appsem Store.",
     url: `${SITE_URL}/404`,
-    image: `${SITE_URL}/appsem-store-icon.png`
+    image: DEFAULT_IMAGE
   }).replace("<meta name=\"robots\" content=\"index, follow, max-image-preview:large\" />", "<meta name=\"robots\" content=\"noindex, follow\" />");
   await writeFile(join(DIST, "404.html"), notFound, "utf8");
   await writeFile(join(DIST, "sitemap.xml"), sitemap(apps), "utf8");
