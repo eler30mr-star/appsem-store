@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -10,16 +10,19 @@ import {
   Info,
   Shield
 } from "lucide-react";
+import AppCard from "../components/AppCard";
 import CommentSection from "../components/CommentSection";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
 import RatingStars from "../components/RatingStars";
 import ScreenshotGallery from "../components/ScreenshotGallery";
+import Seo from "../components/Seo";
 import { categoryMap } from "../data/categories";
 import {
   checkUserInteraction,
   getAppBySlug,
   getApprovedComments,
+  getPublishedApps,
   likeApp,
   registerDownloadClick,
   submitRating
@@ -33,9 +36,19 @@ function formatNumber(value) {
   }).format(value || 0);
 }
 
+function SecurityLink({ href, children }) {
+  if (!href) return null;
+  return (
+    <a className="outline-button" href={href} target="_blank" rel="noopener noreferrer">
+      <BadgeCheck size={18} /> {children}
+    </a>
+  );
+}
+
 export default function AppDetails() {
   const { slug } = useParams();
   const [app, setApp] = useState(null);
+  const [allApps, setAllApps] = useState([]);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -52,17 +65,20 @@ export default function AppDetails() {
       setError("");
 
       try {
-        const data = await getAppBySlug(slug);
+        const [data, publishedApps] = await Promise.all([
+          getAppBySlug(slug),
+          getPublishedApps()
+        ]);
         if (!alive) return;
 
         setApp(data);
+        setAllApps(publishedApps || []);
 
         if (data) {
           const [publicComments, interaction] = await Promise.all([
             getApprovedComments(data.id),
             checkUserInteraction(data.id)
           ]);
-
           if (!alive) return;
           setComments(publicComments);
           setLiked(interaction.liked);
@@ -77,30 +93,33 @@ export default function AppDetails() {
     }
 
     loadApp();
-
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, [slug]);
+
+  const relatedApps = useMemo(() => {
+    if (!app) return [];
+    return allApps
+      .filter((item) => item.id !== app.id)
+      .sort((a, b) => {
+        const aSameCategory = a.categoryKey === app.categoryKey ? 1 : 0;
+        const bSameCategory = b.categoryKey === app.categoryKey ? 1 : 0;
+        return bSameCategory - aSameCategory;
+      })
+      .slice(0, 4);
+  }, [allApps, app]);
 
   async function handleLike() {
     if (!app || liked) return;
     setInteractionMessage("");
-
     try {
       const result = await likeApp(app.id);
-
       if (result.alreadyLiked) {
         setLiked(true);
         setInteractionMessage("Ya diste me gusta a esta app.");
         return;
       }
-
       setLiked(true);
-      setApp((current) => ({
-        ...current,
-        likesCount: Number(current.likesCount || 0) + 1
-      }));
+      setApp((current) => ({ ...current, likesCount: Number(current.likesCount || 0) + 1 }));
       setInteractionMessage("Gracias por tu me gusta.");
     } catch (err) {
       console.error(err);
@@ -111,16 +130,13 @@ export default function AppDetails() {
   async function handleRate(value) {
     if (!app || rated) return;
     setInteractionMessage("");
-
     try {
       const result = await submitRating(app.id, value);
-
       if (result.alreadyRated) {
         setRated(value);
         setInteractionMessage("Ya valoraste esta app anteriormente.");
         return;
       }
-
       setRated(value);
       setApp((current) => ({
         ...current,
@@ -136,13 +152,9 @@ export default function AppDetails() {
 
   async function openDownload(url) {
     if (!url || !app) return;
-
     try {
       await registerDownloadClick(app);
-      setApp((current) => ({
-        ...current,
-        downloadsCount: Number(current.downloadsCount || 0) + 1
-      }));
+      setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
     } catch (err) {
       console.error(err);
     } finally {
@@ -152,61 +164,70 @@ export default function AppDetails() {
 
   async function reloadComments() {
     if (!app) return;
-    const publicComments = await getApprovedComments(app.id);
-    setComments(publicComments);
+    setComments(await getApprovedComments(app.id));
   }
 
-  if (loading) {
-    return (
-      <main className="container page-pad">
-        <LoadingState text="Cargando ficha de la app..." />
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="container page-pad">
-        <div className="error-box">{error}</div>
-      </main>
-    );
-  }
-
+  if (loading) return <main className="container page-pad"><LoadingState text="Cargando ficha de la app..." /></main>;
+  if (error) return <main className="container page-pad"><div className="error-box">{error}</div></main>;
   if (!app) {
     return (
       <main className="container page-pad">
         <EmptyState title="App no encontrada" message="La app no existe o todavía no está publicada." />
-        <Link className="back-link" to="/">
-          <ArrowLeft size={18} /> Volver a la tienda
-        </Link>
+        <Link className="back-link" to="/"><ArrowLeft size={18} /> Volver a la tienda</Link>
       </main>
     );
   }
 
   const bannerStyle = app.bannerUrl
-    ? {
-        backgroundImage: `linear-gradient(100deg, rgba(4, 10, 25, .72), rgba(4, 10, 25, .24)), url(${app.bannerUrl})`
-      }
+    ? { backgroundImage: `linear-gradient(100deg, rgba(4, 10, 25, .72), rgba(4, 10, 25, .24)), url(${app.bannerUrl})` }
     : undefined;
-
   const directDownloadUrl = app.downloadUrl || app.apkUrl || app.playStoreUrl;
   const categoryLabel = categoryMap[app.categoryKey] || app.category || "App";
+  const description = app.seoDescription || app.shortDescription || app.fullDescription || `Descubre ${app.title} en Appsem Store.`;
+  const appUrl = `https://appsem-store.vercel.app/app/${app.slug}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: app.title,
+    description,
+    url: appUrl,
+    image: app.bannerUrl || app.iconUrl,
+    operatingSystem: app.operatingSystem || "Android",
+    applicationCategory: categoryLabel,
+    softwareVersion: app.currentVersion || undefined,
+    fileSize: app.appSize || undefined,
+    author: { "@type": "Organization", name: app.developer || "AppsMart Technology" },
+    offers: {
+      "@type": "Offer",
+      price: String(app.price || "Gratis").toLowerCase().includes("gratis") ? "0" : undefined,
+      priceCurrency: "USD"
+    },
+    aggregateRating: Number(app.ratingCount || 0) > 0 ? {
+      "@type": "AggregateRating",
+      ratingValue: Number(app.ratingAverage || 0).toFixed(1),
+      ratingCount: Number(app.ratingCount || 0)
+    } : undefined
+  };
 
   return (
     <main>
+      <Seo
+        title={app.title}
+        description={description}
+        path={`/app/${app.slug}`}
+        image={app.bannerUrl || app.iconUrl || undefined}
+        type="product"
+        schema={schema}
+      />
+
       <section className="app-detail-hero app-detail-hero-v4">
         <div className="container app-detail-hero-inner">
-          <Link className="back-link light app-detail-back" to="/" aria-label="Volver a la tienda">
-            <ArrowLeft size={18} />
-          </Link>
-
+          <Link className="back-link light app-detail-back" to="/" aria-label="Volver a la tienda"><ArrowLeft size={18} /></Link>
           <div className="app-detail-banner" style={bannerStyle} aria-label={`Banner de ${app.title}`} />
-
           <div className="app-summary-wrap">
             <div className="app-summary-card">
               <div className="app-summary-head">
                 <img className="app-summary-icon" src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
-
                 <div className="app-summary-copy">
                   <span className="app-category light-category app-summary-category">{categoryLabel}</span>
                   <h1>{app.title}</h1>
@@ -217,27 +238,11 @@ export default function AppDetails() {
                   </div>
                 </div>
               </div>
-
               <div className="app-summary-stats" aria-label="Estadísticas de la app">
-                <div className="app-summary-stat app-summary-like-count">
-                  <strong><Heart size={16} /> {formatNumber(app.likesCount)}</strong>
-                  <span>Me gusta</span>
-                </div>
-
-                <div className="app-summary-stat">
-                  <strong>{app.appSize || "—"}</strong>
-                  <span>Tamaño</span>
-                </div>
-
-                <div className="app-summary-stat">
-                  <strong>{formatNumber(app.downloadsCount)}</strong>
-                  <span>Descargas</span>
-                </div>
-
-                <div className="app-summary-stat">
-                  <strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong>
-                  <span>Valoración</span>
-                </div>
+                <div className="app-summary-stat app-summary-like-count"><strong><Heart size={16} /> {formatNumber(app.likesCount)}</strong><span>Me gusta</span></div>
+                <div className="app-summary-stat"><strong>{app.appSize || "—"}</strong><span>Tamaño</span></div>
+                <div className="app-summary-stat"><strong>{formatNumber(app.downloadsCount)}</strong><span>Descargas iniciadas</span></div>
+                <div className="app-summary-stat"><strong>{Number(app.ratingAverage || 0).toFixed(1)}</strong><span>Valoración</span></div>
               </div>
             </div>
           </div>
@@ -247,59 +252,30 @@ export default function AppDetails() {
       <section className="container detail-layout">
         <div className="detail-main">
           <div className="app-download-actions" aria-label="Opciones de descarga">
-            <button
-              className="app-direct-download"
-              onClick={() => openDownload(directDownloadUrl)}
-              disabled={!directDownloadUrl}
-              type="button"
-            >
+            <button className="app-direct-download" onClick={() => openDownload(directDownloadUrl)} disabled={!directDownloadUrl} type="button">
               <Download size={19} /> Descargar
             </button>
-
-            <button
-              className="app-play-store-button"
-              onClick={() => openDownload(app.playStoreUrl)}
-              disabled={!app.playStoreUrl}
-              type="button"
-            >
-              <span className="play-store-mark" aria-hidden="true">▶</span>
-              Google Play
+            <button className="app-play-store-button" onClick={() => openDownload(app.playStoreUrl)} disabled={!app.playStoreUrl} type="button">
+              <span className="play-store-mark" aria-hidden="true">▶</span> Google Play
             </button>
-
-            <button
-              className={`app-like-button ${liked ? "active" : ""}`}
-              onClick={handleLike}
-              disabled={liked}
-              type="button"
-            >
-              <Heart size={19} fill={liked ? "currentColor" : "none"} />
-              {liked ? "Te gusta" : "Me gusta"}
+            <button className={`app-like-button ${liked ? "active" : ""}`} onClick={handleLike} disabled={liked} type="button">
+              <Heart size={19} fill={liked ? "currentColor" : "none"} /> {liked ? "Te gusta" : "Me gusta"}
             </button>
           </div>
+
+          {app.apkUrl || app.downloadUrl ? (
+            <p className="muted-text">Descarga oficial proporcionada por {app.developer || "AppsMart Technology"}. Verifica la versión y el origen antes de instalar.</p>
+          ) : null}
 
           <section className="app-screenshots-section" aria-label={`Capturas de pantalla de ${app.title}`}>
             <ScreenshotGallery screenshots={app.screenshots} title={app.title} />
           </section>
 
           <section className={`app-about-section ${aboutExpanded ? "expanded" : ""}`}>
-            <button
-              className="app-about-toggle"
-              type="button"
-              onClick={() => setAboutExpanded((current) => !current)}
-              aria-expanded={aboutExpanded}
-              aria-controls="app-about-content"
-            >
-              <span>Acerca de la app</span>
-              {aboutExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+            <button className="app-about-toggle" type="button" onClick={() => setAboutExpanded((current) => !current)} aria-expanded={aboutExpanded} aria-controls="app-about-content">
+              <span>Acerca de la app</span>{aboutExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
             </button>
-
-            {aboutExpanded ? (
-              <div id="app-about-content" className="app-about-content">
-                <p className="long-text">
-                  {app.fullDescription || app.shortDescription || "Descripción no disponible."}
-                </p>
-              </div>
-            ) : null}
+            {aboutExpanded ? <div id="app-about-content" className="app-about-content"><p className="long-text">{app.fullDescription || app.shortDescription || "Descripción no disponible."}</p></div> : null}
           </section>
 
           <section className="info-card">
@@ -318,19 +294,28 @@ export default function AppDetails() {
               <div><dt>Precio</dt><dd>{app.price || "No especificado"}</dd></div>
               <div><dt>Nombre del paquete</dt><dd>{app.packageName || "No especificado"}</dd></div>
               <div><dt>Desarrollador</dt><dd>{app.developer || "AppsMart Technology"}</dd></div>
+              {app.sha256 ? <div><dt>SHA-256</dt><dd className="long-text">{app.sha256}</dd></div> : null}
             </dl>
           </section>
 
           <section className="info-card">
-            <h2><Shield size={20} /> Seguridad y privacidad</h2>
-            {app.privacyPolicyUrl ? (
-              <a className="outline-button" href={app.privacyPolicyUrl} target="_blank" rel="noreferrer">
-                <BadgeCheck size={18} /> Ver políticas de privacidad
-              </a>
-            ) : (
-              <p className="muted-text">No se agregó política individual para esta app.</p>
-            )}
+            <h2><Shield size={20} /> Seguridad, privacidad y soporte</h2>
+            <div className="app-download-actions">
+              <SecurityLink href={app.privacyPolicyUrl}>Política de privacidad</SecurityLink>
+              <SecurityLink href={app.termsUrl}>Términos de servicio</SecurityLink>
+              <SecurityLink href={app.accountDeletionUrl}>Eliminación de cuenta y datos</SecurityLink>
+              <SecurityLink href={app.securityReportUrl}>Reporte de vulnerabilidades</SecurityLink>
+              <SecurityLink href={app.legalNoticeUrl}>Aviso legal</SecurityLink>
+            </div>
+            {!app.privacyPolicyUrl && !app.termsUrl && !app.securityReportUrl ? <p className="muted-text">No se agregaron enlaces legales individuales para esta app.</p> : null}
           </section>
+
+          {relatedApps.length > 0 ? (
+            <section className="info-card">
+              <h2>También te puede interesar</h2>
+              <div className="apps-grid">{relatedApps.map((item) => <AppCard app={item} key={item.id} />)}</div>
+            </section>
+          ) : null}
 
           <CommentSection
             appId={app.id}
