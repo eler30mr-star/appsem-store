@@ -3,7 +3,7 @@ import { useEffect } from "react";
 const SITE_NAME = "Appsem Store";
 const SITE_URL = "https://appsem-store.vercel.app";
 const DEFAULT_DESCRIPTION = "Descubre aplicaciones oficiales desarrolladas por AppsMart Technology en Appsem Store.";
-const DEFAULT_IMAGE = `${SITE_URL}/appsem-store-icon.png`;
+const DEFAULT_IMAGE = `${SITE_URL}/images/web/appsem-store-icon-512.png`;
 
 function upsertMeta(selector, attributes) {
   let element = document.head.querySelector(selector);
