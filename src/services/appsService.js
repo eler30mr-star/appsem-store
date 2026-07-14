@@ -5,6 +5,7 @@ import {
   getDoc,
   getDocs,
   increment,
+  limit,
   query,
   runTransaction,
   serverTimestamp,
@@ -35,7 +36,7 @@ function mapApp(snapshot) {
     ratingCount: Number(data.ratingCount || 0),
     screenshots: Array.isArray(data.screenshots) ? data.screenshots.filter(Boolean) : [],
     createdAtMs: normalizeTimestamp(data.createdAt),
-    updatedAtMs: normalizeTimestamp(data.updatedAt)
+    updatedAtMs: normalizeTimestamp(data.contentUpdatedAt || data.updatedAt)
   };
 }
 
@@ -48,9 +49,22 @@ export async function getPublishedApps() {
 }
 
 export async function getAppBySlug(slug) {
-  // Se carga con la misma consulta simple de apps publicadas para evitar índices compuestos.
-  const apps = await getPublishedApps();
-  return apps.find((app) => app.slug === slug) || null;
+  const q = query(
+    appsCollection,
+    where("status", "==", "published"),
+    where("slug", "==", slug),
+    limit(1)
+  );
+
+  try {
+    const result = await getDocs(q);
+    return result.empty ? null : mapApp(result.docs[0]);
+  } catch (error) {
+    // Mantiene compatibilidad mientras se despliega el índice compuesto de Firestore.
+    console.warn("Consulta directa por slug no disponible; usando respaldo temporal.", error);
+    const apps = await getPublishedApps();
+    return apps.find((app) => app.slug === slug) || null;
+  }
 }
 
 export async function likeApp(appId) {
@@ -62,13 +76,10 @@ export async function likeApp(appId) {
     const likeSnapshot = await transaction.get(likeRef);
     if (likeSnapshot.exists()) return { alreadyLiked: true };
 
-    transaction.set(likeRef, {
-      createdAt: serverTimestamp()
-    });
-
+    transaction.set(likeRef, { createdAt: serverTimestamp() });
     transaction.update(appRef, {
       likesCount: increment(1),
-      updatedAt: serverTimestamp()
+      metricsUpdatedAt: serverTimestamp()
     });
 
     return { alreadyLiked: false };
@@ -94,34 +105,29 @@ export async function submitRating(appId, rating) {
     const nextCount = currentCount + 1;
     const nextAverage = Number(((currentAverage * currentCount + safeRating) / nextCount).toFixed(1));
 
-    transaction.set(ratingRef, {
-      rating: safeRating,
-      createdAt: serverTimestamp()
-    });
-
+    transaction.set(ratingRef, { rating: safeRating, createdAt: serverTimestamp() });
     transaction.update(appRef, {
       ratingAverage: nextAverage,
       ratingCount: nextCount,
-      updatedAt: serverTimestamp()
+      metricsUpdatedAt: serverTimestamp()
     });
 
     return { alreadyRated: false, ratingAverage: nextAverage, ratingCount: nextCount };
   });
 }
 
-export async function registerDownloadClick(app) {
+export async function registerDownloadClick(app, targetUrl) {
   const appRef = doc(db, "apps", app.id);
   const clickRef = doc(collection(db, "apps", app.id, "downloadClicks"));
   const batch = writeBatch(db);
 
   batch.set(clickRef, {
-    targetUrl: app.playStoreUrl,
+    targetUrl: String(targetUrl || app.playStoreUrl || app.downloadUrl || ""),
     createdAt: serverTimestamp()
   });
-
   batch.update(appRef, {
     downloadsCount: increment(1),
-    updatedAt: serverTimestamp()
+    metricsUpdatedAt: serverTimestamp()
   });
 
   await batch.commit();
