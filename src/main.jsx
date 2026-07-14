@@ -13,6 +13,7 @@ import "./app-details-desktop-actions.css";
 import "./home-header-search.css";
 import "./home-store-sections.css";
 import "./legal-links.css";
+import "./related-apps-layout.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
