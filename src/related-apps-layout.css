@@ -1,0 +1,70 @@
+.detail-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* La calificación y los comentarios pertenecen a la app actual. */
+.detail-main > .app-reviews-section {
+  order: 90;
+}
+
+/* Las recomendaciones cierran la ficha y se recorren horizontalmente. */
+.detail-main > .info-card:has(> .apps-grid) {
+  order: 100;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.detail-main > .info-card:has(> .apps-grid) > .apps-grid {
+  display: flex;
+  grid-template-columns: none;
+  gap: 18px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 2px 14px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.detail-main > .info-card:has(> .apps-grid) > .apps-grid::-webkit-scrollbar {
+  height: 7px;
+}
+
+.detail-main > .info-card:has(> .apps-grid) > .apps-grid::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.detail-main > .info-card:has(> .apps-grid) > .apps-grid::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.detail-main > .info-card:has(> .apps-grid) > .apps-grid > .app-card {
+  flex: 0 0 clamp(270px, 31vw, 350px);
+  width: clamp(270px, 31vw, 350px);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 680px) {
+  .detail-main > .info-card:has(> .apps-grid) > .apps-grid {
+    gap: 14px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+
+  .detail-main > .info-card:has(> .apps-grid) > .apps-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .detail-main > .info-card:has(> .apps-grid) > .apps-grid > .app-card {
+    flex-basis: min(82vw, 320px);
+    width: min(82vw, 320px);
+  }
+}
