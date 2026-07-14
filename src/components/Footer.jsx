@@ -7,7 +7,7 @@ export default function Footer() {
         <div>
           <h3>Appsem Store</h3>
           <p>
-            Tienda Oficial de{" "}
+            Tienda oficial de{" "}
             <a
               href="https://appsmart-technology.vercel.app"
               target="_blank"
@@ -19,6 +19,8 @@ export default function Footer() {
           </p>
         </div>
         <div className="footer-links">
+          <Link to="/about">Sobre Appsem Store</Link>
+          <Link to="/contact">Contacto y soporte</Link>
           <Link to="/privacy">Política de privacidad</Link>
           <Link to="/cookies">Política de cookies</Link>
           <Link to="/terms">Términos y condiciones</Link>
