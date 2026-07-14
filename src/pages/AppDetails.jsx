@@ -185,13 +185,11 @@ export default function AppDetails() {
   const categoryLabel = categoryMap[app.categoryKey] || app.category || "App";
   const description = app.seoDescription || app.shortDescription || app.fullDescription || `Descubre ${app.title} en Appsem Store.`;
   const appUrl = `https://appsem-store.vercel.app/app/${app.slug}`;
-  const hasBundledLegalPages = app.slug === "biblia-universal-lite";
-  const bundledLegalBase = `/apps/${app.slug}`;
-  const privacyPolicyUrl = app.privacyPolicyUrl || (hasBundledLegalPages ? `${bundledLegalBase}/politicas-de-privacidad/` : "");
-  const termsUrl = app.termsUrl || (hasBundledLegalPages ? `${bundledLegalBase}/terminos-de-servicio/` : "");
-  const legalNoticeUrl = app.legalNoticeUrl || (hasBundledLegalPages ? `${bundledLegalBase}/aviso-legal/` : "");
-  const accountDeletionUrl = app.accountDeletionUrl || (hasBundledLegalPages ? `${bundledLegalBase}/eliminacion-cuenta-datos/` : "");
-  const securityReportUrl = app.securityReportUrl || (hasBundledLegalPages ? `${bundledLegalBase}/reporte-de-seguridad-y-vulnerabilidades/` : "");
+  const privacyPolicyUrl = app.privacyPolicyUrl || "";
+  const termsUrl = app.termsUrl || "";
+  const legalNoticeUrl = app.legalNoticeUrl || "";
+  const accountDeletionUrl = app.accountDeletionUrl || "";
+  const securityReportUrl = app.securityReportUrl || "";
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
