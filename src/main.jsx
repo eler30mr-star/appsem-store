@@ -12,6 +12,7 @@ import "./app-details-desktop.css";
 import "./app-details-desktop-actions.css";
 import "./home-header-search.css";
 import "./home-store-sections.css";
+import "./legal-links.css";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
