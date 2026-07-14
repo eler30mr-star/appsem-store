@@ -37,7 +37,13 @@ export default function Header() {
     <header className={`site-header ${isAppDetails ? "app-detail-site-header" : ""}`}>
       <div className="container header-inner">
         <Link className="brand" to="/" aria-label="Ir al inicio de Appsem Store">
-          <span className="brand-mark">AS</span>
+          <span className="brand-mark">
+            <img
+              src="https://appsem-store.vercel.app/appsem-store-icon.png"
+              alt=""
+              aria-hidden="true"
+            />
+          </span>
           <span>
             <strong>Appsem Store</strong>
             <small>Tienda de apps Android</small>
