@@ -39,9 +39,11 @@ export default function Header() {
         <Link className="brand" to="/" aria-label="Ir al inicio de Appsem Store">
           <span className="brand-mark" style={{ overflow: "hidden" }}>
             <img
-              src="https://appsem-store.vercel.app/appsem-store-icon.png"
+              src="/images/web/appsem-store-icon-192.png"
               alt=""
               aria-hidden="true"
+              width="192"
+              height="192"
               style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "16px" }}
             />
           </span>
