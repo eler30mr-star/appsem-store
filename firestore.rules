@@ -20,29 +20,29 @@ service cloud.firestore {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
     }
 
-    function updateTimeIsServerTime() {
-      return request.resource.data.updatedAt == request.time;
+    function metricsTimeIsServerTime() {
+      return request.resource.data.metricsUpdatedAt == request.time;
     }
 
     function publicLikeIncrement() {
-      return changedOnly(["likesCount", "updatedAt"])
+      return changedOnly(["likesCount", "metricsUpdatedAt"])
         && request.resource.data.likesCount == resource.data.likesCount + 1
-        && updateTimeIsServerTime();
+        && metricsTimeIsServerTime();
     }
 
     function publicDownloadIncrement() {
-      return changedOnly(["downloadsCount", "updatedAt"])
+      return changedOnly(["downloadsCount", "metricsUpdatedAt"])
         && request.resource.data.downloadsCount == resource.data.downloadsCount + 1
-        && updateTimeIsServerTime();
+        && metricsTimeIsServerTime();
     }
 
     function publicRatingUpdate() {
-      return changedOnly(["ratingAverage", "ratingCount", "updatedAt"])
+      return changedOnly(["ratingAverage", "ratingCount", "metricsUpdatedAt"])
         && request.resource.data.ratingCount == resource.data.ratingCount + 1
         && request.resource.data.ratingAverage is number
         && request.resource.data.ratingAverage >= 1
         && request.resource.data.ratingAverage <= 5
-        && updateTimeIsServerTime();
+        && metricsTimeIsServerTime();
     }
 
     match /apps/{appId} {
@@ -79,6 +79,7 @@ service cloud.firestore {
         allow create: if parentAppPublished(appId)
           && request.resource.data.keys().hasOnly(["targetUrl", "createdAt"])
           && request.resource.data.targetUrl is string
+          && request.resource.data.targetUrl.size() <= 2048
           && request.resource.data.createdAt == request.time;
         allow update, delete: if false;
       }
