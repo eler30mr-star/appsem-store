@@ -1,0 +1,72 @@
+/* Accesibilidad, rendimiento percibido y consistencia visual. */
+:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 3px;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+.card-button,
+.outline-button,
+.primary-button,
+.app-direct-download,
+.app-play-store-button {
+  min-height: 44px;
+}
+
+img {
+  height: auto;
+}
+
+.app-card,
+.home-row-app-card,
+.info-card,
+.detail-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 420px;
+}
+
+.home-section-heading {
+  align-items: center;
+}
+
+.home-section-heading h2 {
+  margin: 0;
+}
+
+.home-app-row {
+  scroll-snap-type: x proximity;
+  overscroll-behavior-inline: contain;
+}
+
+.home-row-app-card {
+  scroll-snap-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 680px) {
+  .container {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .home-app-row {
+    padding-inline: 2px;
+  }
+}
