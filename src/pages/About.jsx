@@ -12,25 +12,44 @@ export default function About() {
       <h1>Sobre Appsem Store</h1>
       <p>
         Appsem Store es la tienda oficial de aplicaciones desarrolladas y publicadas por AppsMart Technology.
-        Su objetivo es presentar cada app con información clara, capturas, requisitos técnicos, novedades,
-        políticas y enlaces oficiales de descarga.
+        Opera desde Perú y presenta cada aplicación con información técnica, capturas, políticas y enlaces oficiales.
       </p>
+
       <section>
-        <h2>Aplicaciones oficiales</h2>
+        <h2>Qué publicamos</h2>
         <p>
-          Las fichas publicadas pertenecen a AppsMart Technology o se identifican expresamente con su desarrollador.
-          Los enlaces de descarga se muestran desde fuentes oficiales, como Google Play o archivos distribuidos por el desarrollador.
+          Publicamos aplicaciones propias o fichas cuya autoría y desarrollador estén claramente identificados.
+          Cada ficha debe indicar versión, compatibilidad, tamaño, fecha de actualización, presencia de anuncios,
+          compras dentro de la app y enlaces legales aplicables.
         </p>
       </section>
+
       <section>
-        <h2>Transparencia y seguridad</h2>
+        <h2>Descargas verificadas</h2>
         <p>
-          Cada ficha procura informar la versión, compatibilidad, tamaño, fecha de actualización, presencia de anuncios,
-          compras dentro de la app y políticas aplicables. Los comentarios pueden moderarse para evitar fraude, spam o abuso.
+          Los botones de descarga dirigen a Google Play o a un archivo proporcionado por el desarrollador.
+          Cuando existe una descarga directa, la ficha puede incluir versión, tamaño y huella SHA-256 para facilitar su verificación.
         </p>
       </section>
+
       <section>
-        <h2>Desarrollador</h2>
+        <h2>Moderación y seguridad</h2>
+        <p>
+          Los comentarios se revisan antes de publicarse. Se eliminan mensajes con spam, suplantación, contenido ofensivo,
+          datos personales, enlaces maliciosos o información que pueda poner en riesgo a otros usuarios.
+        </p>
+      </section>
+
+      <section>
+        <h2>Reportes y retirada de contenido</h2>
+        <p>
+          Cualquier usuario puede reportar una ficha incorrecta, un enlace roto, una vulnerabilidad o una posible infracción
+          mediante la página de contacto. Las aplicaciones retiradas dejan de mostrarse públicamente.
+        </p>
+      </section>
+
+      <section>
+        <h2>Responsable</h2>
         <p>
           Appsem Store forma parte de AppsMart Technology, proyecto dedicado al desarrollo de soluciones digitales y aplicaciones móviles.
         </p>
