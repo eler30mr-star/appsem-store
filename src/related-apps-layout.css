@@ -97,6 +97,11 @@
   padding-top: 12px;
 }
 
+/* La valoración ya se muestra arriba como número: no repetir las cinco estrellas. */
+.detail-main > .info-card:has(> .apps-grid) .app-card-footer .rating-stars {
+  display: none;
+}
+
 .detail-main > .info-card:has(> .apps-grid) .card-button {
   padding: 9px 14px;
   font-size: .9rem;
