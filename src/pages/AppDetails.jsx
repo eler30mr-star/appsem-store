@@ -185,6 +185,13 @@ export default function AppDetails() {
   const categoryLabel = categoryMap[app.categoryKey] || app.category || "App";
   const description = app.seoDescription || app.shortDescription || app.fullDescription || `Descubre ${app.title} en Appsem Store.`;
   const appUrl = `https://appsem-store.vercel.app/app/${app.slug}`;
+  const hasBundledLegalPages = app.slug === "biblia-universal-lite";
+  const bundledLegalBase = `/apps/${app.slug}`;
+  const privacyPolicyUrl = app.privacyPolicyUrl || (hasBundledLegalPages ? `${bundledLegalBase}/politicas-de-privacidad/` : "");
+  const termsUrl = app.termsUrl || (hasBundledLegalPages ? `${bundledLegalBase}/terminos-de-servicio/` : "");
+  const legalNoticeUrl = app.legalNoticeUrl || (hasBundledLegalPages ? `${bundledLegalBase}/aviso-legal/` : "");
+  const accountDeletionUrl = app.accountDeletionUrl || (hasBundledLegalPages ? `${bundledLegalBase}/eliminacion-cuenta-datos/` : "");
+  const securityReportUrl = app.securityReportUrl || (hasBundledLegalPages ? `${bundledLegalBase}/reporte-de-seguridad-y-vulnerabilidades/` : "");
   const schema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -301,13 +308,15 @@ export default function AppDetails() {
           <section className="info-card">
             <h2><Shield size={20} /> Seguridad, privacidad y soporte</h2>
             <div className="app-download-actions">
-              <SecurityLink href={app.privacyPolicyUrl}>Política de privacidad</SecurityLink>
-              <SecurityLink href={app.termsUrl}>Términos de servicio</SecurityLink>
-              <SecurityLink href={app.accountDeletionUrl}>Eliminación de cuenta y datos</SecurityLink>
-              <SecurityLink href={app.securityReportUrl}>Reporte de vulnerabilidades</SecurityLink>
-              <SecurityLink href={app.legalNoticeUrl}>Aviso legal</SecurityLink>
+              <SecurityLink href={privacyPolicyUrl}>Política de privacidad</SecurityLink>
+              <SecurityLink href={termsUrl}>Términos de servicio</SecurityLink>
+              <SecurityLink href={legalNoticeUrl}>Aviso legal</SecurityLink>
+              <SecurityLink href={accountDeletionUrl}>Eliminación de cuenta y datos</SecurityLink>
+              <SecurityLink href={securityReportUrl}>Reporte de seguridad y vulnerabilidades</SecurityLink>
             </div>
-            {!app.privacyPolicyUrl && !app.termsUrl && !app.securityReportUrl ? <p className="muted-text">No se agregaron enlaces legales individuales para esta app.</p> : null}
+            {!privacyPolicyUrl && !termsUrl && !legalNoticeUrl && !accountDeletionUrl && !securityReportUrl ? (
+              <p className="muted-text">No se agregaron enlaces legales individuales para esta app.</p>
+            ) : null}
           </section>
 
           {relatedApps.length > 0 ? (
