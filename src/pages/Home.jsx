@@ -16,14 +16,6 @@ function formatNumber(value) {
   }).format(value || 0);
 }
 
-function timestampValue(value) {
-  if (!value) return 0;
-  if (typeof value?.toMillis === "function") return value.toMillis();
-  if (typeof value?.seconds === "number") return value.seconds * 1000;
-  const parsed = Date.parse(value);
-  return Number.isNaN(parsed) ? 0 : parsed;
-}
-
 function normalizeCategory(value) {
   return String(value || "")
     .normalize("NFD")
@@ -51,16 +43,6 @@ function appMatchesCategory(app, category) {
   ]);
 
   return accepted.has(normalizeCategory(app.categoryKey)) || accepted.has(normalizeCategory(app.category));
-}
-
-function uniqueApps(apps, limit = 12) {
-  const seen = new Set();
-  return apps.filter((app) => {
-    const key = app.id || app.slug;
-    if (!key || seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  }).slice(0, limit);
 }
 
 function AppRowCard({ app, featured = false }) {
@@ -91,6 +73,7 @@ function AppRowCard({ app, featured = false }) {
 
 function AppHorizontalSection({ title, apps, featured = false }) {
   if (!apps.length) return null;
+
   return (
     <section className={featured ? "home-promoted-row-section" : "home-app-row-section"}>
       <div className="home-section-heading"><h2>{title}</h2></div>
@@ -122,16 +105,10 @@ export default function Home() {
     return () => { alive = false; };
   }, []);
 
-  const storeSections = useMemo(() => {
-    const featured = uniqueApps(apps.filter((app) => app.featured === true), 8);
-    const newest = uniqueApps([...apps].sort((a, b) => timestampValue(b.createdAt) - timestampValue(a.createdAt)), 12);
-    const updated = uniqueApps([...apps].sort((a, b) => timestampValue(b.updatedAt) - timestampValue(a.updatedAt)), 12);
-    const mostDownloaded = uniqueApps([...apps].sort((a, b) => Number(b.downloadsCount || 0) - Number(a.downloadsCount || 0)), 12);
-    const bestRated = uniqueApps([...apps]
-      .filter((app) => Number(app.ratingCount || 0) > 0)
-      .sort((a, b) => Number(b.ratingAverage || 0) - Number(a.ratingAverage || 0) || Number(b.ratingCount || 0) - Number(a.ratingCount || 0)), 12);
-    return { featured, newest, updated, mostDownloaded, bestRated };
-  }, [apps]);
+  const featuredApps = useMemo(
+    () => apps.filter((app) => app.featured === true).slice(0, 8),
+    [apps]
+  );
 
   const searchResults = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
@@ -144,7 +121,8 @@ export default function Home() {
   const categorySections = useMemo(() => {
     const visible = categories.filter((category) => category.key !== "all");
     const selected = activeCategory === "all" ? visible : visible.filter((category) => category.key === activeCategory);
-    return selected.map((category) => ({ ...category, apps: apps.filter((app) => appMatchesCategory(app, category)) }))
+    return selected
+      .map((category) => ({ ...category, apps: apps.filter((app) => appMatchesCategory(app, category)) }))
       .filter((category) => category.apps.length > 0);
   }, [apps, activeCategory]);
 
@@ -170,18 +148,14 @@ export default function Home() {
 
         {!loading && !error && apps.length > 0 ? (
           <>
-            {activeCategory === "all" ? (
-              <>
-                <AppHorizontalSection title="Apps destacadas" apps={storeSections.featured} featured />
-                <AppHorizontalSection title="Nuevas" apps={storeSections.newest} />
-                <AppHorizontalSection title="Actualizadas recientemente" apps={storeSections.updated} />
-                <AppHorizontalSection title="Más descargadas" apps={storeSections.mostDownloaded} />
-                <AppHorizontalSection title="Mejor valoradas" apps={storeSections.bestRated} />
-              </>
+            {activeCategory === "all" && featuredApps.length > 0 ? (
+              <AppHorizontalSection title="Apps destacadas" apps={featuredApps} featured />
             ) : null}
 
             <div className="home-category-sections">
-              {categorySections.map((category) => <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />)}
+              {categorySections.map((category) => (
+                <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />
+              ))}
             </div>
           </>
         ) : null}
