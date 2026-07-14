@@ -16,6 +16,14 @@ function formatNumber(value) {
   }).format(value || 0);
 }
 
+function timestampValue(value) {
+  if (!value) return 0;
+  if (typeof value?.toMillis === "function") return value.toMillis();
+  if (typeof value?.seconds === "number") return value.seconds * 1000;
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
 function normalizeCategory(value) {
   return String(value || "")
     .normalize("NFD")
@@ -25,25 +33,8 @@ function normalizeCategory(value) {
 }
 
 function appMatchesCategory(app, category) {
-  const appKey = normalizeCategory(app.categoryKey);
-  const appLabel = normalizeCategory(app.category);
-  const categoryKey = normalizeCategory(category.key);
-  const categoryLabel = normalizeCategory(category.label);
-
   const aliases = {
-    "books-reference": [
-      "books-reference",
-      "libros-referencias",
-      "libros y referencias",
-      "bible",
-      "biblia",
-      "biblias",
-      "christian",
-      "cristiana",
-      "cristianas",
-      "cristiano",
-      "cristianos"
-    ],
+    "books-reference": ["books-reference", "libros-referencias", "libros y referencias", "bible", "biblia", "biblias", "christian", "cristiana", "cristiano"],
     tools: ["tools", "herramienta", "herramientas"],
     education: ["education", "educacion"],
     entertainment: ["entertainment", "entretenimiento"],
@@ -53,24 +44,37 @@ function appMatchesCategory(app, category) {
     other: ["other", "otros", "otro"]
   };
 
-  const accepted = new Set([categoryKey, categoryLabel, ...(aliases[category.key] || [])]);
-  return accepted.has(appKey) || accepted.has(appLabel);
+  const accepted = new Set([
+    normalizeCategory(category.key),
+    normalizeCategory(category.label),
+    ...(aliases[category.key] || [])
+  ]);
+
+  return accepted.has(normalizeCategory(app.categoryKey)) || accepted.has(normalizeCategory(app.category));
+}
+
+function uniqueApps(apps, limit = 12) {
+  const seen = new Set();
+  return apps.filter((app) => {
+    const key = app.id || app.slug;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, limit);
 }
 
 function AppRowCard({ app, featured = false }) {
-  const bannerStyle = app.bannerUrl
-    ? { backgroundImage: `url(${app.bannerUrl})` }
-    : undefined;
+  const bannerStyle = app.bannerUrl ? { backgroundImage: `url(${app.bannerUrl})` } : undefined;
 
   return (
     <Link
       className={`home-row-app-card ${featured ? "home-row-app-card-featured" : "home-row-app-card-compact"}`}
       to={`/app/${app.slug}`}
-      aria-label={`Ver ${app.title}`}
+      aria-label={`Ver detalles de ${app.title}`}
     >
       {featured ? <div className="home-row-app-banner" style={bannerStyle} aria-hidden="true" /> : null}
       <div className="home-row-app-body">
-        <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} />
+        <img src={app.iconUrl || fallbackIcon} alt={`Icono de ${app.title}`} loading="lazy" decoding="async" />
         <div className="home-row-app-copy">
           <strong>{app.title}</strong>
           <span>{categoryMap[app.categoryKey] || app.category || "App"}</span>
@@ -85,16 +89,13 @@ function AppRowCard({ app, featured = false }) {
   );
 }
 
-function AppHorizontalSection({ title, apps }) {
+function AppHorizontalSection({ title, apps, featured = false }) {
   if (!apps.length) return null;
-
   return (
-    <section className="home-app-row-section">
-      <div className="home-section-heading">
-        <h2>{title}</h2>
-      </div>
-      <div className="home-app-row home-app-row-compact" aria-label={title}>
-        {apps.map((app) => <AppRowCard app={app} key={app.id} />)}
+    <section className={featured ? "home-promoted-row-section" : "home-app-row-section"}>
+      <div className="home-section-heading"><h2>{title}</h2></div>
+      <div className={`home-app-row ${featured ? "home-app-row-primary" : "home-app-row-compact"}`} aria-label={title}>
+        {apps.map((app) => <AppRowCard app={app} featured={featured} key={app.id || app.slug} />)}
       </div>
     </section>
   );
@@ -111,82 +112,58 @@ export default function Home() {
 
   useEffect(() => {
     let alive = true;
-
-    async function loadApps() {
-      setLoading(true);
-      setError("");
-      try {
-        const data = await getPublishedApps();
-        if (alive) setApps(data);
-      } catch (err) {
+    getPublishedApps()
+      .then((data) => { if (alive) setApps(data); })
+      .catch((err) => {
         console.error(err);
         if (alive) setError("No se pudieron cargar las apps. Revisa Firebase y las reglas de Firestore.");
-      } finally {
-        if (alive) setLoading(false);
-      }
-    }
-
-    loadApps();
-    return () => {
-      alive = false;
-    };
+      })
+      .finally(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
   }, []);
+
+  const storeSections = useMemo(() => {
+    const featured = uniqueApps(apps.filter((app) => app.featured === true), 8);
+    const newest = uniqueApps([...apps].sort((a, b) => timestampValue(b.createdAt) - timestampValue(a.createdAt)), 12);
+    const updated = uniqueApps([...apps].sort((a, b) => timestampValue(b.updatedAt) - timestampValue(a.updatedAt)), 12);
+    const mostDownloaded = uniqueApps([...apps].sort((a, b) => Number(b.downloadsCount || 0) - Number(a.downloadsCount || 0)), 12);
+    const bestRated = uniqueApps([...apps]
+      .filter((app) => Number(app.ratingCount || 0) > 0)
+      .sort((a, b) => Number(b.ratingAverage || 0) - Number(a.ratingAverage || 0) || Number(b.ratingCount || 0) - Number(a.ratingCount || 0)), 12);
+    return { featured, newest, updated, mostDownloaded, bestRated };
+  }, [apps]);
 
   const searchResults = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
     if (!term) return [];
-
     return apps.filter((app) => [app.title, app.shortDescription, app.fullDescription, app.category]
       .filter(Boolean)
       .some((value) => String(value).toLowerCase().includes(term)));
   }, [apps, searchTerm]);
 
   const categorySections = useMemo(() => {
-    const visibleCategories = categories.filter((category) => category.key !== "all");
-    const filteredCategories = activeCategory === "all"
-      ? visibleCategories
-      : visibleCategories.filter((category) => category.key === activeCategory);
-
-    return filteredCategories
-      .map((category) => ({
-        ...category,
-        apps: apps.filter((app) => appMatchesCategory(app, category))
-      }))
+    const visible = categories.filter((category) => category.key !== "all");
+    const selected = activeCategory === "all" ? visible : visible.filter((category) => category.key === activeCategory);
+    return selected.map((category) => ({ ...category, apps: apps.filter((app) => appMatchesCategory(app, category)) }))
       .filter((category) => category.apps.length > 0);
   }, [apps, activeCategory]);
 
-  function handleSearchChange(event) {
-    const nextParams = new URLSearchParams(searchParams);
-    const value = event.target.value;
-
-    if (value) nextParams.set("q", value);
-    else nextParams.delete("q");
-
-    setSearchParams(nextParams, { replace: true });
-  }
-
-  function handleSearchSubmit(event) {
-    event.preventDefault();
-    event.currentTarget.querySelector("input")?.blur();
-  }
-
-  function clearSearch() {
-    const nextParams = new URLSearchParams(searchParams);
-    nextParams.delete("q");
-    setSearchParams(nextParams, { replace: true });
+  function updateSearch(value) {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set("q", value); else next.delete("q");
+    setSearchParams(next, { replace: true });
   }
 
   function closeSearch() {
-    const nextParams = new URLSearchParams(searchParams);
-    nextParams.delete("search");
-    nextParams.delete("q");
-    setSearchParams(nextParams, { replace: true });
+    const next = new URLSearchParams(searchParams);
+    next.delete("search");
+    next.delete("q");
+    setSearchParams(next, { replace: true });
   }
 
   return (
     <>
       <CategoryTabs activeCategory={activeCategory} onChange={setActiveCategory} />
-
       <main className="container home-store-content">
         {loading ? <LoadingState text="Cargando apps publicadas..." /> : null}
         {error ? <div className="error-box">{error}</div> : null}
@@ -194,78 +171,45 @@ export default function Home() {
         {!loading && !error && apps.length > 0 ? (
           <>
             {activeCategory === "all" ? (
-              <section className="home-promoted-row-section">
-                <div className="home-app-row home-app-row-primary" aria-label="Apps disponibles">
-                  {apps.map((app) => <AppRowCard app={app} featured key={app.id} />)}
-                </div>
-              </section>
+              <>
+                <AppHorizontalSection title="Apps destacadas" apps={storeSections.featured} featured />
+                <AppHorizontalSection title="Nuevas" apps={storeSections.newest} />
+                <AppHorizontalSection title="Actualizadas recientemente" apps={storeSections.updated} />
+                <AppHorizontalSection title="Más descargadas" apps={storeSections.mostDownloaded} />
+                <AppHorizontalSection title="Mejor valoradas" apps={storeSections.bestRated} />
+              </>
             ) : null}
 
             <div className="home-category-sections">
-              {categorySections.map((category) => (
-                <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />
-              ))}
+              {categorySections.map((category) => <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />)}
             </div>
           </>
         ) : null}
 
         {!loading && !error && apps.length === 0 ? (
-          <EmptyState
-            title="Aún no hay apps publicadas"
-            message="Cuando publiques apps desde el panel admin aparecerán aquí automáticamente."
-          />
+          <EmptyState title="Aún no hay apps publicadas" message="Cuando publiques apps desde el panel admin aparecerán aquí automáticamente." />
         ) : null}
       </main>
 
       {searchOpen ? (
         <section className="app-search-overlay" aria-label="Buscar apps">
-          <form className="app-search-topbar" onSubmit={handleSearchSubmit} role="search">
-            <button type="button" onClick={closeSearch} aria-label="Volver">
-              <ArrowLeft size={24} />
-            </button>
-
+          <form className="app-search-topbar" onSubmit={(event) => event.preventDefault()} role="search">
+            <button type="button" onClick={closeSearch} aria-label="Volver"><ArrowLeft size={24} /></button>
             <div className="app-search-input-wrap">
               <Search size={21} />
-              <input
-                autoFocus
-                aria-label="Buscar apps"
-                enterKeyHint="search"
-                inputMode="search"
-                onChange={handleSearchChange}
-                placeholder="Buscar apps"
-                type="search"
-                value={searchTerm}
-              />
+              <input autoFocus aria-label="Buscar apps" enterKeyHint="search" onChange={(event) => updateSearch(event.target.value)} placeholder="Buscar apps" type="search" value={searchTerm} />
             </div>
-
-            <button type="button" onClick={clearSearch} aria-label="Borrar búsqueda" disabled={!searchTerm}>
-              <X size={24} />
-            </button>
+            <button type="button" onClick={() => updateSearch("")} aria-label="Borrar búsqueda" disabled={!searchTerm}><X size={24} /></button>
           </form>
 
           <div className="container app-search-results">
             {loading ? <LoadingState text="Cargando apps publicadas..." /> : null}
             {error ? <div className="error-box">{error}</div> : null}
-
-            {!loading && !error && !searchTerm ? (
-              <p className="app-search-hint">Escribe el nombre o una palabra relacionada con la app.</p>
-            ) : null}
-
+            {!loading && !error && !searchTerm ? <p className="app-search-hint">Escribe el nombre o una palabra relacionada con la app.</p> : null}
             {!loading && !error && searchTerm && searchResults.length > 0 ? (
-              <>
-                <div className="app-search-results-heading">
-                  <strong>Resultados</strong>
-                  <span>{searchResults.length}</span>
-                </div>
-                <div className="apps-grid">
-                  {searchResults.map((app) => <AppCard app={app} key={app.id} />)}
-                </div>
-              </>
+              <><div className="app-search-results-heading"><strong>Resultados</strong><span>{searchResults.length}</span></div><div className="apps-grid">{searchResults.map((app) => <AppCard app={app} key={app.id} />)}</div></>
             ) : null}
-
-            {!loading && !error && searchTerm && searchResults.length === 0 ? (
-              <EmptyState title="No encontramos apps" message="Prueba con otro nombre o término de búsqueda." />
-            ) : null}
+            {!loading && !error && searchTerm && searchResults.length === 0 ? <EmptyState title="No encontramos apps" message="Prueba con otro nombre o término de búsqueda." /> : null}
           </div>
         </section>
       ) : null}
