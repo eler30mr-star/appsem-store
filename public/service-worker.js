@@ -2,7 +2,8 @@ const CACHE_NAME = "appsem-store-__BUILD_ID__";
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
-  "/appsem-store-icon.png"
+  "/images/web/appsem-store-icon-192.png",
+  "/images/web/appsem-store-icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
