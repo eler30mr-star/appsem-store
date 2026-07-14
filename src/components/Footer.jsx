@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+const SUPPORT_EMAIL = "support@rap-infinite.online";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -17,6 +19,7 @@ export default function Footer() {
               AppsMart Technology
             </a>
           </p>
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
         </div>
         <div className="footer-links">
           <Link to="/about">Sobre Appsem Store</Link>
@@ -27,7 +30,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        © {new Date().getFullYear()} Appsem Store. Todos los derechos reservados.
+        © {new Date().getFullYear()} Appsem Store · AppsMart Technology · Perú.
       </div>
     </footer>
   );
