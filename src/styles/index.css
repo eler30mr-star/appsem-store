@@ -1,0 +1,18 @@
+/*
+ * Punto único de entrada para los estilos públicos.
+ * Los archivos se mantienen agrupados por responsabilidad para evitar
+ * importaciones dispersas en el arranque de React.
+ */
+@import "../styles.css";
+@import "../site-shell.css";
+@import "../home-header-search.css";
+@import "../home-store-sections.css";
+@import "../app-details-v5.css";
+@import "../app-details-desktop.css";
+@import "../app-details-desktop-actions.css";
+@import "../app-detail-loading.css";
+@import "../gallery-spacing.css";
+@import "../related-apps-layout.css";
+@import "../legal-links.css";
+@import "../mobile-fixes.css";
+@import "../quality-improvements.css";
