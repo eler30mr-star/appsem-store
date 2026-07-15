@@ -180,6 +180,9 @@
   .home-store-content {
     width: 100%;
     padding-top: 18px;
+    padding-right: 16px;
+    padding-left: 16px;
+    box-sizing: border-box;
   }
 
   .home-category-sections {
@@ -188,8 +191,8 @@
   }
 
   .home-section-heading {
-    width: calc(100% - 40px);
-    margin-inline: auto;
+    width: 100%;
+    margin-inline: 0;
     margin-bottom: 12px;
   }
 
@@ -198,10 +201,11 @@
   }
 
   .home-app-row {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding: 2px 20px 12px;
-    scroll-padding-inline: 20px;
+    width: calc(100% + 16px);
+    margin-left: 0;
+    padding: 2px 16px 12px 0;
+    scroll-padding-left: 0;
+    scroll-padding-right: 16px;
   }
 
   .home-row-app-card-featured {
@@ -244,13 +248,21 @@
 }
 
 @media (max-width: 420px) {
+  .home-store-content {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
   .home-section-heading {
-    width: calc(100% - 36px);
+    width: 100%;
   }
 
   .home-app-row {
-    padding-inline: 18px;
-    scroll-padding-inline: 18px;
+    width: calc(100% + 16px);
+    padding-right: 16px;
+    padding-left: 0;
+    scroll-padding-left: 0;
+    scroll-padding-right: 16px;
   }
 
   .home-row-app-card-featured {
