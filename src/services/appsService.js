@@ -49,22 +49,17 @@ export async function getPublishedApps() {
 }
 
 export async function getAppBySlug(slug) {
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return null;
+
   const q = query(
     appsCollection,
     where("status", "==", "published"),
-    where("slug", "==", slug),
+    where("slug", "==", normalizedSlug),
     limit(1)
   );
-
-  try {
-    const result = await getDocs(q);
-    return result.empty ? null : mapApp(result.docs[0]);
-  } catch (error) {
-    // Mantiene compatibilidad mientras se despliega el índice compuesto de Firestore.
-    console.warn("Consulta directa por slug no disponible; usando respaldo temporal.", error);
-    const apps = await getPublishedApps();
-    return apps.find((app) => app.slug === slug) || null;
-  }
+  const result = await getDocs(q);
+  return result.empty ? null : mapApp(result.docs[0]);
 }
 
 export async function likeApp(appId) {
