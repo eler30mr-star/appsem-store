@@ -6,10 +6,11 @@ import {
   getDocs,
   increment,
   limit,
+  orderBy,
   query,
   runTransaction,
   serverTimestamp,
-  updateDoc,
+  startAfter,
   where,
   writeBatch
 } from "firebase/firestore";
@@ -40,31 +41,49 @@ function mapApp(snapshot) {
   };
 }
 
-export async function getPublishedApps() {
-  const q = query(appsCollection, where("status", "==", "published"));
-  const result = await getDocs(q);
-  return result.docs
-    .map(mapApp)
-    .sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+export async function getPublishedAppsPage({ pageSize = 24, cursor = null } = {}) {
+  const safePageSize = Math.max(1, Math.min(60, Number(pageSize) || 24));
+  const constraints = [
+    where("status", "==", "published"),
+    orderBy("createdAt", "desc")
+  ];
+
+  if (cursor) constraints.push(startAfter(cursor));
+  constraints.push(limit(safePageSize + 1));
+
+  const result = await getDocs(query(appsCollection, ...constraints));
+  const hasMore = result.docs.length > safePageSize;
+  const visibleDocs = hasMore ? result.docs.slice(0, safePageSize) : result.docs;
+
+  return {
+    apps: visibleDocs.map(mapApp),
+    cursor: visibleDocs.at(-1) || null,
+    hasMore
+  };
 }
 
-export async function getAppBySlug(slug) {
+export async function getPublishedApps() {
   const q = query(
     appsCollection,
     where("status", "==", "published"),
-    where("slug", "==", slug),
+    orderBy("createdAt", "desc")
+  );
+  const result = await getDocs(q);
+  return result.docs.map(mapApp);
+}
+
+export async function getAppBySlug(slug) {
+  const normalizedSlug = String(slug || "").trim();
+  if (!normalizedSlug) return null;
+
+  const q = query(
+    appsCollection,
+    where("status", "==", "published"),
+    where("slug", "==", normalizedSlug),
     limit(1)
   );
-
-  try {
-    const result = await getDocs(q);
-    return result.empty ? null : mapApp(result.docs[0]);
-  } catch (error) {
-    // Mantiene compatibilidad mientras se despliega el índice compuesto de Firestore.
-    console.warn("Consulta directa por slug no disponible; usando respaldo temporal.", error);
-    const apps = await getPublishedApps();
-    return apps.find((app) => app.slug === slug) || null;
-  }
+  const result = await getDocs(q);
+  return result.empty ? null : mapApp(result.docs[0]);
 }
 
 export async function likeApp(appId) {

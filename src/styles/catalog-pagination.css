@@ -1,0 +1,18 @@
+.catalog-pagination {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0 8px;
+}
+
+.catalog-pagination .primary-button {
+  min-width: 220px;
+}
+
+.catalog-pagination-search {
+  padding-bottom: 32px;
+}
+
+.catalog-pagination button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}

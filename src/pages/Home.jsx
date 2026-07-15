@@ -6,8 +6,9 @@ import CategoryTabs from "../components/CategoryTabs";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
 import { categories, categoryMap } from "../data/categories";
-import { getPublishedApps } from "../services/appsService";
+import { getPublishedAppsPage } from "../services/appsService";
 
+const PAGE_SIZE = 24;
 const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231e293b'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='white'%3EAS%3C/text%3E%3C/svg%3E";
 
 function formatNumber(value) {
@@ -88,6 +89,9 @@ export default function Home() {
   const [apps, setApps] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [cursor, setCursor] = useState(null);
+  const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   const searchTerm = searchParams.get("q") || "";
@@ -95,15 +99,47 @@ export default function Home() {
 
   useEffect(() => {
     let alive = true;
-    getPublishedApps()
-      .then((data) => { if (alive) setApps(data); })
+
+    getPublishedAppsPage({ pageSize: PAGE_SIZE })
+      .then((page) => {
+        if (!alive) return;
+        setApps(page.apps);
+        setCursor(page.cursor);
+        setHasMore(page.hasMore);
+      })
       .catch((err) => {
         console.error(err);
-        if (alive) setError("No se pudieron cargar las apps. Revisa Firebase y las reglas de Firestore.");
+        if (alive) setError("No se pudieron cargar las apps. Revisa Firebase y los índices de Firestore.");
       })
-      .finally(() => { if (alive) setLoading(false); });
-    return () => { alive = false; };
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
   }, []);
+
+  async function loadMoreApps() {
+    if (!hasMore || !cursor || loadingMore) return;
+
+    setLoadingMore(true);
+    setError("");
+    try {
+      const page = await getPublishedAppsPage({ pageSize: PAGE_SIZE, cursor });
+      setApps((current) => {
+        const knownIds = new Set(current.map((app) => app.id));
+        return [...current, ...page.apps.filter((app) => !knownIds.has(app.id))];
+      });
+      setCursor(page.cursor);
+      setHasMore(page.hasMore);
+    } catch (err) {
+      console.error(err);
+      setError("No se pudieron cargar más aplicaciones. Inténtalo nuevamente.");
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   const featuredApps = useMemo(
     () => apps.filter((app) => app.featured === true).slice(0, 8),
@@ -146,7 +182,7 @@ export default function Home() {
         {loading ? <LoadingState text="Cargando apps publicadas..." /> : null}
         {error ? <div className="error-box">{error}</div> : null}
 
-        {!loading && !error && apps.length > 0 ? (
+        {!loading && apps.length > 0 ? (
           <>
             {activeCategory === "all" && featuredApps.length > 0 ? (
               <AppHorizontalSection title="Apps destacadas" apps={featuredApps} featured />
@@ -157,6 +193,14 @@ export default function Home() {
                 <AppHorizontalSection title={category.label} apps={category.apps} key={category.key} />
               ))}
             </div>
+
+            {hasMore ? (
+              <div className="catalog-pagination">
+                <button className="primary-button" type="button" onClick={loadMoreApps} disabled={loadingMore}>
+                  {loadingMore ? "Cargando..." : "Ver más aplicaciones"}
+                </button>
+              </div>
+            ) : null}
           </>
         ) : null}
 
@@ -181,9 +225,30 @@ export default function Home() {
             {error ? <div className="error-box">{error}</div> : null}
             {!loading && !error && !searchTerm ? <p className="app-search-hint">Escribe el nombre o una palabra relacionada con la app.</p> : null}
             {!loading && !error && searchTerm && searchResults.length > 0 ? (
-              <><div className="app-search-results-heading"><strong>Resultados</strong><span>{searchResults.length}</span></div><div className="apps-grid">{searchResults.map((app) => <AppCard app={app} key={app.id} />)}</div></>
+              <>
+                <div className="app-search-results-heading"><strong>Resultados</strong><span>{searchResults.length}</span></div>
+                <div className="apps-grid">{searchResults.map((app) => <AppCard app={app} key={app.id} />)}</div>
+                {hasMore ? (
+                  <div className="catalog-pagination catalog-pagination-search">
+                    <button className="primary-button" type="button" onClick={loadMoreApps} disabled={loadingMore}>
+                      {loadingMore ? "Buscando..." : "Buscar en más aplicaciones"}
+                    </button>
+                  </div>
+                ) : null}
+              </>
             ) : null}
-            {!loading && !error && searchTerm && searchResults.length === 0 ? <EmptyState title="No encontramos apps" message="Prueba con otro nombre o término de búsqueda." /> : null}
+            {!loading && !error && searchTerm && searchResults.length === 0 ? (
+              <>
+                <EmptyState title="No encontramos apps" message="Prueba con otro nombre o término de búsqueda." />
+                {hasMore ? (
+                  <div className="catalog-pagination catalog-pagination-search">
+                    <button className="primary-button" type="button" onClick={loadMoreApps} disabled={loadingMore}>
+                      {loadingMore ? "Buscando..." : "Buscar en más aplicaciones"}
+                    </button>
+                  </div>
+                ) : null}
+              </>
+            ) : null}
           </div>
         </section>
       ) : null}
