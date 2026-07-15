@@ -6,11 +6,9 @@ import {
   getDocs,
   increment,
   limit,
-  orderBy,
   query,
   runTransaction,
   serverTimestamp,
-  startAfter,
   where,
   writeBatch
 } from "firebase/firestore";
@@ -41,35 +39,29 @@ function mapApp(snapshot) {
   };
 }
 
-export async function getPublishedAppsPage({ pageSize = 24, cursor = null } = {}) {
+async function fetchPublishedAppsSorted() {
+  const result = await getDocs(query(appsCollection, where("status", "==", "published")));
+  return result.docs
+    .map(mapApp)
+    .sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+}
+
+export async function getPublishedAppsPage({ pageSize = 24, cursor = 0 } = {}) {
   const safePageSize = Math.max(1, Math.min(60, Number(pageSize) || 24));
-  const constraints = [
-    where("status", "==", "published"),
-    orderBy("createdAt", "desc")
-  ];
-
-  if (cursor) constraints.push(startAfter(cursor));
-  constraints.push(limit(safePageSize + 1));
-
-  const result = await getDocs(query(appsCollection, ...constraints));
-  const hasMore = result.docs.length > safePageSize;
-  const visibleDocs = hasMore ? result.docs.slice(0, safePageSize) : result.docs;
+  const offset = Math.max(0, Number(cursor) || 0);
+  const apps = await fetchPublishedAppsSorted();
+  const visibleApps = apps.slice(offset, offset + safePageSize);
+  const nextOffset = offset + visibleApps.length;
 
   return {
-    apps: visibleDocs.map(mapApp),
-    cursor: visibleDocs.at(-1) || null,
-    hasMore
+    apps: visibleApps,
+    cursor: nextOffset,
+    hasMore: nextOffset < apps.length
   };
 }
 
 export async function getPublishedApps() {
-  const q = query(
-    appsCollection,
-    where("status", "==", "published"),
-    orderBy("createdAt", "desc")
-  );
-  const result = await getDocs(q);
-  return result.docs.map(mapApp);
+  return fetchPublishedAppsSorted();
 }
 
 export async function getAppBySlug(slug) {
