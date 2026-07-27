@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aviso Legal de Biblia Universal, aplicación desarrollada por AppsMart Technology." />
+  <title>Aviso Legal | Biblia Universal</title>
+
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #667085;
+      --gold: #b8892f;
+      --gold-dark: #7a541a;
+      --brown: #4a2c17;
+      --line: #eadfce;
+      --soft: #fff8ec;
+      --shadow: 0 24px 60px rgba(74, 44, 23, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(184, 137, 47, 0.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(74, 44, 23, 0.12), transparent 30rem),
+        linear-gradient(180deg, #fbf7f0 0%, var(--bg) 42%, #f3eadb 100%);
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--gold-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(234, 223, 206, 0.9);
+    }
+
+    .topbar-inner {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(122, 84, 26, 0.25);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--brown);
+      font-size: 15px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      color: #4a5568;
+      font-weight: 700;
+    }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      margin: 42px auto 24px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .summary-card {
+      border: 1px solid rgba(234, 223, 206, 0.95);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero-card {
+      padding: 38px;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -72px;
+      bottom: -72px;
+      background: radial-gradient(circle, rgba(184, 137, 47, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(184, 137, 47, 0.28);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      color: var(--brown);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      color: #4b5563;
+      font-size: 18px;
+      max-width: 68ch;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-card {
+      padding: 28px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 248, 236, 0.92));
+    }
+
+    .summary-card h2 {
+      margin-top: 0;
+      color: var(--brown);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-card p {
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(234, 223, 206, 0.8);
+      border-radius: 15px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .summary-list li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(184, 137, 47, 0.14);
+      color: var(--gold-dark);
+      font-weight: 900;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .layout {
+      width: min(1120px, calc(100% - 32px));
+      margin: 26px auto 64px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 88px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(74, 44, 23, 0.08);
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      color: #596579;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .content {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    section {
+      scroll-margin-top: 96px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:first-child {
+      padding-top: 0;
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--brown);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .notice {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(184, 137, 47, 0.26);
+      background: linear-gradient(135deg, #fff8ec, #fffdf9);
+      color: #4b5563;
+    }
+
+    .notice strong {
+      color: var(--brown);
+    }
+
+    .contact-box {
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #4a2c17, #7a541a);
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .contact-box a {
+      color: #ffe6ad;
+    }
+
+    .footer {
+      text-align: center;
+      color: #667085;
+      font-size: 13px;
+      padding: 34px 16px 48px;
+    }
+
+    .back-top {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--gold-dark);
+      font-weight: 800;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-card,
+      .summary-card,
+      .content {
+        padding: 24px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner,
+      .hero,
+      .layout {
+        width: min(100% - 22px, 1120px);
+      }
+
+      .brand-text span {
+        display: none;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .toc,
+      .footer {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero,
+      .layout {
+        width: 100%;
+        display: block;
+        margin: 0;
+      }
+
+      .summary-card {
+        margin-top: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .content {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" id="top">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✦</div>
+        <div class="brand-text">
+          <strong>Biblia Universal</strong>
+          <span>Aviso Legal</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#identificacion">Identificación</a>
+        <a href="#contenido">Contenido</a>
+        <a href="#terceros">Terceros</a>
+        <a href="#pagos">Pagos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Información legal de la aplicación</span>
+        <h1>Aviso Legal</h1>
+        <p class="lead">
+          Este documento informa sobre la titularidad, finalidad, responsabilidades,
+          servicios de terceros y límites aplicables al uso de Biblia Universal.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>Aplicación</span>
+            <strong>Biblia Universal</strong>
+          </div>
+          <div class="meta-item">
+            <span>Desarrollador</span>
+            <strong>AppsMart Technology</strong>
+          </div>
+          <div class="meta-item">
+            <span>Última actualización</span>
+            <strong>24 de junio de 2026</strong>
+          </div>
+        </div>
+      </article>
+
+      <aside class="summary-card" aria-label="Resumen legal">
+        <h2>Resumen claro</h2>
+        <p>
+          Biblia Universal es una app cristiana de lectura, oración, reflexión y contenido
+          espiritual. El contenido no reemplaza asesoramiento profesional ni pastoral individualizado.
+        </p>
+        <ul class="summary-list">
+          <li>La app es desarrollada por AppsMart Technology.</li>
+          <li>Puede usar Firebase, Google Drive, AdMob, UMP, Play Integrity, Google Play Billing y GitHub.</li>
+          <li>GitHub se usa para leer contenido público, guardarlo localmente y actualizarlo cuando existan cambios.</li>
+          <li>La app puede mostrar anuncios, tener suscripción y ofrecer donaciones voluntarias.</li>
+          <li>El contacto legal y de soporte es support.apps.amt@mail.com.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Índice">
+        <h2>Índice</h2>
+        <a href="#identificacion">1. Identificación</a>
+        <a href="#finalidad">2. Finalidad de la aplicación</a>
+        <a href="#contenido">3. Naturaleza del contenido</a>
+        <a href="#exactitud">4. Exactitud y disponibilidad</a>
+        <a href="#terceros">5. Servicios de terceros</a>
+        <a href="#pagos">6. Publicidad, suscripción y donaciones</a>
+        <a href="#usuario">7. Responsabilidad del usuario</a>
+        <a href="#propiedad">8. Propiedad intelectual</a>
+        <a href="#responsabilidad">9. Limitación de responsabilidad</a>
+        <a href="#contacto">10. Contacto</a>
+      </aside>
+
+      <article class="content">
+        <section id="identificacion">
+          <h2>1. Identificación</h2>
+          <p>
+            <strong>Biblia Universal</strong> es una aplicación desarrollada por
+            <strong>AppsMart Technology</strong>.
+          </p>
+          <div class="notice">
+            <strong>Contacto:</strong>
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>
+          </div>
+        </section>
+
+        <section id="finalidad">
+          <h2>2. Finalidad de la aplicación</h2>
+          <p>
+            Biblia Universal ofrece herramientas de lectura bíblica, devocionales, planes de
+            lectura, oraciones, notas, recordatorios, comentarios, “me gusta”, compartidos,
+            “amén” en el diálogo de oración y funciones relacionadas con la reflexión espiritual.
+          </p>
+        </section>
+
+        <section id="contenido">
+          <h2>3. Naturaleza del contenido</h2>
+          <p>
+            El contenido de la aplicación se ofrece con fines informativos, devocionales,
+            educativos y espirituales. Aunque se procura mantener una experiencia clara y
+            respetuosa, el contenido no debe considerarse asesoramiento profesional, médico,
+            psicológico, jurídico, financiero ni pastoral personalizado.
+          </p>
+          <p>
+            Cada usuario es responsable de interpretar y aplicar el contenido de acuerdo con
+            su criterio, fe, comunidad y circunstancias personales.
+          </p>
+        </section>
+
+        <section id="exactitud">
+          <h2>4. Exactitud y disponibilidad</h2>
+          <p>
+            Trabajamos para ofrecer contenido correcto y una aplicación estable. Sin embargo,
+            no garantizamos que:
+          </p>
+          <ul>
+            <li>Todo el contenido esté libre de errores tipográficos, técnicos o de interpretación.</li>
+            <li>La aplicación funcione sin interrupciones en todos los dispositivos.</li>
+            <li>Los servicios externos estén siempre disponibles.</li>
+            <li>Los planes o contenido leído desde GitHub u otros servidores autorizados permanezcan disponibles indefinidamente.</li>
+            <li>La sincronización o actualización del contenido local se ejecute siempre de forma inmediata en todos los dispositivos.</li>
+          </ul>
+          <p>
+            Podemos corregir, actualizar, modificar o retirar contenido cuando sea necesario.
+          </p>
+        </section>
+
+        <section id="terceros">
+          <h2>5. Servicios de terceros</h2>
+          <p>
+            La aplicación puede usar servicios de terceros, incluyendo Google Firebase,
+            Google Drive, Google Play Billing, Google AdMob, Google UMP, Google Play Services,
+            Play Integrity y GitHub.
+          </p>
+          <p>
+            GitHub puede usarse para alojar contenido público de la aplicación, como planes
+            bíblicos, archivos JSON o recursos relacionados. La aplicación puede leer ese
+            contenido, guardarlo localmente en el dispositivo y sincronizarlo o actualizarlo
+            cuando existan ediciones o cambios en el repositorio.
+          </p>
+          <p>
+            El uso de estos servicios puede estar sujeto a sus propias condiciones, políticas
+            de privacidad y prácticas de tratamiento de datos.
+          </p>
+        </section>
+
+        <section id="pagos">
+          <h2>6. Publicidad, suscripción y donaciones</h2>
+          <p>
+            La aplicación puede mostrar publicidad mediante Google AdMob y/o plataformas de
+            mediación publicitaria compatibles.
+          </p>
+          <p>
+            La aplicación puede ofrecer una suscripción mediante Google Play Billing, por
+            ejemplo para eliminar anuncios u obtener beneficios premium. La suscripción,
+            cancelación, renovación y posibles reembolsos se gestionan conforme a las políticas
+            y herramientas de Google Play.
+          </p>
+          <p>
+            Biblia Universal no ofrece compras únicas dentro de la aplicación. La función de
+            pago disponible, cuando corresponda, es la suscripción.
+          </p>
+          <p>
+            La aplicación también puede incluir una opción de donación voluntaria para apoyar
+            el mantenimiento, desarrollo y continuidad del proyecto. Las donaciones son
+            voluntarias y, salvo que se indique expresamente lo contrario, no constituyen una
+            compra de funciones digitales ni reemplazan la suscripción.
+          </p>
+        </section>
+
+        <section id="usuario">
+          <h2>7. Responsabilidad del usuario</h2>
+          <p>El usuario es responsable de:</p>
+          <ul>
+            <li>Usar la aplicación de forma lícita y respetuosa.</li>
+            <li>No publicar contenido ofensivo, privado de terceros, ilegal o dañino.</li>
+            <li>No manipular comentarios, “me gusta”, compartidos, “amén”, contadores o sistemas de seguridad.</li>
+            <li>Mantener segura su cuenta de Google.</li>
+            <li>Conservar respaldos cuando corresponda.</li>
+            <li>Configurar correctamente permisos, notificaciones y sincronización.</li>
+          </ul>
+        </section>
+
+        <section id="propiedad">
+          <h2>8. Propiedad intelectual</h2>
+          <p>
+            La aplicación, su diseño, estructura, código, iconos, identidad visual y recursos
+            propios pertenecen a sus respectivos titulares. Queda prohibida su reproducción,
+            distribución, modificación o explotación no autorizada.
+          </p>
+          <p>
+            Los textos bíblicos, librerías, imágenes, servicios, marcas y recursos de terceros
+            pueden estar protegidos por sus propias licencias o condiciones.
+          </p>
+        </section>
+
+        <section id="responsabilidad">
+          <h2>9. Limitación de responsabilidad</h2>
+          <p>
+            En la medida permitida por la ley, AppsMart Technology no será responsable por
+            daños, pérdidas, interrupciones, errores, pérdida de información, fallos de servicios
+            externos, problemas de dispositivos, decisiones personales del usuario o uso indebido
+            de la aplicación.
+          </p>
+        </section>
+
+        <section id="contacto">
+          <h2>10. Contacto</h2>
+          <p>Para consultas legales o solicitudes relacionadas con la aplicación, puedes escribirnos.</p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong><br />
+            Contacto legal y soporte:
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>
+          </div>
+          <a class="back-top" href="#top">Volver arriba</a>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+</body>
+</html>
