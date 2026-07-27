@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Términos de Servicio de Biblia Universal, aplicación desarrollada por AppsMart Technology." />
+  <title>Términos de Servicio | Biblia Universal</title>
+
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #667085;
+      --gold: #b8892f;
+      --gold-dark: #7a541a;
+      --brown: #4a2c17;
+      --line: #eadfce;
+      --soft: #fff8ec;
+      --shadow: 0 24px 60px rgba(74, 44, 23, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(184, 137, 47, 0.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(74, 44, 23, 0.12), transparent 30rem),
+        linear-gradient(180deg, #fbf7f0 0%, var(--bg) 42%, #f3eadb 100%);
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--gold-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(234, 223, 206, 0.9);
+    }
+
+    .topbar-inner {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(122, 84, 26, 0.25);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--brown);
+      font-size: 15px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      color: #4a5568;
+      font-weight: 700;
+    }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      margin: 42px auto 24px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .summary-card {
+      border: 1px solid rgba(234, 223, 206, 0.95);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero-card {
+      padding: 38px;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -72px;
+      bottom: -72px;
+      background: radial-gradient(circle, rgba(184, 137, 47, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(184, 137, 47, 0.28);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      color: var(--brown);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      color: #4b5563;
+      font-size: 18px;
+      max-width: 68ch;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-card {
+      padding: 28px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 248, 236, 0.92));
+    }
+
+    .summary-card h2 {
+      margin-top: 0;
+      color: var(--brown);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-card p {
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(234, 223, 206, 0.8);
+      border-radius: 15px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .summary-list li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(184, 137, 47, 0.14);
+      color: var(--gold-dark);
+      font-weight: 900;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .layout {
+      width: min(1120px, calc(100% - 32px));
+      margin: 26px auto 64px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 88px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(74, 44, 23, 0.08);
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      color: #596579;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .content {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    section {
+      scroll-margin-top: 96px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:first-child {
+      padding-top: 0;
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--brown);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .notice {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(184, 137, 47, 0.26);
+      background: linear-gradient(135deg, #fff8ec, #fffdf9);
+      color: #4b5563;
+    }
+
+    .notice strong {
+      color: var(--brown);
+    }
+
+    .contact-box {
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #4a2c17, #7a541a);
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .contact-box a {
+      color: #ffe6ad;
+    }
+
+    .footer {
+      text-align: center;
+      color: #667085;
+      font-size: 13px;
+      padding: 34px 16px 48px;
+    }
+
+    .back-top {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--gold-dark);
+      font-weight: 800;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-card,
+      .summary-card,
+      .content {
+        padding: 24px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner,
+      .hero,
+      .layout {
+        width: min(100% - 22px, 1120px);
+      }
+
+      .brand-text span {
+        display: none;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .toc,
+      .footer {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero,
+      .layout {
+        width: 100%;
+        display: block;
+        margin: 0;
+      }
+
+      .summary-card {
+        margin-top: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .content {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" id="top">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✦</div>
+        <div class="brand-text">
+          <strong>Biblia Universal</strong>
+          <span>Términos de Servicio</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#cuenta">Cuenta</a>
+        <a href="#uso-permitido">Uso permitido</a>
+        <a href="#pagos">Suscripción y donación</a>
+        <a href="#responsabilidad">Responsabilidad</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Reglas de uso de la aplicación</span>
+        <h1>Términos de Servicio</h1>
+        <p class="lead">
+          Estos Términos de Servicio regulan el uso de Biblia Universal.
+          Al descargar, acceder o usar la aplicación, aceptas estos Términos.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>Aplicación</span>
+            <strong>Biblia Universal</strong>
+          </div>
+          <div class="meta-item">
+            <span>Desarrollador</span>
+            <strong>AppsMart Technology</strong>
+          </div>
+          <div class="meta-item">
+            <span>Última actualización</span>
+            <strong>24 de junio de 2026</strong>
+          </div>
+        </div>
+      </article>
+
+      <aside class="summary-card" aria-label="Resumen de términos">
+        <h2>Resumen claro</h2>
+        <p>
+          Usa Biblia Universal de forma personal, espiritual, educativa y respetuosa.
+          Algunas funciones dependen de Google, Firebase, GitHub, anuncios o conexión a internet.
+        </p>
+        <ul class="summary-list">
+          <li>No publiques contenido ofensivo, privado de terceros, ilegal o sensible.</li>
+          <li>Los comentarios, “me gusta” y compartidos pueden estar disponibles en Versículo Diario; el “amén” puede estar disponible en el diálogo de oración.</li>
+          <li>La app puede mostrar anuncios mediante servicios publicitarios compatibles.</li>
+          <li>La app puede ofrecer suscripción mediante Google Play Billing para beneficios premium, como quitar anuncios.</li>
+          <li>La app puede incluir donaciones voluntarias para apoyar el proyecto.</li>
+          <li>Los planes bíblicos pueden leerse desde GitHub, guardarse localmente y actualizarse cuando existan cambios.</li>
+          <li>La app puede cambiar, suspender o retirar funciones por razones técnicas, legales o de seguridad.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Índice">
+        <h2>Índice</h2>
+        <a href="#introduccion">Introducción</a>
+        <a href="#descripcion">1. Descripción del servicio</a>
+        <a href="#cuenta">2. Cuenta de usuario</a>
+        <a href="#uso-permitido">3. Uso permitido</a>
+        <a href="#contenido-usuario">4. Contenido del usuario</a>
+        <a href="#privacidad">5. Datos personales y privacidad</a>
+        <a href="#drive">6. Google Drive y sincronización</a>
+        <a href="#planes">7. Planes y contenido remoto</a>
+        <a href="#pagos">8. Suscripción, donaciones y anuncios</a>
+        <a href="#notificaciones">9. Recordatorios y notificaciones</a>
+        <a href="#disponibilidad">10. Disponibilidad y cambios</a>
+        <a href="#propiedad">11. Propiedad intelectual</a>
+        <a href="#aviso">12. Aviso espiritual y de contenido</a>
+        <a href="#responsabilidad">13. Limitación de responsabilidad</a>
+        <a href="#terminacion">14. Terminación</a>
+        <a href="#cambios">15. Cambios</a>
+        <a href="#contacto">16. Contacto</a>
+      </aside>
+
+      <article class="content">
+        <section id="introduccion">
+          <h2>Introducción</h2>
+          <p>
+            Estos Términos de Servicio regulan el uso de <strong>Biblia Universal</strong>
+            (“la aplicación”). Al descargar, acceder o usar la aplicación, aceptas estos
+            Términos. Si no estás de acuerdo, no debes usar la aplicación.
+          </p>
+        </section>
+
+        <section id="descripcion">
+          <h2>1. Descripción del servicio</h2>
+          <p>
+            Biblia Universal ofrece herramientas de lectura bíblica, búsqueda de versículos,
+            planes de lectura, devocionales, oraciones, notas, recordatorios, comentarios,
+            “me gusta” y compartidos en Versículo Diario, “amén” en el diálogo de oración, contenido visual y funciones relacionadas con
+            la vida espiritual del usuario.
+          </p>
+          <p>
+            Algunas funciones pueden requerir conexión a internet, inicio de sesión con
+            Google, Google Drive, Firebase, GitHub, Google Play Billing, servicios de publicidad o proveedores de donación.
+          </p>
+        </section>
+
+        <section id="cuenta">
+          <h2>2. Cuenta de usuario</h2>
+          <p>
+            La aplicación puede permitir iniciar sesión con Google. El usuario es responsable de:
+          </p>
+          <ul>
+            <li>Mantener segura su cuenta de Google.</li>
+            <li>Usar información verdadera y autorizada.</li>
+            <li>No permitir que terceros usen su cuenta para infringir estos Términos.</li>
+          </ul>
+          <p>
+            Podemos limitar o suspender funciones si detectamos abuso, fraude, spam,
+            actividad automatizada, intentos de manipulación de datos o incumplimiento de
+            estos Términos.
+          </p>
+        </section>
+
+        <section id="uso-permitido">
+          <h2>3. Uso permitido</h2>
+          <p>
+            Puedes usar la aplicación para fines personales, espirituales, educativos y
+            devocionales.
+          </p>
+          <p>No está permitido:</p>
+          <ul>
+            <li>Usar la aplicación para actividades ilegales.</li>
+            <li>Publicar comentarios ofensivos, discriminatorios, amenazantes, sexuales, violentos, difamatorios o que vulneren derechos de terceros.</li>
+            <li>Publicar información privada de otras personas sin autorización.</li>
+            <li>Manipular contadores, “me gusta”, “amén”, compartidos, comentarios o sistemas de seguridad.</li>
+            <li>Intentar acceder a información de otros usuarios.</li>
+            <li>Copiar, modificar, distribuir o explotar comercialmente partes de la aplicación sin autorización.</li>
+            <li>Realizar ingeniería inversa, interferir con servidores o evadir controles de seguridad.</li>
+          </ul>
+        </section>
+
+        <section id="contenido-usuario">
+          <h2>4. Contenido del usuario</h2>
+          <p>
+            El usuario puede crear notas, oraciones, comentarios, acciones sociales como “me gusta”, compartidos, “amén” u otro contenido dentro de
+            la aplicación.
+          </p>
+          <p>
+            El usuario conserva la responsabilidad sobre el contenido que crea o publica.
+            Al publicar comentarios visibles para otros usuarios, otorgas a la aplicación
+            una licencia limitada para mostrar, almacenar, transmitir y moderar ese contenido
+            dentro del servicio.
+          </p>
+          <p>
+            Podemos eliminar comentarios o contenido que incumpla estos Términos, afecte a
+            otros usuarios, exponga datos sensibles o perjudique el funcionamiento de la
+            aplicación.
+          </p>
+        </section>
+
+        <section id="privacidad">
+          <h2>5. Datos personales y privacidad</h2>
+          <p>
+            El tratamiento de datos personales se explica en la Política de Privacidad de
+            Biblia Universal. Al usar la aplicación, aceptas que tus datos se traten conforme
+            a esa Política.
+          </p>
+        </section>
+
+        <section id="drive">
+          <h2>6. Google Drive y sincronización</h2>
+          <p>
+            Las notas, versículos guardados, capítulos leídos y oraciones pueden guardarse
+            en Google Drive de la cuenta del usuario cuando la función esté disponible o
+            habilitada. El usuario es responsable de conservar acceso a su cuenta de Google.
+          </p>
+          <p>
+            La aplicación no garantiza recuperación de datos si el usuario elimina archivos
+            de Drive, revoca permisos, pierde acceso a su cuenta o borra datos de la
+            aplicación sin respaldo.
+          </p>
+        </section>
+
+        <section id="planes">
+          <h2>7. Planes y contenido remoto</h2>
+          <p>
+            Los planes bíblicos pueden leerse desde GitHub u otros servidores autorizados.
+            El contenido puede actualizarse, cambiar o dejar de estar disponible por razones
+            técnicas, editoriales o de mantenimiento.
+          </p>
+          <p>
+            La aplicación puede guardar localmente una copia del contenido leído desde GitHub
+            para mejorar el rendimiento, permitir la consulta sin conexión o mantener disponible
+            el contenido previamente cargado. Esa copia local puede sincronizarse o actualizarse
+            cuando existan ediciones, cambios o nuevas versiones en el repositorio.
+          </p>
+          <p>
+            GitHub se utiliza para alojar contenido público de la aplicación, como planes
+            bíblicos, archivos JSON o recursos relacionados. No debe usarse como almacenamiento
+            de notas personales, oraciones privadas, versículos guardados ni progreso personal
+            del usuario.
+          </p>
+        </section>
+
+        <section id="pagos">
+          <h2>8. Suscripción, donaciones y anuncios</h2>
+          <p>
+            La aplicación puede mostrar anuncios mediante Google AdMob y/o plataformas de
+            mediación publicitaria compatibles.
+          </p>
+          <p>
+            La aplicación puede ofrecer una suscripción mediante Google Play Billing, por ejemplo
+            para eliminar anuncios u obtener beneficios premium. La suscripción se procesa y se
+            administra mediante Google Play. Cancelaciones, renovaciones, reembolsos y gestión de
+            la suscripción se rigen por las políticas de Google Play.
+          </p>
+          <p>
+            Biblia Universal no ofrece compras únicas dentro de la aplicación. La función de pago
+            disponible, cuando corresponda, es la suscripción.
+          </p>
+          <p>
+            La aplicación también puede incluir una opción de donación voluntaria para apoyar el
+            mantenimiento, desarrollo y continuidad del proyecto. Las donaciones son voluntarias y,
+            salvo que se indique expresamente lo contrario, no constituyen compra de funciones
+            digitales ni reemplazan la suscripción.
+          </p>
+          <p>
+            La disponibilidad de beneficios premium puede depender del estado de la suscripción,
+            conexión a internet, cuenta de Google Play y validación técnica.
+          </p>
+        </section>
+
+        <section id="notificaciones">
+          <h2>9. Recordatorios y notificaciones</h2>
+          <p>
+            La aplicación puede permitir configurar recordatorios y notificaciones. El usuario
+            controla si concede permisos de notificación o alarmas exactas. El funcionamiento
+            puede variar según la versión de Android, ahorro de batería, configuraciones del
+            dispositivo o restricciones del fabricante.
+          </p>
+        </section>
+
+        <section id="disponibilidad">
+          <h2>10. Disponibilidad y cambios</h2>
+          <p>
+            Podemos modificar, suspender o retirar funciones de la aplicación por mantenimiento,
+            mejoras, seguridad, cambios legales, decisiones de plataforma o razones técnicas.
+          </p>
+          <p>
+            No garantizamos que la aplicación esté libre de errores, interrupciones o
+            incompatibilidades en todos los dispositivos.
+          </p>
+        </section>
+
+        <section id="propiedad">
+          <h2>11. Propiedad intelectual</h2>
+          <p>
+            La aplicación, su diseño, código, nombre, iconos, estructura, elementos visuales
+            y funciones pertenecen a sus respectivos titulares. El contenido bíblico,
+            imágenes, fuentes, librerías o servicios de terceros pueden estar sujetos a sus
+            propias licencias.
+          </p>
+          <p>
+            El uso de la aplicación no otorga derechos de propiedad sobre el software ni
+            sobre marcas o elementos protegidos.
+          </p>
+        </section>
+
+        <section id="aviso">
+          <h2>12. Aviso espiritual y de contenido</h2>
+          <p>
+            La aplicación proporciona contenido bíblico, devocional y espiritual con fines
+            de lectura, reflexión y crecimiento personal. No reemplaza asesoramiento
+            profesional, médico, psicológico, legal, financiero ni pastoral individualizado.
+          </p>
+        </section>
+
+        <section id="responsabilidad">
+          <h2>13. Limitación de responsabilidad</h2>
+          <p>
+            En la medida permitida por la ley, Biblia Universal y sus responsables no serán
+            responsables por daños indirectos, pérdida de datos, interrupciones, errores,
+            decisiones tomadas por el usuario con base en el contenido, fallos de terceros,
+            pérdida de acceso a cuentas externas o problemas derivados del uso incorrecto de
+            la aplicación.
+          </p>
+        </section>
+
+        <section id="terminacion">
+          <h2>14. Terminación</h2>
+          <p>
+            Puedes dejar de usar la aplicación en cualquier momento. También puedes solicitar
+            eliminación de cuenta y datos conforme al documento correspondiente.
+          </p>
+          <p>
+            Podemos limitar o terminar el acceso a funciones si existe incumplimiento de
+            estos Términos o riesgo para otros usuarios, la seguridad o el servicio.
+          </p>
+        </section>
+
+        <section id="cambios">
+          <h2>15. Cambios en estos Términos</h2>
+          <p>
+            Podemos actualizar estos Términos cuando cambien funciones, leyes, proveedores o
+            prácticas de la aplicación. La fecha de última actualización indicará la versión
+            vigente.
+          </p>
+        </section>
+
+        <section id="contacto">
+          <h2>16. Contacto</h2>
+          <p>Para consultas sobre estos Términos, puedes escribirnos.</p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong><br />
+            Soporte:
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>
+          </div>
+          <a class="back-top" href="#top">Volver arriba</a>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+</body>
+</html>
