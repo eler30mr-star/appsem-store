@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Reporte de Seguridad y Vulnerabilidades de Biblia Universal, aplicación desarrollada por AppsMart Technology." />
+  <title>Reporte de Seguridad y Vulnerabilidades | Biblia Universal</title>
+
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #667085;
+      --gold: #b8892f;
+      --gold-dark: #7a541a;
+      --brown: #4a2c17;
+      --line: #eadfce;
+      --soft: #fff8ec;
+      --shadow: 0 24px 60px rgba(74, 44, 23, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(184, 137, 47, 0.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(74, 44, 23, 0.12), transparent 30rem),
+        linear-gradient(180deg, #fbf7f0 0%, var(--bg) 42%, #f3eadb 100%);
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--gold-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(234, 223, 206, 0.9);
+    }
+
+    .topbar-inner {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(122, 84, 26, 0.25);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--brown);
+      font-size: 15px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      color: #4a5568;
+      font-weight: 700;
+    }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      margin: 42px auto 24px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .summary-card {
+      border: 1px solid rgba(234, 223, 206, 0.95);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero-card {
+      padding: 38px;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -72px;
+      bottom: -72px;
+      background: radial-gradient(circle, rgba(184, 137, 47, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(184, 137, 47, 0.28);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      color: var(--brown);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      color: #4b5563;
+      font-size: 18px;
+      max-width: 68ch;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-card {
+      padding: 28px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 248, 236, 0.92));
+    }
+
+    .summary-card h2 {
+      margin-top: 0;
+      color: var(--brown);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-card p {
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(234, 223, 206, 0.8);
+      border-radius: 15px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .summary-list li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(184, 137, 47, 0.14);
+      color: var(--gold-dark);
+      font-weight: 900;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .layout {
+      width: min(1120px, calc(100% - 32px));
+      margin: 26px auto 64px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 88px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(74, 44, 23, 0.08);
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      color: #596579;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .content {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    section {
+      scroll-margin-top: 96px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:first-child {
+      padding-top: 0;
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--brown);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin: 22px 0 8px;
+      color: #5a3419;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .notice {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(184, 137, 47, 0.26);
+      background: linear-gradient(135deg, #fff8ec, #fffdf9);
+      color: #4b5563;
+    }
+
+    .notice strong {
+      color: var(--brown);
+    }
+
+    .warning {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(122, 84, 26, 0.24);
+      background: linear-gradient(135deg, #fff4e5, #fffdf9);
+      color: #4b5563;
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .steps li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fffaf2;
+      border-radius: 16px;
+      margin: 0;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .contact-box {
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #4a2c17, #7a541a);
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .contact-box a {
+      color: #ffe6ad;
+    }
+
+    .footer {
+      text-align: center;
+      color: #667085;
+      font-size: 13px;
+      padding: 34px 16px 48px;
+    }
+
+    .back-top {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--gold-dark);
+      font-weight: 800;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-card,
+      .summary-card,
+      .content {
+        padding: 24px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner,
+      .hero,
+      .layout {
+        width: min(100% - 22px, 1120px);
+      }
+
+      .brand-text span {
+        display: none;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .toc,
+      .footer {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero,
+      .layout {
+        width: 100%;
+        display: block;
+        margin: 0;
+      }
+
+      .summary-card {
+        margin-top: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .content {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" id="top">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✦</div>
+        <div class="brand-text">
+          <strong>Biblia Universal</strong>
+          <span>Reporte de Seguridad y Vulnerabilidades</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#alcance">Alcance</a>
+        <a href="#reportar">Cómo reportar</a>
+        <a href="#permitido">Permitido</a>
+        <a href="#no-permitido">No permitido</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Seguridad responsable</span>
+        <h1>Reporte de Seguridad y Vulnerabilidades</h1>
+        <p class="lead">
+          Esta página explica cómo reportar posibles fallos de seguridad relacionados
+          con Biblia Universal, sus servicios integrados y el tratamiento responsable de
+          vulnerabilidades.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>Aplicación</span>
+            <strong>Biblia Universal</strong>
+          </div>
+          <div class="meta-item">
+            <span>Desarrollador</span>
+            <strong>AppsMart Technology</strong>
+          </div>
+          <div class="meta-item">
+            <span>Última actualización</span>
+            <strong>24 de junio de 2026</strong>
+          </div>
+        </div>
+      </article>
+
+      <aside class="summary-card" aria-label="Resumen de seguridad">
+        <h2>Resumen claro</h2>
+        <p>
+          Si encuentras una posible vulnerabilidad, puedes reportarla de forma responsable
+          para ayudarnos a proteger la aplicación y a sus usuarios.
+        </p>
+        <ul class="summary-list">
+          <li>Envía reportes a support.apps.amt@mail.com.</li>
+          <li>No accedas, copies, modifiques ni elimines datos de otros usuarios.</li>
+          <li>No realices ataques, automatizaciones agresivas, spam, denegación de servicio ni pruebas destructivas.</li>
+          <li>Incluye pasos claros para reproducir el problema y evidencia técnica segura.</li>
+          <li>No existe recompensa económica garantizada por reportes.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Índice">
+        <h2>Índice</h2>
+        <a href="#introduccion">Introducción</a>
+        <a href="#alcance">1. Alcance</a>
+        <a href="#fuera-alcance">2. Fuera de alcance</a>
+        <a href="#reportar">3. Cómo reportar</a>
+        <a href="#incluir">4. Qué incluir</a>
+        <a href="#permitido">5. Investigación permitida</a>
+        <a href="#no-permitido">6. Actividades no permitidas</a>
+        <a href="#datos">7. Protección de datos</a>
+        <a href="#proceso">8. Proceso de revisión</a>
+        <a href="#divulgacion">9. Divulgación responsable</a>
+        <a href="#recompensas">10. Recompensas</a>
+        <a href="#terceros">11. Servicios de terceros</a>
+        <a href="#contacto">12. Contacto</a>
+      </aside>
+
+      <article class="content">
+        <section id="introduccion">
+          <h2>Introducción</h2>
+          <p>
+            En <strong>Biblia Universal</strong>, desarrollada por
+            <strong>AppsMart Technology</strong>, valoramos la seguridad de la aplicación,
+            la privacidad de los usuarios y la protección de los datos tratados mediante
+            servicios como Firebase, Google Drive, Google Play Services, Play Integrity,
+            AdMob, UMP y GitHub.
+          </p>
+          <p>
+            Esta página establece una vía responsable para reportar posibles vulnerabilidades,
+            errores de configuración, fallos de autenticación, exposición de datos u otros
+            problemas de seguridad relacionados con la aplicación.
+          </p>
+          <div class="notice">
+            <strong>Correo para reportes:</strong>
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a><br />
+            <strong>Asunto sugerido:</strong> Reporte de seguridad - Biblia Universal
+          </div>
+        </section>
+
+        <section id="alcance">
+          <h2>1. Alcance</h2>
+          <p>
+            Puedes reportar posibles vulnerabilidades relacionadas con:
+          </p>
+          <ul>
+            <li>La aplicación Android Biblia Universal.</li>
+            <li>Inicio de sesión con Google y autenticación mediante Firebase.</li>
+            <li>Reglas de seguridad o acceso en Firebase/Firestore.</li>
+            <li>Comentarios, “me gusta”, compartidos y “amén” en funciones sociales de la app.</li>
+            <li>Sincronización o tratamiento de datos personales con Google Drive, cuando la función esté disponible.</li>
+            <li>Lectura, almacenamiento local y actualización de planes bíblicos o contenido público desde GitHub.</li>
+            <li>Protecciones mediante App Check, Play Integrity u otros mecanismos de seguridad.</li>
+            <li>Errores que puedan afectar privacidad, integridad, disponibilidad o acceso indebido a datos.</li>
+          </ul>
+        </section>
+
+        <section id="fuera-alcance">
+          <h2>2. Fuera de alcance</h2>
+          <p>
+            Normalmente no se consideran vulnerabilidades de seguridad:
+          </p>
+          <ul>
+            <li>Errores visuales, de diseño o textos mal escritos sin impacto de seguridad.</li>
+            <li>Problemas de rendimiento sin riesgo para datos, cuentas o disponibilidad.</li>
+            <li>Reportes sin pasos de reproducción o sin evidencia suficiente.</li>
+            <li>Problemas causados por dispositivos modificados, emuladores manipulados o entornos no confiables, salvo que demuestren impacto real.</li>
+            <li>Fallos en servicios externos que pertenecen directamente a Google, Firebase, GitHub u otros proveedores, salvo que estén relacionados con una mala integración de la app.</li>
+            <li>Solicitudes de soporte general, recuperación de cuenta, eliminación de datos o cancelación de suscripción. Esos casos deben tratarse por soporte normal.</li>
+          </ul>
+        </section>
+
+        <section id="reportar">
+          <h2>3. Cómo reportar una vulnerabilidad</h2>
+          <p>
+            Para reportar una posible vulnerabilidad, envía un correo a:
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>.
+          </p>
+          <ol class="steps">
+            <li>Usa el asunto: “Reporte de seguridad - Biblia Universal”.</li>
+            <li>Describe el problema de forma clara y técnica.</li>
+            <li>Incluye pasos para reproducirlo sin afectar a otros usuarios.</li>
+            <li>Adjunta evidencia segura, como capturas, registros no sensibles o explicación del flujo afectado.</li>
+            <li>Indica tu nombre o alias si deseas ser identificado en la comunicación.</li>
+          </ol>
+        </section>
+
+        <section id="incluir">
+          <h2>4. Información recomendada en el reporte</h2>
+          <p>
+            Para revisar el reporte con mayor rapidez, incluye:
+          </p>
+          <ul>
+            <li>Versión de la app instalada.</li>
+            <li>Modelo de dispositivo y versión de Android.</li>
+            <li>Descripción del posible impacto.</li>
+            <li>Pasos exactos para reproducir el problema.</li>
+            <li>Función afectada: login, Firebase, Google Drive, GitHub, comentarios, “me gusta”, “amén”, compartidos, anuncios, suscripción u otra.</li>
+            <li>Capturas o videos que no expongan datos privados de terceros.</li>
+            <li>Fecha y hora aproximada de la prueba.</li>
+            <li>Cuenta de prueba utilizada, si corresponde.</li>
+          </ul>
+        </section>
+
+        <section id="permitido">
+          <h2>5. Investigación permitida</h2>
+          <p>
+            Se permite investigar de forma responsable siempre que no afectes a otros usuarios,
+            no interrumpas el servicio y no accedas a datos que no te pertenecen.
+          </p>
+          <ul>
+            <li>Revisar comportamientos visibles de la aplicación desde tu propia cuenta.</li>
+            <li>Probar flujos normales de autenticación, comentarios, “me gusta”, compartidos, “amén”, sincronización y contenido remoto.</li>
+            <li>Reportar errores de acceso, permisos, validación o configuración observados sin explotación destructiva.</li>
+            <li>Usar cuentas propias o cuentas de prueba bajo tu control.</li>
+          </ul>
+        </section>
+
+        <section id="no-permitido">
+          <h2>6. Actividades no permitidas</h2>
+          <p>
+            Para proteger a los usuarios y la estabilidad del servicio, no están permitidas
+            las siguientes acciones:
+          </p>
+          <ul>
+            <li>Acceder, copiar, modificar, eliminar o divulgar datos de otros usuarios.</li>
+            <li>Realizar ataques de denegación de servicio, estrés, carga masiva o automatización agresiva.</li>
+            <li>Manipular contadores de “me gusta”, “amén”, compartidos o comentarios.</li>
+            <li>Enviar spam, contenido ofensivo o datos falsos para alterar el funcionamiento de la app.</li>
+            <li>Evitar controles de seguridad de forma destructiva o persistente.</li>
+            <li>Usar malware, phishing, ingeniería social o robo de credenciales.</li>
+            <li>Intentar acceder a sistemas, cuentas, repositorios, claves, servidores o consolas que no estén bajo tu autorización.</li>
+            <li>Publicar detalles de la vulnerabilidad antes de que sea revisada y corregida.</li>
+          </ul>
+          <div class="warning">
+            Si durante una prueba encuentras datos privados o acceso no autorizado, detén la
+            investigación de inmediato y reporta el hallazgo sin copiar, modificar ni compartir
+            esos datos.
+          </div>
+        </section>
+
+        <section id="datos">
+          <h2>7. Protección de datos y privacidad</h2>
+          <p>
+            Al reportar una vulnerabilidad, evita enviar datos personales innecesarios, claves,
+            tokens, credenciales, información privada de terceros o contenido sensible.
+          </p>
+          <p>
+            Si el reporte incluye capturas, registros o videos, oculta correos, identificadores,
+            nombres, fotos de perfil, comentarios privados, datos de Drive u otra información
+            que pueda identificar a un usuario.
+          </p>
+          <p>
+            La información enviada será usada únicamente para revisar, validar y corregir el
+            posible problema de seguridad.
+          </p>
+        </section>
+
+        <section id="proceso">
+          <h2>8. Proceso de revisión</h2>
+          <p>
+            Al recibir un reporte, intentaremos revisarlo dentro de un plazo razonable. El
+            proceso puede incluir:
+          </p>
+          <ul>
+            <li>Confirmar recepción del reporte cuando sea posible.</li>
+            <li>Revisar si el problema está dentro del alcance.</li>
+            <li>Solicitar información adicional si el reporte no es suficiente.</li>
+            <li>Validar el impacto técnico y de privacidad.</li>
+            <li>Corregir o mitigar el problema cuando corresponda.</li>
+            <li>Actualizar la aplicación, reglas de seguridad, configuración o documentación si es necesario.</li>
+          </ul>
+        </section>
+
+        <section id="divulgacion">
+          <h2>9. Divulgación responsable</h2>
+          <p>
+            Pedimos que no publiques detalles técnicos, pruebas de concepto, capturas,
+            rutas de explotación o información sensible hasta que el problema haya sido
+            revisado y corregido.
+          </p>
+          <p>
+            Si deseas publicar una investigación o mencionar el hallazgo, coordina primero
+            con AppsMart Technology mediante el correo de contacto para evitar riesgos a los
+            usuarios o al servicio.
+          </p>
+        </section>
+
+        <section id="recompensas">
+          <h2>10. Recompensas</h2>
+          <p>
+            Biblia Universal no cuenta actualmente con un programa público de recompensas
+            económicas por vulnerabilidades. Enviar un reporte no garantiza pago, premio,
+            reconocimiento público ni compensación.
+          </p>
+          <p>
+            Agradecemos los reportes responsables que ayuden a mejorar la seguridad de la app
+            y proteger a sus usuarios.
+          </p>
+        </section>
+
+        <section id="terceros">
+          <h2>11. Servicios de terceros</h2>
+          <p>
+            La aplicación puede depender de servicios como Google Firebase, Google Drive,
+            Google Play Services, Play Integrity, Google AdMob, Google UMP, Google Play Billing
+            y GitHub. Cada proveedor mantiene sus propios sistemas, condiciones, políticas y
+            canales de reporte.
+          </p>
+          <p>
+            Si encuentras una vulnerabilidad que afecta directamente a un proveedor externo
+            y no a la integración de Biblia Universal, también puede ser necesario reportarla
+            mediante los canales oficiales de ese proveedor.
+          </p>
+        </section>
+
+        <section id="contacto">
+          <h2>12. Contacto</h2>
+          <p>
+            Para reportar problemas de seguridad, vulnerabilidades o configuraciones que puedan
+            afectar la protección de la aplicación o sus usuarios, puedes escribirnos.
+          </p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong><br />
+            Reportes de seguridad:
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a><br />
+            Asunto sugerido: Reporte de seguridad - Biblia Universal
+          </div>
+          <a class="back-top" href="#top">Volver arriba</a>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+</body>
+</html>
