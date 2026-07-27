@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Eliminar cuenta y datos de Biblia Universal, aplicación desarrollada por AppsMart Technology." />
+  <title>Eliminar Cuenta y Datos | Biblia Universal</title>
+
+  <style>
+    :root {
+      --bg: #f7f3ec;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #667085;
+      --gold: #b8892f;
+      --gold-dark: #7a541a;
+      --brown: #4a2c17;
+      --line: #eadfce;
+      --soft: #fff8ec;
+      --shadow: 0 24px 60px rgba(74, 44, 23, 0.12);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(184, 137, 47, 0.18), transparent 34rem),
+        radial-gradient(circle at top right, rgba(74, 44, 23, 0.12), transparent 30rem),
+        linear-gradient(180deg, #fbf7f0 0%, var(--bg) 42%, #f3eadb 100%);
+      color: var(--ink);
+      line-height: 1.72;
+    }
+
+    a {
+      color: var(--gold-dark);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(255, 255, 255, 0.82);
+      border-bottom: 1px solid rgba(234, 223, 206, 0.9);
+    }
+
+    .topbar-inner {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-size: 22px;
+      box-shadow: 0 10px 24px rgba(122, 84, 26, 0.25);
+      flex: 0 0 auto;
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--brown);
+      font-size: 15px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      color: #4a5568;
+      font-weight: 700;
+    }
+
+    .hero {
+      width: min(1120px, calc(100% - 32px));
+      margin: 42px auto 24px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .summary-card {
+      border: 1px solid rgba(234, 223, 206, 0.95);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .hero-card {
+      padding: 38px;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      right: -72px;
+      bottom: -72px;
+      background: radial-gradient(circle, rgba(184, 137, 47, 0.22), transparent 70%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid rgba(184, 137, 47, 0.28);
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--gold-dark);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 22px 0 16px;
+      color: var(--brown);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      margin: 0;
+      color: #4b5563;
+      font-size: 18px;
+      max-width: 68ch;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .meta-item {
+      background: #fffaf2;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .meta-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-item strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--brown);
+      font-size: 14px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-card {
+      padding: 28px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 248, 236, 0.92));
+    }
+
+    .summary-card h2 {
+      margin-top: 0;
+      color: var(--brown);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .summary-card p {
+      color: #4b5563;
+      margin-bottom: 18px;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(234, 223, 206, 0.8);
+      border-radius: 15px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .summary-list li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: rgba(184, 137, 47, 0.14);
+      color: var(--gold-dark);
+      font-weight: 900;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
+
+    .layout {
+      width: min(1120px, calc(100% - 32px));
+      margin: 26px auto 64px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .toc {
+      position: sticky;
+      top: 88px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.84);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(74, 44, 23, 0.08);
+      max-height: calc(100vh - 112px);
+      overflow: auto;
+    }
+
+    .toc h2 {
+      margin: 0 0 12px;
+      color: var(--brown);
+      font-size: 16px;
+    }
+
+    .toc a {
+      display: block;
+      padding: 9px 10px;
+      border-radius: 12px;
+      color: #596579;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .toc a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .content {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 34px;
+    }
+
+    section {
+      scroll-margin-top: 96px;
+      padding: 26px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    section:first-child {
+      padding-top: 0;
+    }
+
+    section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      color: var(--brown);
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    .notice {
+      margin: 20px 0;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(184, 137, 47, 0.26);
+      background: linear-gradient(135deg, #fff8ec, #fffdf9);
+      color: #4b5563;
+    }
+
+    .notice strong {
+      color: var(--brown);
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 12px;
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .steps li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: #fffaf2;
+      border-radius: 16px;
+      margin: 0;
+    }
+
+    .steps li::before {
+      content: counter(step);
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #6f421e, #bf8e36);
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .contact-box {
+      padding: 22px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #4a2c17, #7a541a);
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .contact-box a {
+      color: #ffe6ad;
+    }
+
+    .footer {
+      text-align: center;
+      color: #667085;
+      font-size: 13px;
+      padding: 34px 16px 48px;
+    }
+
+    .back-top {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--gold-dark);
+      font-weight: 800;
+    }
+
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .toc {
+        position: relative;
+        top: auto;
+        max-height: none;
+      }
+
+      .nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-card,
+      .summary-card,
+      .content {
+        padding: 24px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-inner,
+      .hero,
+      .layout {
+        width: min(100% - 22px, 1120px);
+      }
+
+      .brand-text span {
+        display: none;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .toc,
+      .footer {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .hero,
+      .layout {
+        width: 100%;
+        display: block;
+        margin: 0;
+      }
+
+      .summary-card {
+        margin-top: 20px;
+      }
+
+      .hero-card,
+      .summary-card,
+      .content {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar" id="top">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✦</div>
+        <div class="brand-text">
+          <strong>Biblia Universal</strong>
+          <span>Eliminar Cuenta y Datos</span>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Navegación principal">
+        <a href="#datos">Datos</a>
+        <a href="#solicitud">Solicitud</a>
+        <a href="#drive">Google Drive</a>
+        <a href="#suscripcion">Suscripción</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <article class="hero-card">
+        <span class="eyebrow">Control de cuenta y privacidad</span>
+        <h1>Eliminar Cuenta y Datos</h1>
+        <p class="lead">
+          Este documento explica cómo solicitar la eliminación de tu cuenta y datos
+          asociados a Biblia Universal.
+        </p>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>Aplicación</span>
+            <strong>Biblia Universal</strong>
+          </div>
+          <div class="meta-item">
+            <span>Desarrollador</span>
+            <strong>AppsMart Technology</strong>
+          </div>
+          <div class="meta-item">
+            <span>Última actualización</span>
+            <strong>24 de junio de 2026</strong>
+          </div>
+        </div>
+      </article>
+
+      <aside class="summary-card" aria-label="Resumen de eliminación">
+        <h2>Resumen claro</h2>
+        <p>
+          Puedes solicitar la eliminación de tu cuenta y de los datos asociados a la app.
+          Algunas acciones pueden requerir verificación para proteger tu seguridad.
+        </p>
+        <ul class="summary-list">
+          <li>La eliminación puede incluir cuenta, comentarios, “me gusta”, “amén”, compartidos, datos de Firebase, Drive y datos locales.</li>
+          <li>Los conteos agregados pueden conservarse sin identificación directa del usuario.</li>
+          <li>Los planes bíblicos guardados localmente desde GitHub pueden borrarse al limpiar datos de la app.</li>
+          <li>Eliminar la cuenta no cancela automáticamente una suscripción activa en Google Play.</li>
+          <li>El correo de soporte es support.apps.amt@mail.com.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="layout">
+      <aside class="toc" aria-label="Índice">
+        <h2>Índice</h2>
+        <a href="#introduccion">Introducción</a>
+        <a href="#datos">1. Qué datos pueden eliminarse</a>
+        <a href="#agregados">2. Datos agregados</a>
+        <a href="#solicitud">3. Cómo solicitar la eliminación</a>
+        <a href="#app">4. Eliminación desde la app</a>
+        <a href="#drive">5. Google Drive</a>
+        <a href="#github">6. Datos locales de GitHub</a>
+        <a href="#comentarios">7. Comentarios</a>
+        <a href="#plazo">8. Plazo de atención</a>
+        <a href="#suscripcion">9. Suscripción</a>
+        <a href="#donaciones">10. Donaciones</a>
+        <a href="#backups">11. Copias y registros</a>
+        <a href="#contacto">12. Contacto</a>
+      </aside>
+
+      <article class="content">
+        <section id="introduccion">
+          <h2>Introducción</h2>
+          <p>
+            Este documento explica cómo solicitar la eliminación de tu cuenta y datos
+            asociados a <strong>Biblia Universal</strong>.
+          </p>
+          <p>
+            La eliminación puede variar según las funciones que hayas usado, los datos
+            guardados en tu dispositivo, los datos asociados a Firebase y los archivos creados
+            o sincronizados con tu cuenta de Google Drive cuando esa función esté disponible.
+          </p>
+        </section>
+
+        <section id="datos">
+          <h2>1. Qué datos pueden eliminarse</h2>
+          <p>
+            Según las funciones que hayas utilizado, la eliminación puede incluir:
+          </p>
+          <ul>
+            <li>Cuenta de autenticación asociada a la aplicación.</li>
+            <li>Comentarios publicados por tu usuario.</li>
+            <li>Datos sociales asociados a tu usuario, como registros de “me gusta” o compartidos en Versículo Diario, y registros de “amén” en el diálogo de oración.</li>
+            <li>Identificadores técnicos asociados a tu cuenta en Firebase.</li>
+            <li>Datos personales guardados por la aplicación en Google Drive, como notas, versículos guardados, capítulos leídos y oraciones, cuando esta función esté disponible.</li>
+            <li>Datos locales de la aplicación almacenados en tu dispositivo.</li>
+            <li>Copias locales de planes bíblicos o contenido público leído desde GitHub y guardado en el dispositivo para funcionamiento local o sincronización.</li>
+          </ul>
+        </section>
+
+        <section id="agregados">
+          <h2>2. Datos que pueden conservarse de forma agregada</h2>
+          <p>
+            Algunos datos pueden mantenerse de forma agregada, no directamente personal,
+            cuando sea necesario para el funcionamiento público de la aplicación, por ejemplo:
+          </p>
+          <ul>
+            <li>Conteos totales de “me gusta”.
+            <li>Conteos totales de “amén”.</li>
+            <li>Conteos totales de compartidos.</li></li>
+            <li>Estadísticas técnicas anónimas o agregadas.</li>
+            <li>Registros técnicos necesarios para seguridad, diagnóstico o prevención de abuso, cuando aplique.</li>
+          </ul>
+          <p>
+            Cuando sea posible, eliminaremos o desvincularemos los datos personales del usuario.
+          </p>
+        </section>
+
+        <section id="solicitud">
+          <h2>3. Cómo solicitar la eliminación</h2>
+          <p>Puedes solicitar la eliminación escribiendo a:</p>
+          <div class="notice">
+            <strong>Correo:</strong>
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a><br />
+            <strong>Asunto sugerido:</strong> Eliminar cuenta y datos - Biblia Universal
+          </div>
+
+          <p>Incluye en el mensaje:</p>
+          <ul>
+            <li>Correo de la cuenta de Google usada en la aplicación.</li>
+            <li>Nombre visible de la cuenta, si corresponde.</li>
+            <li>Indica si deseas eliminar solo comentarios, datos sociales como “me gusta”, “amén” o compartidos, datos de Drive, datos locales o toda la cuenta y datos asociados.</li>
+          </ul>
+          <p>
+            Por seguridad, podemos pedir información adicional para verificar que eres el
+            titular de la cuenta antes de eliminar datos.
+          </p>
+        </section>
+
+        <section id="app">
+          <h2>4. Eliminación desde la aplicación</h2>
+          <p>
+            Si la aplicación incluye una opción interna de <strong>“Eliminar cuenta”</strong>,
+            puedes usarla desde la sección de cuenta, perfil o ajustes.
+          </p>
+          <p>
+            Esa opción puede cerrar tu sesión, eliminar datos asociados en Firebase y solicitar
+            la eliminación de datos de Drive cuando la función esté disponible.
+          </p>
+          <ol class="steps">
+            <li>Abre Biblia Universal y entra a tu cuenta o perfil.</li>
+            <li>Busca la sección de ajustes, privacidad o cuenta.</li>
+            <li>Selecciona “Eliminar cuenta” o una opción equivalente, si está disponible.</li>
+            <li>Sigue las instrucciones de verificación y confirmación.</li>
+          </ol>
+        </section>
+
+        <section id="drive">
+          <h2>5. Eliminación de datos en Google Drive</h2>
+          <p>
+            Las notas, versículos guardados, capítulos leídos y oraciones pueden guardarse en
+            Google Drive de la cuenta del usuario cuando la función esté disponible.
+          </p>
+          <p>Puedes eliminar esos datos de las siguientes formas, según disponibilidad:</p>
+          <ul>
+            <li>Desde la propia aplicación, si existe una opción de eliminar o reiniciar datos.</li>
+            <li>Desde Google Drive, eliminando los archivos o carpeta creada por Biblia Universal.</li>
+            <li>Solicitando ayuda por correo a <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>.</li>
+          </ul>
+          <p>
+            Si eliminas manualmente archivos de Drive, la aplicación podría perder la capacidad
+            de restaurar tus datos.
+          </p>
+        </section>
+
+        <section id="github">
+          <h2>6. Eliminación de datos locales de GitHub</h2>
+          <p>
+            Biblia Universal puede leer planes bíblicos, archivos JSON o contenido público desde
+            GitHub. Ese contenido puede guardarse localmente en tu dispositivo para mejorar el
+            rendimiento, permitir consulta sin conexión o sincronizar cambios cuando el repositorio
+            sea actualizado.
+          </p>
+          <p>
+            Este contenido no corresponde a datos personales privados del usuario. Sin embargo,
+            puedes eliminar las copias locales borrando los datos de la aplicación desde el sistema
+            Android, desinstalando la app o usando una función interna de limpieza/restablecimiento
+            si está disponible.
+          </p>
+        </section>
+
+        <section id="comentarios">
+          <h2>7. Eliminación de comentarios</h2>
+          <p>
+            Los comentarios publicados pueden ser visibles para otros usuarios. Puedes eliminarlos
+            desde la aplicación si la función está disponible. También puedes solicitar su eliminación
+            por correo.
+          </p>
+          <p>Para ubicar comentarios con mayor rapidez, indica:</p>
+          <ul>
+            <li>Fecha aproximada del comentario.</li>
+            <li>Versículo Diario, diálogo de oración o sección donde realizaste la acción.</li>
+            <li>Texto aproximado del comentario.</li>
+          </ul>
+        </section>
+
+        <section id="plazo">
+          <h2>8. Plazo de atención</h2>
+          <p>
+            Intentaremos responder las solicitudes dentro de un plazo razonable. Algunas
+            eliminaciones pueden requerir verificación manual o depender de servicios externos
+            como Google/Firebase.
+          </p>
+        </section>
+
+        <section id="suscripcion">
+          <h2>9. Suscripción</h2>
+          <p>
+            Eliminar tu cuenta en la aplicación no cancela automáticamente una suscripción activa
+            de Google Play. Para cancelar una suscripción, debes gestionarla desde Google Play:
+          </p>
+          <div class="notice">
+            <strong>Ruta recomendada:</strong><br />
+            Google Play &gt; Pagos y suscripciones &gt; Suscripciones.
+          </div>
+          <p>
+            La suscripción, renovaciones, cancelaciones y reembolsos se administran conforme a
+            las políticas y herramientas de Google Play.
+          </p>
+        </section>
+
+        <section id="donaciones">
+          <h2>10. Donaciones</h2>
+          <p>
+            Si realizaste una donación voluntaria para apoyar el proyecto, la eliminación de cuenta
+            no elimina necesariamente los registros conservados por el proveedor externo usado para
+            procesar la donación.
+          </p>
+          <p>
+            Para consultas sobre una donación específica, puedes escribir a
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a> con la fecha,
+            método utilizado y cualquier referencia disponible.
+          </p>
+        </section>
+
+        <section id="backups">
+          <h2>11. Datos en copias de seguridad y registros</h2>
+          <p>
+            Algunos datos pueden permanecer temporalmente en copias de seguridad, registros técnicos
+            o sistemas de seguridad hasta que se eliminen según los ciclos normales de retención de
+            los proveedores.
+          </p>
+        </section>
+
+        <section id="contacto">
+          <h2>12. Contacto</h2>
+          <p>Para eliminar cuenta o datos, puedes escribirnos.</p>
+          <div class="contact-box">
+            <strong>AppsMart Technology</strong><br />
+            Soporte y privacidad:
+            <a href="mailto:support.apps.amt@mail.com">support.apps.amt@mail.com</a>
+          </div>
+          <a class="back-top" href="#top">Volver arriba</a>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2026 AppsMart Technology. Todos los derechos reservados.
+  </footer>
+</body>
+</html>
