@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07101d">
+<meta name="description" content="Política de Privacidad de ScreenPro, desarrollada por AppsMart Technolgy.">
+<title>Política de Privacidad | ScreenPro</title>
+<style>
+:root{
+  --bg:#07101d;--bg2:#0b1730;--card:rgba(15,28,50,.86);--text:#eef7ff;
+  --muted:#a9b9cc;--line:rgba(116,205,255,.18);--cyan:#35d5ff;--blue:#4d7cff;
+  --red:#ff4d5e;--green:#48e0aa;--amber:#ffbd62;--shadow:0 22px 70px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);line-height:1.68;
+  background:
+    radial-gradient(circle at 14% 2%,rgba(53,213,255,.12),transparent 27rem),
+    radial-gradient(circle at 88% 12%,rgba(77,124,255,.14),transparent 30rem),
+    linear-gradient(180deg,var(--bg2),var(--bg) 35%,#050b14);
+}
+a{color:#7fddff;text-decoration:none} a:hover{text-decoration:underline}
+.wrap{width:min(1080px,calc(100% - 34px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(7,16,29,.82);backdrop-filter:blur(16px)}
+.topbar .inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#14325f,#09182d);
+  border:1px solid rgba(92,211,255,.34);box-shadow:inset 0 0 22px rgba(53,213,255,.1),0 8px 28px rgba(0,0,0,.25)}
+.logo b{font-size:17px;background:linear-gradient(135deg,#fff,#35d5ff 55%,#4d7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav{display:flex;flex-wrap:wrap;gap:7px}.nav a{padding:8px 11px;border-radius:10px;color:#c9d7e7;font-size:.89rem}
+.nav a:hover,.nav a.active{background:rgba(53,213,255,.09);color:#fff;text-decoration:none}
+.hero{padding:72px 0 38px}.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.84rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9de9ff}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 18px rgba(255,77,94,.75)}
+h1{font-size:clamp(2.25rem,6vw,4.35rem);line-height:1.02;margin:15px 0 16px;letter-spacing:-.045em}
+.subtitle{max-width:800px;color:var(--muted);font-size:1.08rem;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);color:#c7d9e9;font-size:.88rem}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 44px}
+.quick .q{padding:20px;border:1px solid var(--line);border-radius:18px;background:rgba(14,28,49,.68);box-shadow:var(--shadow)}
+.q strong{display:block;margin-bottom:5px}.q span{color:var(--muted);font-size:.94rem}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.toc{position:sticky;top:94px;padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(10,23,42,.72)}
+.toc h3{font-size:.9rem;margin:0 0 11px;text-transform:uppercase;letter-spacing:.08em;color:#96a9bd}
+.toc a{display:block;padding:7px 9px;border-radius:9px;color:#b9c9da;font-size:.91rem}
+.toc a:hover{background:rgba(53,213,255,.07);color:#fff;text-decoration:none}
+.content{min-width:0} section.card{scroll-margin-top:96px;padding:29px;margin:0 0 18px;border-radius:22px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(16,31,54,.86),rgba(11,23,41,.82));box-shadow:var(--shadow)}
+h2{font-size:1.45rem;margin:0 0 15px;letter-spacing:-.02em} h3{font-size:1.02rem;margin:25px 0 9px}
+p{margin:10px 0;color:#d7e2ee} ul{padding-left:22px;margin:10px 0;color:#d7e2ee} li{margin:7px 0}
+.notice{border:1px solid rgba(53,213,255,.25);background:rgba(53,213,255,.06);padding:17px 18px;border-radius:15px;color:#d9f7ff;margin:16px 0}
+.warning{border-color:rgba(255,189,98,.3);background:rgba(255,189,98,.075);color:#ffe8c3}
+.ok{border-color:rgba(72,224,170,.25);background:rgba(72,224,170,.06);color:#d8fff1}
+table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:15px;margin:15px 0}
+th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{color:#aeeaff;background:rgba(53,213,255,.055);font-size:.88rem} td{color:#d7e2ee;font-size:.92rem} tr:last-child td{border-bottom:0}
+.contact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.contact a{display:block;padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.contact small{display:block;color:var(--muted);margin-top:2px}
+footer{padding:44px 0 64px;color:#8498ae;font-size:.88rem}.footerline{height:1px;background:var(--line);margin-bottom:24px}
+footer .cols{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:840px){.layout{grid-template-columns:1fr}.toc{position:static}.quick{grid-template-columns:1fr}.nav{display:none}}
+@media(max-width:600px){.hero{padding-top:50px}.wrap{width:min(100% - 22px,1080px)}section.card{padding:21px}.contact{grid-template-columns:1fr}table{display:block;overflow-x:auto}}
+@media print{body{background:white;color:#111}.topbar,.toc{display:none}.layout{display:block}.wrap{width:100%}
+section.card{box-shadow:none;border:1px solid #ddd;background:#fff;break-inside:avoid}p,li,td{color:#222}h1,h2,h3{color:#000}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="wrap inner">
+<a class="brand" href="https://appsmart-technology.vercel.app/" aria-label="AppsMart Technolgy"><span class="logo" aria-hidden="true"><b>SP</b></span><span>ScreenPro</span></a>
+<nav class="nav" aria-label="Documentos legales"><a class="active" href="screenpro-politica-privacidad.html">Privacidad</a><a class="" href="screenpro-terminos-servicio.html">Términos</a><a class="" href="screenpro-aviso-legal.html">Aviso legal</a></nav>
+</div></header>
+<main class="wrap">
+<div class="hero"><div class="eyebrow"><span class="dot"></span>Privacidad, datos y publicidad</div><h1>Política de Privacidad</h1>
+<p class="subtitle">Información sobre permisos, grabaciones, almacenamiento local, publicidad, identificadores y opciones de privacidad en ScreenPro.</p>
+<div class="meta"><span class="pill">Última actualización: 18 de agosto de 2026</span><span class="pill">Desarrollador: AppsMart Technolgy</span><span class="pill">Aplicación: ScreenPro</span></div>
+</div>
+<div class="quick"><div class="q"><strong>Grabaciones locales</strong><span>El contenido creado por el usuario no se utiliza como dato publicitario.</span></div><div class="q"><strong>Publicidad transparente</strong><span>Se explica el uso de AdMob, identificadores, medición y prevención de fraude.</span></div><div class="q"><strong>Consentimiento</strong><span>Se contemplan anuncios personalizados, no personalizados o limitados según región y elección.</span></div></div>
+<div class="layout"><aside class="toc" aria-label="Índice"><h3>Contenido</h3><a href="#responsable">1. Responsable y alcance</a><a href="#datos">2. Datos, contenido y permisos</a><a href="#publicidad">3. Publicidad y datos publicitarios</a><a href="#consentimiento">4. Consentimiento y preferencias</a><a href="#uso">5. Cómo usamos la información</a><a href="#local">6. Archivos y tratamiento local</a><a href="#terceros">7. Compartición y terceros</a><a href="#conservacion">8. Conservación y eliminación</a><a href="#seguridad">9. Seguridad</a><a href="#sensibles">10. Contenido sensible</a><a href="#menores">11. Menores de edad</a><a href="#derechos">12. Controles del usuario</a><a href="#cambios">13. Cambios</a><a href="#contacto">14. Contacto</a></aside><div class="content">
+<section class="card" id="responsable"><h2>1. Responsable y alcance</h2>
+<p><strong>ScreenPro</strong> es una aplicación de grabación y captura de pantalla desarrollada por <strong>AppsMart Technolgy</strong>. Esta Política de Privacidad explica cómo la aplicación utiliza permisos del dispositivo, procesa el contenido generado por el usuario y, cuando la publicidad está habilitada, cómo pueden intervenir servicios publicitarios de terceros.</p>
+<div class="contact"><a href="mailto:support.apps.amt@gmail.com"><strong>Privacidad y soporte</strong><small>support.apps.amt@gmail.com</small></a>
+<a href="https://appsmart-technology.vercel.app/"><strong>AppsMart Technolgy</strong><small>Sitio oficial del desarrollador</small></a></div></section>
+
+<section class="card" id="datos"><h2>2. Datos, contenido y permisos</h2>
+<p>ScreenPro puede solicitar acceso a funciones necesarias para las características que el usuario decide utilizar.</p>
+<table><thead><tr><th>Acceso</th><th>Finalidad</th><th>Uso</th></tr></thead><tbody>
+<tr><td><strong>Captura o proyección de pantalla</strong></td><td>Crear grabaciones de pantalla y capturas.</td><td>Cuando el usuario inicia la función y autoriza la captura mediante Android.</td></tr>
+<tr><td><strong>Micrófono</strong></td><td>Incluir audio del micrófono.</td><td>Solo si el usuario activa esta opción y concede permiso.</td></tr>
+<tr><td><strong>Cámara</strong></td><td>Ofrecer la función de facecam.</td><td>Solo si el usuario activa facecam y concede permiso.</td></tr>
+<tr><td><strong>Notificaciones</strong></td><td>Mostrar estado y controles relacionados con la grabación.</td><td>Cuando sea necesario según la versión de Android.</td></tr>
+<tr><td><strong>Mostrar sobre otras apps</strong></td><td>Mostrar botón flotante y controles rápidos.</td><td>Solo si el usuario habilita esta capacidad especial.</td></tr>
+<tr><td><strong>Biblioteca multimedia / archivos</strong></td><td>Guardar, mostrar, reproducir, compartir, renombrar, restaurar o eliminar grabaciones y capturas.</td><td>Cuando el usuario utiliza funciones de gestión multimedia.</td></tr>
+</tbody></table>
+<div class="notice ok"><strong>Control del usuario.</strong> Un permiso puede revocarse desde Android. Si se revoca, la función asociada puede dejar de estar disponible.</div>
+</section>
+
+<section class="card" id="publicidad"><h2>3. Publicidad y datos publicitarios</h2>
+<p>ScreenPro puede mostrar anuncios para financiar el mantenimiento y desarrollo de la aplicación. Para ello puede integrar <strong>Google Mobile Ads (AdMob)</strong> y, si se configura mediación publicitaria, otros proveedores publicitarios mostrados o identificados por las herramientas de consentimiento correspondientes.</p>
+<p>Los SDK publicitarios pueden procesar información técnica o de uso para mostrar anuncios, medir su rendimiento, limitar fraude y abuso, y realizar funciones de analítica asociadas a la publicidad. Dependiendo del proveedor, configuración, región y permisos disponibles, esta información puede incluir:</p>
+<ul>
+<li>Dirección IP, que puede utilizarse para estimar una ubicación general.</li>
+<li>Interacciones con la aplicación o con anuncios, como aperturas, impresiones, clics o visualizaciones.</li>
+<li>Información de diagnóstico y rendimiento, como fallos, tiempos de carga o estabilidad.</li>
+<li>Identificadores del dispositivo o de la aplicación, incluido el identificador publicitario de Android cuando esté disponible y permitido.</li>
+<li>Información técnica básica del dispositivo, sistema operativo, idioma o configuración necesaria para servir y medir publicidad.</li>
+</ul>
+<p>La aplicación <strong>no necesita enviar las grabaciones o capturas creadas por el usuario a la red publicitaria para mostrar anuncios</strong>. Las grabaciones y capturas siguen tratándose de acuerdo con las secciones sobre almacenamiento local de esta política.</p>
+
+</section>
+
+<section class="card" id="consentimiento"><h2>4. Consentimiento, anuncios personalizados y preferencias</h2>
+<p>Cuando sea requerido por la legislación aplicable o por las políticas de los proveedores publicitarios, ScreenPro puede mostrar un mensaje de privacidad o consentimiento antes de utilizar determinadas tecnologías publicitarias.</p>
+<p>Según la región, las opciones disponibles y la elección del usuario, los anuncios pueden ser personalizados, no personalizados o limitados. Los anuncios personalizados pueden utilizar señales e identificadores permitidos para adaptar publicidad; los anuncios no personalizados o limitados reducen el uso de señales para personalización, aunque ciertos datos técnicos pueden seguir siendo necesarios para entrega, frecuencia, medición, seguridad y prevención de fraude.</p>
+<p>Cuando se utilice Google Mobile Ads, ScreenPro puede usar las herramientas de <strong>Privacy &amp; messaging / User Messaging Platform (UMP)</strong> de Google para solicitar o administrar opciones de privacidad cuando corresponda.</p>
+<p>El usuario también puede restablecer o eliminar su identificador publicitario desde los controles de privacidad de Android, cuando esa opción esté disponible en su dispositivo.</p>
+</section>
+
+<section class="card" id="uso"><h2>5. Cómo usamos la información</h2>
+<ul>
+<li>Crear grabaciones y capturas solicitadas por el usuario.</li>
+<li>Incluir audio o facecam cuando el usuario active esas opciones.</li>
+<li>Guardar y administrar archivos multimedia en el dispositivo.</li>
+<li>Mantener controles flotantes y notificaciones de grabación.</li>
+<li>Mostrar, medir y proteger la entrega de publicidad cuando la monetización esté habilitada.</li>
+<li>Responder a consultas de soporte enviadas voluntariamente al correo oficial.</li>
+</ul>
+<p>Si el usuario escribe a soporte, AppsMart Technolgy puede recibir su dirección de correo, el contenido del mensaje y los archivos que decida adjuntar para atender la consulta o reporte.</p>
+</section>
+
+<section class="card" id="local"><h2>6. Archivos y tratamiento local</h2>
+<p>Las grabaciones y capturas creadas con ScreenPro se guardan en el dispositivo mediante las capacidades de almacenamiento y biblioteca multimedia de Android.</p>
+<div class="notice"><strong>Contenido de grabación:</strong> ScreenPro no utiliza las grabaciones o capturas del usuario como datos publicitarios ni las envía automáticamente a proveedores de anuncios. El usuario decide si comparte un archivo mediante otra aplicación o servicio.</div>
+<p>ScreenPro no reclama propiedad sobre los archivos generados por el usuario.</p></section>
+
+<section class="card" id="terceros"><h2>7. Compartición y servicios de terceros</h2>
+<p>La aplicación puede compartir o permitir el tratamiento de determinados datos técnicos con proveedores publicitarios cuando sea necesario para servir, medir, personalizar cuando esté permitido, proteger o limitar fraude en los anuncios. Las prácticas de cada proveedor se rigen además por sus propias políticas.</p>
+<p><strong>Google Mobile Ads / AdMob:</strong> puede procesar información técnica y publicitaria según su configuración y las opciones de privacidad aplicables. Más información sobre las prácticas de Google puede consultarse en <a href="https://policies.google.com/privacy">la Política de Privacidad de Google</a> y en <a href="https://policies.google.com/technologies/ads">la información de Google sobre tecnologías publicitarias</a>.</p>
+<p>Cuando el usuario pulsa <em>Compartir</em> sobre una grabación o captura, Android puede mostrar aplicaciones o servicios instalados. El envío posterior depende de la elección del usuario y de la política del servicio seleccionado.</p>
+</section>
+
+<section class="card" id="conservacion"><h2>8. Conservación y eliminación</h2>
+<h3>Grabaciones y capturas</h3><p>Permanecen en el dispositivo hasta que el usuario las elimina. Desinstalar ScreenPro no garantiza la eliminación de archivos guardados por Android en ubicaciones multimedia compartidas.</p>
+<h3>Datos publicitarios</h3><p>La conservación de datos procesados por proveedores publicitarios depende del proveedor, de la configuración de la app, de las opciones de privacidad del usuario y de la legislación aplicable. El usuario puede utilizar los mecanismos de privacidad disponibles en la app, Android y los servicios correspondientes.</p>
+<h3>Comunicaciones de soporte</h3><p>Los correos enviados voluntariamente pueden conservarse durante el tiempo razonablemente necesario para responder, mantener un historial de soporte, prevenir abuso o cumplir obligaciones legales.</p>
+</section>
+
+<section class="card" id="seguridad"><h2>9. Seguridad</h2>
+<p>AppsMart Technolgy procura limitar los accesos a las funciones necesarias y utilizar mecanismos del sistema Android y conexiones seguras ofrecidas por los SDK y servicios integrados. Ningún sistema puede garantizar seguridad absoluta.</p>
+<p>El usuario debe mantener su dispositivo protegido, revisar permisos y evitar compartir contenido sensible con servicios que no considere confiables.</p>
+</section>
+
+<section class="card" id="sensibles"><h2>10. Contenido sensible y derechos de terceros</h2>
+<p>Una grabación puede incluir mensajes, imágenes, nombres, información financiera, credenciales, documentos, conversaciones o contenido protegido. El usuario es responsable de contar con las autorizaciones necesarias y de cumplir las leyes y reglas aplicables antes de grabar o compartir contenido.</p>
+<p>ScreenPro no debe utilizarse para grabar de forma encubierta, vulnerar la privacidad, eludir medidas de seguridad o infringir derechos de autor.</p></section>
+
+<section class="card" id="menores"><h2>11. Menores de edad</h2>
+<p>ScreenPro no está dirigida específicamente a menores de edad. Si la aplicación se distribuye a audiencias que incluyan menores, la configuración de publicidad, consentimiento y público objetivo deberá ajustarse a las reglas aplicables de Google Play y a la legislación correspondiente.</p>
+</section>
+
+<section class="card" id="derechos"><h2>12. Controles y derechos del usuario</h2>
+<ul>
+<li>Revocar permisos desde Ajustes de Android.</li>
+<li>Desactivar la superposición sobre otras aplicaciones.</li>
+<li>Rechazar o finalizar la autorización de captura de pantalla.</li>
+<li>Eliminar grabaciones y capturas.</li>
+<li>Restablecer o eliminar el identificador publicitario cuando Android ofrezca esa opción.</li>
+<li>Gestionar opciones de privacidad o consentimiento publicitario cuando estén disponibles.</li>
+<li>Borrar los datos locales de la app o desinstalarla.</li>
+<li>Contactar a <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a> para consultas de privacidad.</li>
+</ul></section>
+
+<section class="card" id="cambios"><h2>13. Cambios en esta política</h2>
+<p>Esta política puede actualizarse cuando cambien funciones, permisos, SDK publicitarios, proveedores, requisitos de Google Play o leyes aplicables. La fecha indicada al inicio identifica la versión vigente.</p></section>
+
+<section class="card" id="contacto"><h2>14. Contacto</h2>
+<div class="contact"><a href="mailto:support.apps.amt@gmail.com"><strong>support.apps.amt@gmail.com</strong><small>Soporte y privacidad</small></a>
+<a href="https://appsmart-technology.vercel.app/"><strong>AppsMart Technolgy</strong><small>Sitio oficial</small></a>
+<a href="https://appsem-store.vercel.app/"><strong>AppSEM Store</strong><small>Página de aplicaciones</small></a></div></section>
+</div></div>
+</main>
+<footer><div class="wrap"><div class="footerline"></div><div class="cols">
+<div>© 2026 AppsMart Technolgy. Documentos legales de ScreenPro.</div>
+<div><a href="https://appsmart-technology.vercel.app/">Sitio del desarrollador</a> · <a href="https://appsem-store.vercel.app/">AppSEM Store</a> · <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a></div>
+</div></div></footer>
+</body></html>
