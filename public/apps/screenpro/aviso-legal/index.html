@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07101d">
+<meta name="description" content="Aviso Legal de ScreenPro, desarrollada por AppsMart Technolgy.">
+<title>Aviso Legal | ScreenPro</title>
+<style>
+:root{
+  --bg:#07101d;--bg2:#0b1730;--card:rgba(15,28,50,.86);--text:#eef7ff;
+  --muted:#a9b9cc;--line:rgba(116,205,255,.18);--cyan:#35d5ff;--blue:#4d7cff;
+  --red:#ff4d5e;--green:#48e0aa;--amber:#ffbd62;--shadow:0 22px 70px rgba(0,0,0,.34);
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);line-height:1.68;
+  background:
+    radial-gradient(circle at 14% 2%,rgba(53,213,255,.12),transparent 27rem),
+    radial-gradient(circle at 88% 12%,rgba(77,124,255,.14),transparent 30rem),
+    linear-gradient(180deg,var(--bg2),var(--bg) 35%,#050b14);
+}
+a{color:#7fddff;text-decoration:none} a:hover{text-decoration:underline}
+.wrap{width:min(1080px,calc(100% - 34px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);background:rgba(7,16,29,.82);backdrop-filter:blur(16px)}
+.topbar .inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#14325f,#09182d);
+  border:1px solid rgba(92,211,255,.34);box-shadow:inset 0 0 22px rgba(53,213,255,.1),0 8px 28px rgba(0,0,0,.25)}
+.logo b{font-size:17px;background:linear-gradient(135deg,#fff,#35d5ff 55%,#4d7cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav{display:flex;flex-wrap:wrap;gap:7px}.nav a{padding:8px 11px;border-radius:10px;color:#c9d7e7;font-size:.89rem}
+.nav a:hover,.nav a.active{background:rgba(53,213,255,.09);color:#fff;text-decoration:none}
+.hero{padding:72px 0 38px}.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.84rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9de9ff}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 18px rgba(255,77,94,.75)}
+h1{font-size:clamp(2.25rem,6vw,4.35rem);line-height:1.02;margin:15px 0 16px;letter-spacing:-.045em}
+.subtitle{max-width:800px;color:var(--muted);font-size:1.08rem;margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.pill{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);color:#c7d9e9;font-size:.88rem}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 44px}
+.quick .q{padding:20px;border:1px solid var(--line);border-radius:18px;background:rgba(14,28,49,.68);box-shadow:var(--shadow)}
+.q strong{display:block;margin-bottom:5px}.q span{color:var(--muted);font-size:.94rem}
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.toc{position:sticky;top:94px;padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(10,23,42,.72)}
+.toc h3{font-size:.9rem;margin:0 0 11px;text-transform:uppercase;letter-spacing:.08em;color:#96a9bd}
+.toc a{display:block;padding:7px 9px;border-radius:9px;color:#b9c9da;font-size:.91rem}
+.toc a:hover{background:rgba(53,213,255,.07);color:#fff;text-decoration:none}
+.content{min-width:0} section.card{scroll-margin-top:96px;padding:29px;margin:0 0 18px;border-radius:22px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(16,31,54,.86),rgba(11,23,41,.82));box-shadow:var(--shadow)}
+h2{font-size:1.45rem;margin:0 0 15px;letter-spacing:-.02em} h3{font-size:1.02rem;margin:25px 0 9px}
+p{margin:10px 0;color:#d7e2ee} ul{padding-left:22px;margin:10px 0;color:#d7e2ee} li{margin:7px 0}
+.notice{border:1px solid rgba(53,213,255,.25);background:rgba(53,213,255,.06);padding:17px 18px;border-radius:15px;color:#d9f7ff;margin:16px 0}
+.warning{border-color:rgba(255,189,98,.3);background:rgba(255,189,98,.075);color:#ffe8c3}
+.ok{border-color:rgba(72,224,170,.25);background:rgba(72,224,170,.06);color:#d8fff1}
+table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid var(--line);border-radius:15px;margin:15px 0}
+th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{color:#aeeaff;background:rgba(53,213,255,.055);font-size:.88rem} td{color:#d7e2ee;font-size:.92rem} tr:last-child td{border-bottom:0}
+.contact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.contact a{display:block;padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.contact small{display:block;color:var(--muted);margin-top:2px}
+footer{padding:44px 0 64px;color:#8498ae;font-size:.88rem}.footerline{height:1px;background:var(--line);margin-bottom:24px}
+footer .cols{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:840px){.layout{grid-template-columns:1fr}.toc{position:static}.quick{grid-template-columns:1fr}.nav{display:none}}
+@media(max-width:600px){.hero{padding-top:50px}.wrap{width:min(100% - 22px,1080px)}section.card{padding:21px}.contact{grid-template-columns:1fr}table{display:block;overflow-x:auto}}
+@media print{body{background:white;color:#111}.topbar,.toc{display:none}.layout{display:block}.wrap{width:100%}
+section.card{box-shadow:none;border:1px solid #ddd;background:#fff;break-inside:avoid}p,li,td{color:#222}h1,h2,h3{color:#000}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="wrap inner">
+<a class="brand" href="https://appsmart-technology.vercel.app/" aria-label="AppsMart Technolgy"><span class="logo" aria-hidden="true"><b>SP</b></span><span>ScreenPro</span></a>
+<nav class="nav" aria-label="Documentos legales"><a class="" href="screenpro-politica-privacidad.html">Privacidad</a><a class="" href="screenpro-terminos-servicio.html">Términos</a><a class="active" href="screenpro-aviso-legal.html">Aviso legal</a></nav>
+</div></header>
+<main class="wrap">
+<div class="hero"><div class="eyebrow"><span class="dot"></span>Información legal</div><h1>Aviso Legal</h1>
+<p class="subtitle">Titularidad, finalidad, publicidad, permisos, propiedad intelectual y responsabilidades relacionadas con ScreenPro.</p>
+<div class="meta"><span class="pill">Última actualización: 18 de agosto de 2026</span><span class="pill">Desarrollador: AppsMart Technolgy</span><span class="pill">Aplicación: ScreenPro</span></div>
+</div>
+<div class="quick"><div class="q"><strong>Titular</strong><span>AppsMart Technolgy figura como desarrollador.</span></div><div class="q"><strong>Publicidad externa</strong><span>Se aclara que los anuncios pueden proceder de redes de terceros.</span></div><div class="q"><strong>Captura responsable</strong><span>El usuario debe respetar privacidad y derechos sobre el contenido grabado.</span></div></div>
+<div class="layout"><aside class="toc" aria-label="Índice"><h3>Contenido</h3><a href="#titular">1. Titular y contacto</a><a href="#finalidad">2. Finalidad</a><a href="#publicidad">3. Publicidad</a><a href="#informativo">4. Alcance</a><a href="#propiedad">5. Propiedad intelectual</a><a href="#usuario">6. Responsabilidad</a><a href="#permisos">7. Permisos</a><a href="#enlaces">8. Servicios externos</a><a href="#garantias">9. Disponibilidad</a><a href="#marcas">10. Marcas</a><a href="#privacidad">11. Privacidad</a><a href="#cambios">12. Modificaciones</a><a href="#contacto">13. Contacto</a></aside><div class="content">
+<section class="card" id="titular"><h2>1. Titular y contacto</h2>
+<p>Este Aviso Legal corresponde a <strong>ScreenPro</strong>, aplicación desarrollada y publicada bajo la marca <strong>AppsMart Technolgy</strong>.</p>
+<div class="contact"><a href="https://appsmart-technology.vercel.app/"><strong>AppsMart Technolgy</strong><small>https://appsmart-technology.vercel.app/</small></a>
+<a href="https://appsem-store.vercel.app/"><strong>AppSEM Store</strong><small>https://appsem-store.vercel.app/</small></a>
+<a href="mailto:support.apps.amt@gmail.com"><strong>support.apps.amt@gmail.com</strong><small>Contacto oficial</small></a></div></section>
+
+<section class="card" id="finalidad"><h2>2. Finalidad de la aplicación</h2>
+<p>ScreenPro es una utilidad destinada a grabación de pantalla, capturas, audio opcional, facecam, controles flotantes y gestión local de archivos multimedia.</p></section>
+
+<section class="card" id="publicidad"><h2>3. Publicidad</h2>
+<p>ScreenPro puede financiarse total o parcialmente mediante publicidad proporcionada por terceros, incluido Google Mobile Ads (AdMob), y mediante proveedores de mediación que puedan habilitarse en la aplicación.</p>
+<p>Los anuncios son servidos por plataformas externas y pueden basarse en información técnica, contexto, región y, cuando corresponda legalmente y el usuario lo permita, señales utilizadas para personalización. Las opciones de privacidad se describen en la Política de Privacidad.</p>
+<p>AppsMart Technolgy no controla individualmente cada anuncio ni se hace responsable del contenido, ofertas, sitios web, productos o servicios de anunciantes externos, sin perjuicio de las obligaciones que no puedan excluirse por ley.</p></section>
+
+<section class="card" id="informativo"><h2>4. Alcance del aviso</h2>
+<p>Este documento describe condiciones generales relacionadas con titularidad, uso y responsabilidades de ScreenPro. No constituye asesoramiento jurídico individual.</p></section>
+
+<section class="card" id="propiedad"><h2>5. Propiedad intelectual</h2>
+<p>Los elementos propios de ScreenPro, incluyendo código, interfaz, diseño, gráficos, iconos, documentación e identidad visual, pertenecen a AppsMart Technolgy o a sus licenciantes y están protegidos por las normas aplicables.</p></section>
+
+<section class="card" id="usuario"><h2>6. Responsabilidad del usuario</h2>
+<p>El usuario es responsable del contenido que graba, captura, guarda o comparte y debe respetar privacidad, protección de datos, derechos de imagen, propiedad intelectual, confidencialidad y condiciones de servicios de terceros.</p>
+<div class="notice warning"><strong>ScreenPro no autoriza la grabación de contenido por el mero hecho de facilitar técnicamente la captura de pantalla.</strong></div></section>
+
+<section class="card" id="permisos"><h2>7. Permisos y compatibilidad</h2>
+<p>ScreenPro puede requerir permisos o autorizaciones de Android para captura, micrófono, cámara, notificaciones, superposición y archivos multimedia. El usuario puede revocarlos desde los ajustes del dispositivo.</p>
+<p>La superposición sobre otras aplicaciones se utiliza para controles de grabación y no debe emplearse para mostrar anuncios de forma que interfiera con la experiencia del sistema u otras aplicaciones.</p></section>
+
+<section class="card" id="enlaces"><h2>8. Enlaces y servicios externos</h2>
+<p>Los sitios, redes publicitarias y servicios externos tienen sus propias condiciones y políticas. AppsMart Technolgy recomienda revisarlas antes de proporcionar información o completar transacciones con terceros.</p></section>
+
+<section class="card" id="garantias"><h2>9. Disponibilidad y responsabilidad</h2>
+<p>AppsMart Technolgy procura mantener ScreenPro funcional y actualizada, pero no garantiza servicio ininterrumpido, compatibilidad con todos los dispositivos ni la finalización de todas las grabaciones en cualquier circunstancia.</p></section>
+
+<section class="card" id="marcas"><h2>10. Marcas y referencias a terceros</h2>
+<p>Los nombres, marcas y logotipos de terceros pertenecen a sus respectivos titulares. Las referencias a Android, Google Play, Google Mobile Ads o AdMob se utilizan para identificar compatibilidad, distribución o servicios integrados.</p></section>
+
+<section class="card" id="privacidad"><h2>11. Privacidad</h2>
+<p>El uso de permisos, tratamiento local de grabaciones y funcionamiento de la publicidad se explica en la <a href="screenpro-politica-privacidad.html">Política de Privacidad de ScreenPro</a>.</p></section>
+
+<section class="card" id="cambios"><h2>12. Modificaciones</h2>
+<p>AppsMart Technolgy puede actualizar este Aviso Legal para reflejar cambios en la aplicación, proveedores publicitarios, requisitos de distribución o normas aplicables.</p></section>
+
+<section class="card" id="contacto"><h2>13. Contacto</h2>
+<div class="contact"><a href="mailto:support.apps.amt@gmail.com"><strong>support.apps.amt@gmail.com</strong><small>Correo oficial</small></a>
+<a href="https://appsmart-technology.vercel.app/"><strong>AppsMart Technolgy</strong><small>Sitio del desarrollador</small></a>
+<a href="https://appsem-store.vercel.app/"><strong>AppSEM Store</strong><small>Página de aplicaciones</small></a></div></section>
+</div></div>
+</main>
+<footer><div class="wrap"><div class="footerline"></div><div class="cols">
+<div>© 2026 AppsMart Technolgy. Documentos legales de ScreenPro.</div>
+<div><a href="https://appsmart-technology.vercel.app/">Sitio del desarrollador</a> · <a href="https://appsem-store.vercel.app/">AppSEM Store</a> · <a href="mailto:support.apps.amt@gmail.com">support.apps.amt@gmail.com</a></div>
+</div></div></footer>
+</body></html>
