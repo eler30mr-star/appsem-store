@@ -110,8 +110,7 @@ export function createTurnstileProbeHandler({
       return reply(res, 413, { error: 'Solicitud demasiado grande.' });
     }
     const token = req.body?.token;
-    if (typeof token !== 'string' || token.length < 10 || token.length > 2048 ||
-        !/^[a-zA-Z0-9._-]+$/.test(token)) {
+    if (typeof token !== 'string' || token.length < 10 || token.length > 2048) {
       return reply(res, 400, { error: 'Token no válido.' });
     }
     const forwarded = req.headers['x-vercel-forwarded-for'];
