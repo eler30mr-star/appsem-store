@@ -8,6 +8,7 @@ export default function CommentSection({
   comments = [],
   onCommentSent,
   rated,
+  ratingPending = false,
   onRate,
   interactionMessage
 }) {
@@ -40,7 +41,7 @@ export default function CommentSection({
       </div>
 
       <div className="app-review-rating">
-        <RatingStars value={rated || 0} interactive={!rated} onRate={onRate} size={28} />
+        <RatingStars value={rated || 0} interactive={!rated && !ratingPending} onRate={onRate} size={28} />
         {interactionMessage ? <p className="form-message">{interactionMessage}</p> : null}
       </div>
 

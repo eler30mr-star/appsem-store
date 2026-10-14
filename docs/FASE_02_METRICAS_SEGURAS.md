@@ -91,3 +91,11 @@ Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Ver
 - Prueba realizada el 14/10/2026 en el dominio canónico: el navegador mostró **«Verificación real aprobada. Firebase no se modificó.»**; este mensaje únicamente se muestra después de un HTTP 200 del servidor tras Siteverify positivo.
 - Después del éxito, la variable `PHASE2_TURNSTILE_PROBE_ENABLED` se fijó en `false` para nuevos despliegues y se retiraron los archivos `api/turnstile-probe.js`, `public/turnstile-probe.js` y la suite de prueba temporal. El cierre efectivo de la ruta requiere comprobar el despliegue limpio.
 - Ninguna regla Firestore se publicó y `METRICS_BACKEND_ENABLED` / `VITE_METRICS_BACKEND` permanecieron sin activar. Aún falta coordinar la migración cliente-reglas y el plan de reversión.
+
+## Preparación cliente para cambio controlado (14/10/2026)
+
+- Identificado y corregido un bloqueo de navegación: Turnstile introduce una operación asíncrona, así que abrir la pestaña de descarga tras `await` puede ser bloqueado por el navegador. En **modo seguro solamente**, una vez registrado el clic se presenta un enlace HTTPS explícito `Abrir descarga` para un segundo gesto de usuario. Si la métrica falla, el catálogo mantiene el enlace válido disponible sin falsificar contadores. El flujo heredado no se modifica hasta el corte.
+- Likes y rating bloquean clics simultáneos mientras se resuelve la verificación; los errores vuelven a habilitar los controles.
+- Si la consulta de comentarios o de estado de visitante falla, se mantiene la ficha publicada y su enlace de descarga en lugar de marcar toda la aplicación como fallida. No se concede una valoración ficticia ni un like en caso de error.
+- El enlace externo se valida con HTTPS y sin usuario, clave, destinos de loopback ni puertos especiales.
+- **Este cambio NO activa `VITE_METRICS_BACKEND=server`**, no aplica reglas productivas y no introduce escritura nueva. Antes de abrir la Fase 2 a visitantes: E2E con Firestore Emulator, pruebas en navegador de flujo de descarga y preparación del corte de reglas con reversión y clientes antiguos.

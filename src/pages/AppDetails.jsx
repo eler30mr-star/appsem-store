@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   ArrowLeft,
@@ -11,6 +11,8 @@ import {
   Shield
 } from "lucide-react";
 import AppCard from "../components/AppCard";
+import { useVerifiedMetrics } from "../services/verifiedInteractions";
+import { validatedDownloadUrl } from "../services/safeDownloadUrl";
 import CommentSection from "../components/CommentSection";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
@@ -54,6 +56,12 @@ export default function AppDetails() {
   const [error, setError] = useState("");
   const [liked, setLiked] = useState(false);
   const [rated, setRated] = useState(null);
+  const [interactionPending, setInteractionPending] = useState(false);
+  const [downloadPending, setDownloadPending] = useState(false);
+  const [downloadReady, setDownloadReady] = useState("");
+  const [downloadMessage, setDownloadMessage] = useState("");
+  const interactionPendingRef = useRef(false);
+  const downloadPendingRef = useRef(false);
   const [interactionMessage, setInteractionMessage] = useState("");
   const [aboutExpanded, setAboutExpanded] = useState(false);
 
@@ -63,6 +71,11 @@ export default function AppDetails() {
     async function loadApp() {
       setLoading(true);
       setError("");
+      setDownloadReady("");
+      setDownloadMessage("");
+      setLiked(false);
+      setRated(null);
+      setInteractionMessage("");
 
       try {
         const [data, publishedApps] = await Promise.all([
@@ -75,14 +88,20 @@ export default function AppDetails() {
         setAllApps(publishedApps || []);
 
         if (data) {
-          const [publicComments, interaction] = await Promise.all([
+          // Métricas y comentarios son secundarios: si falla la API en el
+          // despliegue coordinado, el catálogo y los enlaces siguen accesibles.
+          const [commentResult, interactionResult] = await Promise.allSettled([
             getApprovedComments(data.id),
             checkUserInteraction(data.id)
           ]);
           if (!alive) return;
-          setComments(publicComments);
-          setLiked(interaction.liked);
-          setRated(interaction.rated);
+          setComments(commentResult.status === "fulfilled" ? commentResult.value : []);
+          if (interactionResult.status === "fulfilled") {
+            setLiked(Boolean(interactionResult.value.liked));
+            setRated(interactionResult.value.rated ?? null);
+          } else {
+            setInteractionMessage("No se pudo consultar tu valoración anterior. Puedes seguir navegando.");
+          }
         }
       } catch (err) {
         console.error(err);
@@ -109,7 +128,9 @@ export default function AppDetails() {
   }, [allApps, app]);
 
   async function handleLike() {
-    if (!app || liked) return;
+    if (!app || liked || interactionPendingRef.current) return;
+    interactionPendingRef.current = true;
+    setInteractionPending(true);
     setInteractionMessage("");
     try {
       const result = await likeApp(app.id);
@@ -124,11 +145,16 @@ export default function AppDetails() {
     } catch (err) {
       console.error(err);
       setInteractionMessage("No se pudo registrar el me gusta.");
+    } finally {
+      interactionPendingRef.current = false;
+      setInteractionPending(false);
     }
   }
 
   async function handleRate(value) {
-    if (!app || rated) return;
+    if (!app || rated || interactionPendingRef.current) return;
+    interactionPendingRef.current = true;
+    setInteractionPending(true);
     setInteractionMessage("");
     try {
       const result = await submitRating(app.id, value);
@@ -147,20 +173,54 @@ export default function AppDetails() {
     } catch (err) {
       console.error(err);
       setInteractionMessage("No se pudo guardar la valoración.");
+    } finally {
+      interactionPendingRef.current = false;
+      setInteractionPending(false);
     }
   }
 
   async function openDownload(url) {
-    if (!url || !app) return;
+    if (!url || !app || downloadPendingRef.current) return;
+    if (!useVerifiedMetrics) {
+      // No cambiar el comportamiento heredado hasta el corte coordinado.
+      try {
+        const tracked = await registerDownloadClick(app, url);
+        if (!tracked?.alreadyRecorded) {
+          setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      return;
+    }
+
+    // Una verificación Turnstile asíncrona pierde el gesto de usuario para window.open.
+    // Ofrecer el enlace en un segundo clic evita bloqueos emergentes.
+    const safeUrl = validatedDownloadUrl(url);
+    if (!safeUrl) {
+      setDownloadMessage("El enlace oficial no es una URL HTTPS válida.");
+      return;
+    }
+    downloadPendingRef.current = true;
+    setDownloadPending(true);
+    setDownloadReady("");
+    setDownloadMessage("Verificando la descarga...");
     try {
       const tracked = await registerDownloadClick(app, url);
       if (!tracked?.alreadyRecorded) {
         setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
       }
+      setDownloadMessage("Verificación completada. Pulsa «Abrir descarga» para continuar.");
     } catch (err) {
       console.error(err);
+      // El enlace oficial puede seguir accesible aunque las métricas fallen.
+      setDownloadMessage("No se pudo registrar el clic. Puedes abrir la descarga oficial igualmente.");
     } finally {
-      window.open(url, "_blank", "noopener,noreferrer");
+      setDownloadReady(safeUrl);
+      setDownloadPending(false);
+      downloadPendingRef.current = false;
     }
   }
 
@@ -259,16 +319,27 @@ export default function AppDetails() {
       <section className="container detail-layout">
         <div className="detail-main">
           <div className="app-download-actions" aria-label="Opciones de descarga">
-            <button className="app-direct-download" onClick={() => openDownload(directDownloadUrl)} disabled={!directDownloadUrl} type="button">
+            <button className="app-direct-download" onClick={() => openDownload(directDownloadUrl)} disabled={!directDownloadUrl || downloadPending} type="button">
               <Download size={19} /> Descargar
             </button>
-            <button className="app-play-store-button" onClick={() => openDownload(app.playStoreUrl)} disabled={!app.playStoreUrl} type="button">
+            <button className="app-play-store-button" onClick={() => openDownload(app.playStoreUrl)} disabled={!app.playStoreUrl || downloadPending} type="button">
               <span className="play-store-mark" aria-hidden="true">▶</span> Google Play
             </button>
-            <button className={`app-like-button ${liked ? "active" : ""}`} onClick={handleLike} disabled={liked} type="button">
+            <button className={`app-like-button ${liked ? "active" : ""}`} onClick={handleLike} disabled={liked || interactionPending} type="button">
               <Heart size={19} fill={liked ? "currentColor" : "none"} /> {liked ? "Te gusta" : "Me gusta"}
             </button>
           </div>
+
+          {useVerifiedMetrics && downloadMessage ? (
+            <div className="form-message" role="status">
+              <p>{downloadMessage}</p>
+              {downloadReady ? (
+                <a className="app-direct-download" href={downloadReady} target="_blank" rel="noopener noreferrer">
+                  <Download size={19} /> Abrir descarga
+                </a>
+              ) : null}
+            </div>
+          ) : null}
 
           {app.apkUrl || app.downloadUrl ? (
             <p className="muted-text">Descarga oficial proporcionada por {app.developer || "AppsMart Technology"}. Verifica la versión y el origen antes de instalar.</p>
@@ -331,6 +402,7 @@ export default function AppDetails() {
             comments={comments}
             onCommentSent={reloadComments}
             rated={rated}
+            ratingPending={interactionPending}
             onRate={handleRate}
             interactionMessage={interactionMessage}
           />
