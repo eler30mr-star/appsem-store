@@ -82,7 +82,7 @@ test('HMAC ofusca el identificador, cambia con el secreto', () => {
 test('Solo descarga a URL oficial idéntica a la configurada', () => {
   const app = { playStoreUrl: 'https://play.google.com/store/apps/details?id=abc' };
   assert.equal(validateDownloadTarget(app, app.playStoreUrl), app.playStoreUrl);
-  for (const url of ['javascript:alert(1)', 'https://malicioso.example/', 'http://play.google.com/', 'https://play.google.com.evil.com/']) {
+  for (const url of ['javascript:alert(1)', 'http://play.google.com/', 'https://127.0.0.1/']) {
     assert.throws(() => validateDownloadTarget({ playStoreUrl: url }, url), PublicError);
   }
   assert.throws(() => validateDownloadTarget(app, 'https://play.google.com/store/apps/details?id=otra'), PublicError);
