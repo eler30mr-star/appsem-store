@@ -79,3 +79,14 @@ El build de la tienda ejecuta `scripts/check-phase2-live-readiness.mjs`, pero ú
 Precisión: un rechazo correcto de token falso demuestra conexión con Cloudflare y procesamiento de esa solicitud, **no equivale a demostrar que un token legítimo de usuario pasa**. Ese ensayo positivo, el comportamiento real de la interfaz y la coordinación con reglas nuevas siguen pendientes.
 
 Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Vercel para disparar una compilación controlada; al terminar, cambiar su valor a `false`. La prueba de GitHub Actions no utiliza claves reales. Prohibido publicar claves o copiar JSON privado en los logs.
+
+## Prueba temporal POSITIVA del desafío Turnstile (sin tocar Firestore)
+
+- Función Vercel temporal: GET y POST en `/api/turnstile-probe`.
+- Por defecto devuelve 404; solo se abre con `PHASE2_TURNSTILE_PROBE_ENABLED=true` en Production y en el dominio canónico `appsem-store.vercel.app`.
+- GET sirve una página con la sitekey pública, los encabezados CSP existentes y un JavaScript externo en `public/turnstile-probe.js`; nunca entrega la Secret Key.
+- El visitante inicia el widget con `action: appsem-metrics`. POST exige Origin exacto, JSON pequeño, IP de Vercel, límite temporal por IP y llama a `server/verifyTurnstile.js`.
+- Solo muestra aprobación cuando Cloudflare confirma `success`, `hostname` y `action`. El endpoint no importa Firebase ni modifica métricas, comentarios o documentos.
+- El límite IP es por instancia, disuasorio y no sirve como defensa global permanente. El probe está previsto solo para una ventana breve.
+- Después de CI aprobado: poner temporalmente la variable en Vercel Production, desplegar y abrir `https://appsem-store.vercel.app/api/turnstile-probe` para completar el desafío.
+- Tras concluir: desactivar la variable, retirar la función temporal y el JS, desplegar limpieza. Solo entonces continuar con la migración de métricas y reglas Firestore.
