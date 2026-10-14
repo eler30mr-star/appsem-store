@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/check-metrics-env.mjs && vite build && node scripts/postbuild.mjs",
+    "build": "node scripts/check-metrics-env.mjs && node scripts/check-phase2-live-readiness.mjs && vite build && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "check": "npm run lint && npm run build",
