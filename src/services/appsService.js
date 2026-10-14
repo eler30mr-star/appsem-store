@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { getClientId } from "./clientId";
+import { useVerifiedMetrics, verifiedInteraction, verifiedInteractionStatus } from "./verifiedInteractions";
 
 const appsCollection = collection(db, "apps");
 
@@ -79,6 +80,10 @@ export async function getAppBySlug(slug) {
 }
 
 export async function likeApp(appId) {
+  if (useVerifiedMetrics) {
+    const output = await verifiedInteraction('like', appId);
+    return { alreadyLiked: output.alreadyRecorded };
+  }
   const clientId = getClientId();
   const appRef = doc(db, "apps", appId);
   const likeRef = doc(db, "apps", appId, "likes", clientId);
@@ -98,6 +103,11 @@ export async function likeApp(appId) {
 }
 
 export async function submitRating(appId, rating) {
+  if (useVerifiedMetrics) {
+    const output = await verifiedInteraction('rating', appId, { rating });
+    return { alreadyRated: output.alreadyRecorded, ratingAverage: output.ratingAverage,
+      ratingCount: output.ratingCount, rating: output.rating };
+  }
   const safeRating = Math.max(1, Math.min(5, Number(rating)));
   const clientId = getClientId();
   const appRef = doc(db, "apps", appId);
@@ -128,6 +138,9 @@ export async function submitRating(appId, rating) {
 }
 
 export async function registerDownloadClick(app, targetUrl) {
+  if (useVerifiedMetrics) {
+    return verifiedInteraction('download', app.id, { targetUrl: targetUrl || app.playStoreUrl || app.downloadUrl || app.apkUrl });
+  }
   const appRef = doc(db, "apps", app.id);
   const clickRef = doc(collection(db, "apps", app.id, "downloadClicks"));
   const batch = writeBatch(db);
@@ -172,6 +185,7 @@ export async function getApprovedComments(appId) {
 }
 
 export async function checkUserInteraction(appId) {
+  if (useVerifiedMetrics) return verifiedInteractionStatus(appId);
   const clientId = getClientId();
   const [likeSnapshot, ratingSnapshot] = await Promise.all([
     getDoc(doc(db, "apps", appId, "likes", clientId)),

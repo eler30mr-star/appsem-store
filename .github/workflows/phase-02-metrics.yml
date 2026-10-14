@@ -1,0 +1,37 @@
+name: "Fase 2 - API y seguridad de métricas"
+on:
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - "server/**"
+      - "src/services/**"
+      - "src/pages/AppDetails.jsx"
+      - "tests/**"
+      - "package.json"
+      - "vercel.json"
+      - ".github/workflows/phase-02-metrics.yml"
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Dependencias sin credenciales de producción
+        run: npm install --no-audit --no-fund
+      - name: Casos de integridad del backend
+        run: npm run test:security
+      - name: Comprobar ESLint
+        run: npm run lint
+      - name: Compilar Vite sin ejecutar prerender remoto
+        run: npx vite build
+# No establece ni utiliza secrets Firebase, ni realiza deploy.

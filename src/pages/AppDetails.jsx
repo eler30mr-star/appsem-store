@@ -133,7 +133,7 @@ export default function AppDetails() {
     try {
       const result = await submitRating(app.id, value);
       if (result.alreadyRated) {
-        setRated(value);
+        setRated(result.rating ?? value);
         setInteractionMessage("Ya valoraste esta app anteriormente.");
         return;
       }
@@ -153,8 +153,10 @@ export default function AppDetails() {
   async function openDownload(url) {
     if (!url || !app) return;
     try {
-      await registerDownloadClick(app);
-      setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
+      const tracked = await registerDownloadClick(app, url);
+      if (!tracked?.alreadyRecorded) {
+        setApp((current) => ({ ...current, downloadsCount: Number(current.downloadsCount || 0) + 1 }));
+      }
     } catch (err) {
       console.error(err);
     } finally {

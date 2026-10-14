@@ -8,14 +8,16 @@
     "build": "vite build && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
-    "check": "npm run lint && npm run build"
+    "check": "npm run lint && npm run build",
+    "test:security": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "firebase": "10.14.1",
     "lucide-react": "0.468.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router-dom": "6.30.1"
+    "react-router-dom": "6.30.1",
+    "firebase-admin": "12.7.0"
   },
   "devDependencies": {
     "@eslint/js": "9.17.0",
