@@ -28,6 +28,8 @@ jobs:
           node-version: "22"
       - name: Dependencias sin credenciales de producción
         run: npm install --no-audit --no-fund
+      - name: Validar protección de configuración de despliegue
+        run: npm run check:metrics-env
       - name: Casos de integridad del backend
         run: npm run test:security
       - name: Comprobar ESLint

@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/postbuild.mjs",
+    "build": "node scripts/check-metrics-env.mjs && vite build && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "check": "npm run lint && npm run build",
-    "test:security": "node --test tests/*.test.mjs"
+    "test:security": "node --test tests/*.test.mjs",
+    "check:metrics-env": "node scripts/check-metrics-env.mjs"
   },
   "dependencies": {
     "firebase": "10.14.1",
