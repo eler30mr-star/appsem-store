@@ -25,7 +25,7 @@ if (process.env.PHASE2_READINESS_CHECK !== 'true') {
     console.info('PASS PHASE2 FIREBASE: cuenta de servicio autenticada; lectura autorizada sin mostrar datos.');
     console.info('PASS PHASE2 TURNSTILE: Siteverify remoto rechaza token falso con error esperado.');
     console.info('PENDIENTE: verificar desafío real válido antes de activar el backend.');
-  } catch (error) {
+  } catch {
     // No mostrar mensajes de las SDK remotas porque podrían contener detalles privados.
     console.error('FAIL PHASE2 READINESS: fallo de autenticación/lectura o comprobación anti-bot.');
     process.exitCode = 1;
