@@ -122,6 +122,9 @@ export async function recordInteraction({ db, FieldValue, payload, ip, secret, n
       throw new PublicError(404, 'La aplicación no está publicada.');
     }
     const app = appSnapshot.data();
+    // La validación del enlace debe ocurrir ANTES de deduplicar:
+    // un registro previo no puede convertir una URL falsificada en éxito.
+    const verifiedTarget = action === 'download' ? validateDownloadTarget(app, targetUrl) : null;
     if (eventSnapshot.exists || legacySnapshot?.exists) {
       const existing = eventSnapshot.exists ? eventSnapshot : legacySnapshot;
       return { alreadyRecorded: true, action, ...(action === 'rating' ? { rating: existing.data().rating } : {}) };
@@ -140,8 +143,7 @@ export async function recordInteraction({ db, FieldValue, payload, ip, secret, n
       document = { rating, createdAt: serverTime };
       update = { ...nextRating(app, rating), metricsUpdatedAt: serverTime };
     } else {
-      const url = validateDownloadTarget(app, targetUrl);
-      document = { targetUrl: url, createdAt: serverTime };
+      document = { targetUrl: verifiedTarget, createdAt: serverTime };
       update = { downloadsCount: FieldValue.increment(1), metricsUpdatedAt: serverTime };
     }
     tx.create(eventRef, document);
