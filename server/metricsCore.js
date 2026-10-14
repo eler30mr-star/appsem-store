@@ -212,16 +212,18 @@ export async function getInteractionStatus({ db, appId, visitorId, secret }) {
     throw new PublicError(400, 'Identificador inválido.');
   }
   const actor = keyedHash(secret, 'visitor', visitorId);
-  const [app, like, legacyLike, rating, legacyRating] = await Promise.all([
-    db.doc('apps/' + appId).get(),
+  // Comprobar la app antes de consultar cuatro registros de eventos.
+  // Una ID inexistente/no publicada consume solo 1 lectura y no revela actividad.
+  const app = await db.doc('apps/' + appId).get();
+  if (!app.exists || app.data().status !== 'published') {
+    throw new PublicError(404, 'Aplicación no publicada.');
+  }
+  const [like, legacyLike, rating, legacyRating] = await Promise.all([
     db.doc('apps/' + appId + '/likes/' + actor).get(),
     db.doc('apps/' + appId + '/likes/' + visitorId).get(),
     db.doc('apps/' + appId + '/ratings/' + actor).get(),
     db.doc('apps/' + appId + '/ratings/' + visitorId).get()
   ]);
-  if (!app.exists || app.data().status !== 'published') {
-    throw new PublicError(404, 'Aplicación no publicada.');
-  }
   return { liked: like.exists || legacyLike.exists,
     rated: rating.exists ? rating.data().rating : legacyRating.exists ? legacyRating.data().rating : null };
 }
