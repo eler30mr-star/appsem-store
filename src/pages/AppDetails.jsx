@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import AppCard from "../components/AppCard";
 import { useVerifiedMetrics } from "../services/verifiedInteractions";
+import { validatedDownloadUrl } from "../services/safeDownloadUrl";
 import CommentSection from "../components/CommentSection";
 import EmptyState from "../components/EmptyState";
 import LoadingState from "../components/LoadingState";
@@ -30,16 +31,6 @@ import {
 } from "../services/appsService";
 
 const fallbackIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231e293b'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='34' font-weight='700' fill='white'%3EAS%3C/text%3E%3C/svg%3E";
-
-function validatedDownloadUrl(value) {
-  try {
-    const url = new URL(value);
-    if (url.protocol !== "https:" || url.username || url.password) return null;
-    return url.href;
-  } catch {
-    return null;
-  }
-}
 
 function formatNumber(value) {
   return new Intl.NumberFormat("es-PE", {
