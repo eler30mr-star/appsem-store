@@ -157,3 +157,25 @@ test('Límite por IP/bucket bloquea envío de identidades arbitrarias adicionale
     payload: { ...sample, visitorId: 'identity-xxxxxxxxxxxx' }, ip: '198.51.100.30', secret, now: 1700000000000
   }), err => err instanceof PublicError && err.status === 429);
 });
+
+
+test('Compatibilidad de eventos heredados: no se duplican likes/ratings antiguos', async () => {
+  const { db, docs, FieldValue } = mockDb();
+  docs.set('apps/testapp/likes/' + visitorId, { createdAt: new Date() });
+  docs.set('apps/testapp/ratings/' + visitorId, { rating: 3, createdAt: new Date() });
+  const baseline = new Date('2026-10-14T00:00:00Z').getTime();
+  const like = await recordInteraction({
+    db, FieldValue, payload: sample, ip: '198.51.100.98', secret, now: baseline
+  });
+  const rating = await recordInteraction({
+    db, FieldValue, payload: { ...sample, action: 'rating', rating: 5 },
+    ip: '198.51.100.98', secret, now: baseline
+  });
+  assert.equal(like.alreadyRecorded, true);
+  assert.deepEqual({ alreadyRecorded: rating.alreadyRecorded, rating: rating.rating },
+    { alreadyRecorded: true, rating: 3 });
+  assert.equal(docs.get('apps/testapp').likesCount, 0);
+  assert.equal(docs.get('apps/testapp').ratingCount, 0);
+  assert.deepEqual(await getInteractionStatus({ db, appId: 'testapp', visitorId, secret }),
+    { liked: true, rated: 3 });
+});

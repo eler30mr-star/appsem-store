@@ -108,18 +108,23 @@ export async function recordInteraction({ db, FieldValue, payload, ip, secret, n
   const eventId = action === 'download' ? actor + '_' + bucket : actor;
   const collection = action === 'like' ? 'likes' : action === 'rating' ? 'ratings' : 'downloadClicks';
   const eventRef = db.doc('apps/' + appId + '/' + collection + '/' + eventId);
+  // Las versiones anteriores escribían el ID local del visitante sin HMAC.
+  // Leer el registro heredado evita contabilizar un segundo like o rating.
+  const legacyRef = action === 'download' ? null : db.doc('apps/' + appId + '/' + collection + '/' + visitorId);
 
   return db.runTransaction(async (tx) => {
     // Todas las lecturas antes de la primera escritura (transacción Firestore).
-    const [appSnapshot, eventSnapshot, rateSnapshot] = await Promise.all([
-      tx.get(appRef), tx.get(eventRef), tx.get(limitRef)
+    const [appSnapshot, eventSnapshot, rateSnapshot, legacySnapshot] = await Promise.all([
+      tx.get(appRef), tx.get(eventRef), tx.get(limitRef),
+      legacyRef ? tx.get(legacyRef) : Promise.resolve(null)
     ]);
     if (!appSnapshot.exists || appSnapshot.data().status !== 'published') {
       throw new PublicError(404, 'La aplicación no está publicada.');
     }
     const app = appSnapshot.data();
-    if (eventSnapshot.exists) {
-      return { alreadyRecorded: true, action, ...(action === 'rating' ? { rating: eventSnapshot.data().rating } : {}) };
+    if (eventSnapshot.exists || legacySnapshot?.exists) {
+      const existing = eventSnapshot.exists ? eventSnapshot : legacySnapshot;
+      return { alreadyRecorded: true, action, ...(action === 'rating' ? { rating: existing.data().rating } : {}) };
     }
     const requestCount = rateSnapshot.exists ? rateSnapshot.data().count : 0;
     if (!Number.isInteger(requestCount) || requestCount < 0 || requestCount >= LIMITS[action]) {
@@ -154,13 +159,16 @@ export async function getInteractionStatus({ db, appId, visitorId, secret }) {
     throw new PublicError(400, 'Identificador inválido.');
   }
   const actor = keyedHash(secret, 'visitor', visitorId);
-  const [app, like, rating] = await Promise.all([
+  const [app, like, legacyLike, rating, legacyRating] = await Promise.all([
     db.doc('apps/' + appId).get(),
     db.doc('apps/' + appId + '/likes/' + actor).get(),
-    db.doc('apps/' + appId + '/ratings/' + actor).get()
+    db.doc('apps/' + appId + '/likes/' + visitorId).get(),
+    db.doc('apps/' + appId + '/ratings/' + actor).get(),
+    db.doc('apps/' + appId + '/ratings/' + visitorId).get()
   ]);
   if (!app.exists || app.data().status !== 'published') {
     throw new PublicError(404, 'Aplicación no publicada.');
   }
-  return { liked: like.exists, rated: rating.exists ? rating.data().rating : null };
+  return { liked: like.exists || legacyLike.exists,
+    rated: rating.exists ? rating.data().rating : legacyRating.exists ? legacyRating.data().rating : null };
 }
