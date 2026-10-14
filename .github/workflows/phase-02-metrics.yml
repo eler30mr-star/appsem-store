@@ -37,5 +37,7 @@ jobs:
       - name: Compilar Vite sin ejecutar prerender remoto
         run: npx vite build
 # No establece ni utiliza secrets Firebase, ni realiza deploy.
-      - name: Comprobar ruta externa Vercel (GET, backend desactivado)
+      - name: Comprobar ruta externa Vercel (GET sin escrituras)
         run: node scripts/check-live-metrics-route.mjs
+      - name: Confirmar rechazo de POST externos y tokens falsos sin escrituras
+        run: node scripts/check-live-metrics-post-rejections.mjs
