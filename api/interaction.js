@@ -8,7 +8,8 @@ function json(res, status, payload) {
   return res.status(status).json(payload);
 }
 function ready() {
-  if (process.env.METRICS_BACKEND_ENABLED !== 'true') {
+  const mode = process.env.METRICS_BACKEND_ENABLED;
+  if (mode !== 'true' && mode !== 'read-only') {
     throw new PublicError(503, 'Métricas del servidor todavía no habilitadas.');
   }
   const origin = process.env.PUBLIC_SITE_ORIGIN;
@@ -18,13 +19,18 @@ function ready() {
       new URL(origin).protocol !== 'https:') {
     throw new PublicError(503, 'Servicio no configurado.');
   }
-  return { origin, secret, turnstileSecret };
+  return { origin, secret, turnstileSecret, mode };
 }
 export default async function handler(req, res) {
   res.setHeader('Allow', 'GET, POST');
   if (!['GET', 'POST'].includes(req.method)) return json(res, 405, { error: 'Método no permitido.' });
   try {
-    const { origin, secret, turnstileSecret } = ready();
+    const { origin, secret, turnstileSecret, mode } = ready();
+    // Ensayo no destructivo en producción: GET usa Firebase Admin; cualquier
+    // POST queda denegado ANTES de abrir Firestore o consumir un token Turnstile.
+    if (mode === 'read-only' && req.method !== 'GET') {
+      throw new PublicError(503, 'Registro de interacciones todavía no habilitado.');
+    }
     if (req.headers.origin && req.headers.origin !== origin) {
       throw new PublicError(403, 'Origen no autorizado.');
     }
