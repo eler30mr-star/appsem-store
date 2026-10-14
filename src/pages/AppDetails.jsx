@@ -80,6 +80,11 @@ export default function AppDetails() {
     async function loadApp() {
       setLoading(true);
       setError("");
+      setDownloadReady("");
+      setDownloadMessage("");
+      setLiked(false);
+      setRated(null);
+      setInteractionMessage("");
 
       try {
         const [data, publishedApps] = await Promise.all([
@@ -92,14 +97,20 @@ export default function AppDetails() {
         setAllApps(publishedApps || []);
 
         if (data) {
-          const [publicComments, interaction] = await Promise.all([
+          // Métricas y comentarios son secundarios: si falla la API en el
+          // despliegue coordinado, el catálogo y los enlaces siguen accesibles.
+          const [commentResult, interactionResult] = await Promise.allSettled([
             getApprovedComments(data.id),
             checkUserInteraction(data.id)
           ]);
           if (!alive) return;
-          setComments(publicComments);
-          setLiked(interaction.liked);
-          setRated(interaction.rated);
+          setComments(commentResult.status === "fulfilled" ? commentResult.value : []);
+          if (interactionResult.status === "fulfilled") {
+            setLiked(Boolean(interactionResult.value.liked));
+            setRated(interactionResult.value.rated ?? null);
+          } else {
+            setInteractionMessage("No se pudo consultar tu valoración anterior. Puedes seguir navegando.");
+          }
         }
       } catch (err) {
         console.error(err);
