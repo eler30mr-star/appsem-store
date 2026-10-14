@@ -99,3 +99,12 @@ Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Ver
 - Si la consulta de comentarios o de estado de visitante falla, se mantiene la ficha publicada y su enlace de descarga en lugar de marcar toda la aplicación como fallida. No se concede una valoración ficticia ni un like en caso de error.
 - El enlace externo se valida con HTTPS y sin usuario, clave, destinos de loopback ni puertos especiales.
 - **Este cambio NO activa `VITE_METRICS_BACKEND=server`**, no aplica reglas productivas y no introduce escritura nueva. Antes de abrir la Fase 2 a visitantes: E2E con Firestore Emulator, pruebas en navegador de flujo de descarga y preparación del corte de reglas con reversión y clientes antiguos.
+
+## Activación por etapas: servidor en solo lectura (14/10/2026)
+
+- El backend admite ahora tres estados: ausencia o `false` => **503 para GET/POST**; `read-only` => **GET con Firebase Admin** y **POST 503 antes de conectar a Firestore o verificar Turnstile**; `true` => GET/POST seguros con Cloudflare y límites.
+- Este estado intermedio permite verificar respuesta real de `/api/interaction` sin activar los likes, ratings, descargas ni comentarios del nuevo sistema. La tienda sigue usando Firestore directo mientras `VITE_METRICS_BACKEND` no sea `server`.
+- Prueba segura: GET con `appId=phase2-readiness-nonexistent-20261014` y un UUID sintético. Resultado esperado en `read-only`: **404 JSON `Aplicación no publicada.`**, que indica que se consultó Firestore sin escribir. En backend apagado: 503 JSON.
+- `scripts/check-live-metrics-route.mjs` acepta únicamente estos dos resultados exactos. NO realiza POST. Las pruebas unitarias aseguran que POST en `read-only` se bloquea ANTES de invocar Firebase Admin o Turnstile.
+- Esta es una comprobación de conexión, no una garantía de cuota de lecturas contra solicitudes públicas repetidas. Mantener el ensayo breve y monitorear errores/uso en Vercel y Firestore; después hacer corte coordinado a `true` + `VITE_METRICS_BACKEND=server` y reglas reforzadas solamente con plan de reversión.
+- No se modifica Firebase ni su configuración de reglas desde este cambio.
