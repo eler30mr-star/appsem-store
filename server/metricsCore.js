@@ -49,9 +49,13 @@ export function keyedHash(secret, ...parts) {
 }
 
 export function validateDownloadTarget(app, input) {
-  const expected = app.playStoreUrl || app.downloadUrl;
-  if (typeof expected !== 'string' || !expected) {
-    throw new PublicError(409, 'No hay enlace de descarga configurado.');
+  // El enlace debe figurar EXACTAMENTE en el catálogo editado por el Admin.
+  // Soporta Play Store y descargas HTTPS oficiales externas (APK).
+  const urls = [app.downloadUrl, app.apkUrl, app.playStoreUrl]
+    .filter(value => typeof value === 'string' && value.length > 0);
+  const expected = input || urls[0];
+  if (!expected || !urls.includes(expected)) {
+    throw new PublicError(400, 'El destino no coincide con el catálogo publicado.');
   }
   let canonical;
   try {
@@ -59,13 +63,14 @@ export function validateDownloadTarget(app, input) {
   } catch {
     throw new PublicError(409, 'El enlace del catálogo no es válido.');
   }
-  if (canonical.protocol !== 'https:' ||
-      !['play.google.com', 'apps.apple.com'].includes(canonical.hostname) ||
-      canonical.username || canonical.password) {
-    throw new PublicError(409, 'El destino de descarga no es una tienda autorizada.');
-  }
-  if (input && input !== expected) {
-    throw new PublicError(400, 'El enlace de descarga no coincide con el catálogo.');
+  const host = canonical.hostname.toLowerCase();
+  if (canonical.protocol !== 'https:' || !host || canonical.username ||
+      canonical.password || canonical.port ||
+      host === 'localhost' || host.endsWith('.localhost') ||
+      host.endsWith('.local') ||
+      /^(\d{1,3}\.){3}\d{1,3}$/.test(host) ||
+      host.includes(':')) {
+    throw new PublicError(409, 'El destino debe ser una URL HTTPS pública del catálogo.');
   }
   return expected;
 }

@@ -86,6 +86,9 @@ test('Solo descarga a URL oficial idéntica a la configurada', () => {
     assert.throws(() => validateDownloadTarget({ playStoreUrl: url }, url), PublicError);
   }
   assert.throws(() => validateDownloadTarget(app, 'https://play.google.com/store/apps/details?id=otra'), PublicError);
+  const direct = { playStoreUrl: app.playStoreUrl, apkUrl: 'https://releases.example.com/apps/app.apk' };
+  assert.equal(validateDownloadTarget(direct, direct.apkUrl), direct.apkUrl);
+  assert.throws(() => validateDownloadTarget(direct, 'https://otro.example.com/app.apk'), PublicError);
 });
 
 test('Cálculo de ratings compatible con campos históricos', () => {

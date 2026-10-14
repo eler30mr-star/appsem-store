@@ -1,0 +1,14 @@
+# Dependencias y compilaciones
+node_modules/
+dist/
+.vercel/
+*.log
+
+# No subir nunca credenciales, tokens ni claves administrativas.
+.env
+.env.*
+!.env.example
+*service-account*.json
+*firebase-adminsdk*.json
+credentials/
+backups/

@@ -20,7 +20,7 @@ export async function verifyTurnstile({ token, ip, secret, expectedHostname }) {
   if (!response.ok) throw new PublicError(503, 'Verificación anti-bot temporalmente no disponible.');
   const data = await response.json();
   if (data.success !== true || data.hostname !== expectedHostname ||
-      (data.action && data.action !== 'appsem-metrics')) {
+      data.action !== 'appsem-metrics') {
     throw new PublicError(403, 'No se pudo validar la interacción.');
   }
   return true;
