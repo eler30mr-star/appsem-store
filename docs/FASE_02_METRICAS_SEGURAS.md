@@ -80,7 +80,7 @@ Precisión: un rechazo correcto de token falso demuestra conexión con Cloudflar
 
 Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Vercel para disparar una compilación controlada; al terminar, cambiar su valor a `false`. La prueba de GitHub Actions no utiliza claves reales. Prohibido publicar claves o copiar JSON privado en los logs.
 
-## Prueba temporal POSITIVA del desafío Turnstile (sin tocar Firestore)
+## Prueba positiva del desafío Turnstile — completada, herramienta temporal en retirada
 
 - Función Vercel temporal: GET y POST en `/api/turnstile-probe`.
 - Por defecto devuelve 404; solo se abre con `PHASE2_TURNSTILE_PROBE_ENABLED=true` en Production y en el dominio canónico `appsem-store.vercel.app`.
@@ -88,5 +88,6 @@ Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Ver
 - El visitante inicia el widget con `action: appsem-metrics`. POST exige Origin exacto, JSON pequeño, IP de Vercel, límite temporal por IP y llama a `server/verifyTurnstile.js`.
 - Solo muestra aprobación cuando Cloudflare confirma `success`, `hostname` y `action`. El endpoint no importa Firebase ni modifica métricas, comentarios o documentos.
 - El límite IP es por instancia, disuasorio y no sirve como defensa global permanente. El probe está previsto solo para una ventana breve.
-- Después de CI aprobado: poner temporalmente la variable en Vercel Production, desplegar y abrir `https://appsem-store.vercel.app/api/turnstile-probe` para completar el desafío.
-- Tras concluir: desactivar la variable, retirar la función temporal y el JS, desplegar limpieza. Solo entonces continuar con la migración de métricas y reglas Firestore.
+- Prueba realizada el 14/10/2026 en el dominio canónico: el navegador mostró **«Verificación real aprobada. Firebase no se modificó.»**; este mensaje únicamente se muestra después de un HTTP 200 del servidor tras Siteverify positivo.
+- Después del éxito, la variable `PHASE2_TURNSTILE_PROBE_ENABLED` se fijó en `false` para nuevos despliegues y se retiraron los archivos `api/turnstile-probe.js`, `public/turnstile-probe.js` y la suite de prueba temporal. El cierre efectivo de la ruta requiere comprobar el despliegue limpio.
+- Ninguna regla Firestore se publicó y `METRICS_BACKEND_ENABLED` / `VITE_METRICS_BACKEND` permanecieron sin activar. Aún falta coordinar la migración cliente-reglas y el plan de reversión.
