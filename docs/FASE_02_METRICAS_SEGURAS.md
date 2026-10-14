@@ -71,3 +71,11 @@ Workflow `Fase 2 - API y seguridad de métricas` ejecuta `node --test tests/*.te
 Se agrega la acción `comment` en la misma API segura y la tienda la utilizará **solo cuando** `VITE_METRICS_BACKEND=server`. Se comprueban tamaño/nombre, app publicada, verificación Turnstile, idempotencia por contenido dentro de una ventana de 15 minutos y máximo tres comentarios por IP y ventana (límite compartido entre apps). El backend crea registros con `approved: false`, que después modera Admin como antes.
 
 **Condición de despliegue:** las reglas candidatas ahora negarán las creaciones públicas directas de comentarios; no publicarlas mientras algún cliente de tienda todavía use la ruta anterior. Los comentarios anteriores permanecen intactos. Es protección contra spam básico, no garantía contra abuso distribuido.
+
+## Ensayo productivo de solo lectura — sin activar interacciones (octubre de 2026)
+
+El build de la tienda ejecuta `scripts/check-phase2-live-readiness.mjs`, pero únicamente hace solicitudes externas cuando `PHASE2_READINESS_CHECK=true` **y** `VERCEL_ENV=production` y las dos banderas funcionales del backend/client siguen apagadas. Este chequeo consulta Firestore con la cuenta de servicio **leyendo como máximo un documento**, nunca escribe y nunca imprime contenidos. Además realiza un Siteverify **negativo** con un token deliberadamente inválido y exige el error esperado `invalid-input-response`, rechazando `invalid-input-secret`. Si algo falla el nuevo build no se publica; el despliegue anterior continúa activo.
+
+Precisión: un rechazo correcto de token falso demuestra conexión con Cloudflare y procesamiento de esa solicitud, **no equivale a demostrar que un token legítimo de usuario pasa**. Ese ensayo positivo, el comportamiento real de la interfaz y la coordinación con reglas nuevas siguen pendientes.
+
+Configurar temporalmente `PHASE2_READINESS_CHECK=true` solo en Production de Vercel para disparar una compilación controlada; al terminar, cambiar su valor a `false`. La prueba de GitHub Actions no utiliza claves reales. Prohibido publicar claves o copiar JSON privado en los logs.
