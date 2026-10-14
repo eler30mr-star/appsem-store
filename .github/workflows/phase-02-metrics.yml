@@ -43,3 +43,5 @@ jobs:
         env:
           METRICS_EXPECT_ACTIVE: "true"
         run: node scripts/check-live-metrics-post-rejections.mjs
+      - name: Auditar reglas Firestore REAL con SDK anónimo (solo lectura)
+        run: node scripts/audit-live-firestore-rules.mjs
