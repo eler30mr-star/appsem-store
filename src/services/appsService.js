@@ -163,6 +163,9 @@ export async function submitComment(appId, payload) {
 
   if (name.length < 2) throw new Error("Escribe tu nombre.");
   if (comment.length < 5) throw new Error("Escribe un comentario más completo.");
+  if (useVerifiedMetrics) {
+    return verifiedInteraction('comment', appId, { name, comment });
+  }
 
   const commentsRef = collection(db, "apps", appId, "comments");
   await addDoc(commentsRef, {

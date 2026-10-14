@@ -179,3 +179,44 @@ test('Compatibilidad de eventos heredados: no se duplican likes/ratings antiguos
   assert.deepEqual(await getInteractionStatus({ db, appId: 'testapp', visitorId, secret }),
     { liked: true, rated: 3 });
 });
+
+
+test('Comentario: válido, enviado pendiente y no duplicable en la misma ventana', async () => {
+  const { db, docs, FieldValue } = mockDb();
+  const req = {
+    db, FieldValue, secret, ip: '198.51.100.61',
+    payload: { ...sample, action: 'comment', name: '  María  ',
+      comment: '  Excelente aplicación, felicitaciones  ' }, now: 1700000000000
+  };
+  const first = await recordInteraction(req);
+  const second = await recordInteraction(req);
+  assert.deepEqual(first, { action: 'comment', alreadyRecorded: false, status: 'pending' });
+  assert.deepEqual(second, { action: 'comment', alreadyRecorded: true, status: 'pending' });
+  const entries = [...docs.entries()].filter(([path]) => path.includes('/comments/'));
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0][1].approved, false);
+  assert.equal(entries[0][1].name, 'María');
+});
+test('Comentario: valida contenido y rechaza campos extras en otras acciones', () => {
+  for (const wrong of [
+    { ...sample, action: 'comment', name: 'A', comment: 'Hola mundo' },
+    { ...sample, action: 'comment', name: 'Ana', comment: 'Mal' },
+    { ...sample, action: 'comment', name: 'Ana', comment: 'x'.repeat(801) },
+    { ...sample, name: 'Campo inesperado' }
+  ]) assert.throws(() => validateInteraction(wrong), PublicError);
+});
+test('Comentarios: 3 por IP/15 minutos, aunque se modifique el ID del visitante', async () => {
+  const { db, FieldValue } = mockDb();
+  for (let i = 0; i < 3; i++) {
+    const req = { db, FieldValue, secret, ip: '198.51.100.62', now: 1700000000000,
+      payload: { ...sample, action: 'comment',
+        visitorId: 'visitor-comments-' + String(i).padStart(8,'0'),
+        name: 'Ana', comment: 'Comentario distinto #' + i + ' de ensayo' } };
+    assert.equal((await recordInteraction(req)).alreadyRecorded, false);
+  }
+  await assert.rejects(recordInteraction({ db, FieldValue, secret, ip: '198.51.100.62',
+    now: 1700000000000,
+    payload: { ...sample, action: 'comment', name: 'Ana',
+      comment: 'Un cuarto comentario de prueba' }
+  }), err => err instanceof PublicError && err.status === 429);
+});

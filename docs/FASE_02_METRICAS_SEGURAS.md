@@ -64,3 +64,10 @@ Workflow `Fase 2 - API y seguridad de métricas` ejecuta `node --test tests/*.te
 - Se agregó una ruta **solo para pruebas en Emulator** al módulo del SDK Admin. Requiere simultáneamente `METRICS_EMULATOR_TEST=true`, `FIRESTORE_EMULATOR_HOST` en loopback puerto 8080, `GCLOUD_PROJECT=demo-*` y ausencia de entorno Vercel; jamás permite apuntar al proyecto real.
 - Validación de variables de compilación: JSON sintácticamente válido, `project_id=webs-8b1bf`, tipo y estructura de cuenta de servicio correctos, HTTPS. **El chequeo es estructural:** no verifica que la clave sea real, tenga permisos o que el backend de Vercel esté desplegado.
 - Pruebas de API HTTP completa y del SDK Admin en Firebase Emulator se administran desde `appsem-store-admin` (CI integrada). Ningún dato real es consultado.
+
+
+## Comentarios con protección antispam (14/10/2026)
+
+Se agrega la acción `comment` en la misma API segura y la tienda la utilizará **solo cuando** `VITE_METRICS_BACKEND=server`. Se comprueban tamaño/nombre, app publicada, verificación Turnstile, idempotencia por contenido dentro de una ventana de 15 minutos y máximo tres comentarios por IP y ventana (límite compartido entre apps). El backend crea registros con `approved: false`, que después modera Admin como antes.
+
+**Condición de despliegue:** las reglas candidatas ahora negarán las creaciones públicas directas de comentarios; no publicarlas mientras algún cliente de tienda todavía use la ruta anterior. Los comentarios anteriores permanecen intactos. Es protección contra spam básico, no garantía contra abuso distribuido.

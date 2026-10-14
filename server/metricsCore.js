@@ -1,9 +1,9 @@
 import { createHmac } from 'node:crypto';
 
-const ACTIONS = new Set(['like', 'rating', 'download']);
+const ACTIONS = new Set(['like', 'rating', 'download', 'comment']);
 const APP_ID = /^[A-Za-z0-9_-]{1,128}$/;
 const VISITOR_ID = /^[A-Za-z0-9-]{8,128}$/;
-const LIMITS = { like: 12, rating: 8, download: 30 };
+const LIMITS = { like: 12, rating: 8, download: 30, comment: 3 };
 const BUCKET_MS = 15 * 60 * 1000;
 
 export class PublicError extends Error {
@@ -17,11 +17,11 @@ export function validateInteraction(payload) {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
     throw new PublicError(400, 'Solicitud inválida.');
   }
-  const allowed = new Set(['action', 'appId', 'visitorId', 'rating', 'targetUrl', 'turnstileToken']);
+  const allowed = new Set(['action', 'appId', 'visitorId', 'rating', 'targetUrl', 'turnstileToken', 'name', 'comment']);
   if (Object.keys(payload).some((key) => !allowed.has(key))) {
     throw new PublicError(400, 'Campos de interacción no permitidos.');
   }
-  const { action, appId, visitorId, rating, targetUrl, turnstileToken } = payload;
+  const { action, appId, visitorId, rating, targetUrl, turnstileToken, name, comment } = payload;
   if (!ACTIONS.has(action) || !APP_ID.test(appId || '') || !VISITOR_ID.test(visitorId || '')) {
     throw new PublicError(400, 'Interacción o identificador inválido.');
   }
@@ -40,7 +40,18 @@ export function validateInteraction(payload) {
   if (action !== 'download' && targetUrl !== undefined) {
     throw new PublicError(400, 'Enlace inesperado.');
   }
-  return { action, appId, visitorId, rating, targetUrl, turnstileToken };
+  if (action === 'comment') {
+    if (typeof name !== 'string' || typeof comment !== 'string' ||
+        name.trim().length < 2 || name.trim().length > 60 ||
+        comment.trim().length < 5 || comment.trim().length > 800 ||
+        name.length > 100 || comment.length > 1000) {
+      throw new PublicError(400, 'Nombre o comentario fuera de los límites permitidos.');
+    }
+  } else if (name !== undefined || comment !== undefined) {
+    throw new PublicError(400, 'Texto de comentario inesperado.');
+  }
+  return { action, appId, visitorId, rating, targetUrl, turnstileToken,
+    ...(action === 'comment' ? { name: name.trim(), comment: comment.trim() } : {}) };
 }
 
 export function keyedHash(secret, ...parts) {
@@ -97,8 +108,48 @@ export function nextRating(app, rating) {
   };
 }
 
+/**
+ * Comentarios: moderación previa, ID determinístico por contenido/visitante/bucket
+ * y límite por IP. El navegador no decide si está aprobado.
+ */
+export async function recordComment({ db, FieldValue, payload, ip, secret, now = Date.now() }) {
+  const { appId, visitorId, name, comment } = validateInteraction(payload);
+  if (payload.action !== 'comment') throw new PublicError(400, 'Acción inesperada.');
+  const bucket = Math.floor(now / BUCKET_MS);
+  const actor = keyedHash(secret, 'visitor', visitorId);
+  const ipHash = keyedHash(secret, 'ip', ip);
+  const eventId = keyedHash(secret, 'comment', appId, actor, name, comment, String(bucket));
+  const appRef = db.doc('apps/' + appId);
+  const commentRef = db.doc('apps/' + appId + '/comments/' + eventId);
+  const rateRef = db.doc('commentsLimits/' + bucket + '_' + ipHash);
+  return db.runTransaction(async (tx) => {
+    const [app, prior, rate] = await Promise.all([
+      tx.get(appRef), tx.get(commentRef), tx.get(rateRef)
+    ]);
+    if (!app.exists || app.data().status !== 'published') {
+      throw new PublicError(404, 'La aplicación no está publicada.');
+    }
+    if (prior.exists) return { action: 'comment', alreadyRecorded: true, status: 'pending' };
+    const used = rate.exists ? rate.data().count : 0;
+    if (!Number.isSafeInteger(used) || used < 0 || used >= LIMITS.comment) {
+      throw new PublicError(429, 'Has enviado varios comentarios. Intenta más tarde.');
+    }
+    tx.create(commentRef, {
+      name, comment, approved: false, createdAt: FieldValue.serverTimestamp()
+    });
+    tx.set(rateRef, {
+      count: used + 1,
+      expiresAt: new Date((bucket + 1) * BUCKET_MS + 7 * 24 * 3600000)
+    });
+    return { action: 'comment', alreadyRecorded: false, status: 'pending' };
+  });
+}
+
 export async function recordInteraction({ db, FieldValue, payload, ip, secret, now = Date.now() }) {
   const { action, appId, visitorId, rating, targetUrl } = validateInteraction(payload);
+  if (action === 'comment') {
+    return recordComment({ db, FieldValue, payload, ip, secret, now });
+  }
   const actor = keyedHash(secret, 'visitor', visitorId);
   const ipHash = keyedHash(secret, 'ip', ip);
   const bucket = Math.floor(now / BUCKET_MS);
