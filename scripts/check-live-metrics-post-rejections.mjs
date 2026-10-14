@@ -35,6 +35,9 @@ try {
   const external = await post({ Origin: 'https://origin-not-allowed.example' });
   if (external.code === 503 &&
       external.message === 'Registro de interacciones todavía no habilitado.') {
+    if (process.env.METRICS_EXPECT_ACTIVE === 'true') {
+      throw Error('Backend sigue en read-only cuando se esperaba escritura protegida activa.');
+    }
     console.info('PASS: read-only; POST bloqueado antes de Firebase y Turnstile.');
   } else if (external.code === 403 && external.message === 'Origen no autorizado.') {
     const forged = await post({ Origin: 'https://appsem-store.vercel.app' });
