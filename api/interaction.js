@@ -28,9 +28,10 @@ export default async function handler(req, res) {
     if (req.headers.origin && req.headers.origin !== origin) {
       throw new PublicError(403, 'Origen no autorizado.');
     }
-    // Vercel sobreescribe Forwarded-For para impedir suplantación en Vercel Hosting.
-    const ip = String(req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'] || '')
-      .split(',')[0].trim();
+    // Usar exclusivamente el encabezado específico que Vercel establece;
+    // X-Forwarded-For a secas podría ser manipulable en otros proxies.
+    const forwarded = req.headers['x-vercel-forwarded-for'];
+    const ip = typeof forwarded === 'string' ? forwarded.split(',')[0].trim() : '';
     if (!ip || ip.length > 64) throw new PublicError(400, 'IP de origen no disponible.');
     const { db, FieldValue } = getMetricsFirestore();
     if (req.method === 'GET') {
