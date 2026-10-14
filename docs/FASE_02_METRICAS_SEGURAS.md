@@ -56,3 +56,11 @@ Usar claves restringidas y de mínimo privilegio. No insertar el JSON de la cuen
 Workflow `Fase 2 - API y seguridad de métricas` ejecuta `node --test tests/*.test.mjs`, ESLint y compilación Vite aislada del prerender remoto. Los tests de reglas y acceso Admin se ejecutan por separado en la suite `appsem-store-admin` con Firebase Emulator. NO se conectan a Firebase real.
 
 **No marcar Fase 2 como completada ni afirmar que se bloquean actualmente los incrementos directos públicos** hasta activar backend y publicar reglas compatibles de forma coordinada.
+
+
+## Endurecimiento adicional — 14/10/2026
+
+- API: POST exige `Origin` exacto, JSON y un `Content-Length` válido dentro del límite, antes de verificar Turnstile o escribir en Firestore. Estos encabezados no reemplazan Turnstile ni la limitación de cuota.
+- Se agregó una ruta **solo para pruebas en Emulator** al módulo del SDK Admin. Requiere simultáneamente `METRICS_EMULATOR_TEST=true`, `FIRESTORE_EMULATOR_HOST` en loopback puerto 8080, `GCLOUD_PROJECT=demo-*` y ausencia de entorno Vercel; jamás permite apuntar al proyecto real.
+- Validación de variables de compilación: JSON sintácticamente válido, `project_id=webs-8b1bf`, tipo y estructura de cuenta de servicio correctos, HTTPS. **El chequeo es estructural:** no verifica que la clave sea real, tenga permisos o que el backend de Vercel esté desplegado.
+- Pruebas de API HTTP completa y del SDK Admin en Firebase Emulator se administran desde `appsem-store-admin` (CI integrada). Ningún dato real es consultado.

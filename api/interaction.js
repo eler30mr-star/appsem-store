@@ -39,13 +39,18 @@ export default async function handler(req, res) {
       });
       return json(res, 200, data);
     }
-    const body = validateInteraction(req.body);
     if (String(req.headers['content-type'] || '').split(';')[0] !== 'application/json') {
       throw new PublicError(415, 'Se requiere JSON.');
     }
-    if (Number(req.headers['content-length'] || 0) > 8192) {
-      throw new PublicError(413, 'Solicitud demasiado grande.');
+    const size = Number(req.headers['content-length']);
+    if (!Number.isFinite(size) || size < 0 || size > 8192) {
+      throw new PublicError(413, 'Tamaño de solicitud no permitido.');
     }
+    // Acepta solo solicitudes POST originadas desde el propio sitio.
+    if (req.headers.origin !== origin) {
+      throw new PublicError(403, 'Origen requerido para registrar interacciones.');
+    }
+    const body = validateInteraction(req.body);
     await verifyTurnstile({
       token: body.turnstileToken,
       ip,
