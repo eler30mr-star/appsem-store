@@ -220,3 +220,26 @@ test('Comentarios: 3 por IP/15 minutos, aunque se modifique el ID del visitante'
       comment: 'Un cuarto comentario de prueba' }
   }), err => err instanceof PublicError && err.status === 429);
 });
+
+test('GET de app ausente o borrador no consulta 4 registros de interacción', async () => {
+  for (const [appId, published] of [['missing-app', null], ['draft-app', false]]) {
+    const queried = [];
+    const db = {
+      doc(path) {
+        return {
+          async get() {
+            queried.push(path);
+            if (published === null) return { exists: false };
+            return { exists: true, data: () => ({ status: 'draft' }) };
+          }
+        };
+      }
+    };
+    await assert.rejects(
+      getInteractionStatus({ db, appId, visitorId, secret }),
+      error => error instanceof PublicError && error.status === 404
+    );
+    assert.deepEqual(queried, ['apps/' + appId],
+      'No consultar likes/ratings ni IDs heredadas cuando la app no es pública');
+  }
+});
