@@ -42,8 +42,17 @@ export default async function handler(req, res) {
     if (String(req.headers['content-type'] || '').split(';')[0] !== 'application/json') {
       throw new PublicError(415, 'Se requiere JSON.');
     }
-    const size = Number(req.headers['content-length']);
-    if (!Number.isFinite(size) || size < 0 || size > 8192) {
+    // Content-Length es opcional en HTTP/2; validar también JSON ya parseado.
+    const declared = req.headers['content-length'];
+    const declaredBytes = declared === undefined ? null : Number(declared);
+    let actualBytes;
+    try {
+      actualBytes = Buffer.byteLength(JSON.stringify(req.body ?? null));
+    } catch {
+      throw new PublicError(400, 'Cuerpo JSON inválido.');
+    }
+    if ((declaredBytes !== null && (!Number.isSafeInteger(declaredBytes) ||
+        declaredBytes < 0 || declaredBytes > 8192)) || actualBytes > 8192) {
       throw new PublicError(413, 'Tamaño de solicitud no permitido.');
     }
     // Acepta solo solicitudes POST originadas desde el propio sitio.
