@@ -1,1 +1,15 @@
-Ingresa un dominio para generar un archivo JSON
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.appsmarttechnology.authpro",
+      "sha256_cert_fingerprints": [
+        "5C:D0:BE:CD:A8:B0:10:86:67:41:53:0B:10:85:1F:19:4D:96:04:6E:F6:71:D9:1D:C7:15:D1:98:F4:F9:CC:C8"
+      ]
+    }
+  }
+]
